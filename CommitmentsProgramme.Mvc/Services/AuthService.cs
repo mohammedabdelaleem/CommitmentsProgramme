@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using static CommitmentsProgramme.Utilities.Abstractions.Consts.SharedData;
 
-namespace CommitmentsProgramme.Infrastructure.Services;
+namespace CommitmentsProgramme.Mvc.Services;
 public class AuthService
 {
 	private readonly UserManager<ApplicationUser> _userManager;

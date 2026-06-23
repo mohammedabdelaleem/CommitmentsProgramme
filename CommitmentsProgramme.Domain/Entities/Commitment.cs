@@ -10,19 +10,10 @@ public class Commitment : BaseEntity
   [Display(Name = "التوقيت")]
   public TimeOnly? Time { get; set; }
 
-  [Display(Name = "المكان")]
-  public string? Location { get; set; }
-
-  [Display(Name = "الحضور")]
-  public string? Attendance { get; set; }
-
+ 
   [Display(Name = "ملاحظات")]
   public string? Notes { get; set; }
 
-  //[Display(Name = "الفرع المختص")]
-  //public int BranchId { get; set; }
-
-  //public Branch Branch { get; set; } = default!;
 
   [Display(Name = "نوع الالتزام")]
   public int CommitmentTypeId { get; set; }
@@ -37,4 +28,10 @@ public class Commitment : BaseEntity
   public int DailyPlanId { get; set; }
 
   public DailyPlan DailyPlan { get; set; } = default!;
+
+    public List<Attendance> Attendances { get; set; } = [];
+    public List<Branch> Branches { get; set; } = [];
+
+    public int PlaceId { get; set; }
+    public Place Place { get; set; } 
 }

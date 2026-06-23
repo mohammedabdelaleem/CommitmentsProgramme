@@ -17,7 +17,8 @@ namespace CommitmentsProgramme.Infrastructure.Persistance
     public DbSet<Branch> Branches { get; set; }
     public DbSet<DailyPlan> DailyPlans { get; set; }
     public DbSet<Officer> Officers { get; set; }
-
+    public DbSet<Place> Places { get; set; }
+    public DbSet<Attendance> Attendances { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
 		{

@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Mail;
 
-namespace CommitmentsProgramme.Infrastructure.Services;
+namespace CommitmentsProgramme.Mvc.Services;
 
 public class EmailService(IOptions<EmailSettings> options) : IEmailService
 {

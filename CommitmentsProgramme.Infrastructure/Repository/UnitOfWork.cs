@@ -14,6 +14,8 @@ public class UnitOfWork : IUnitOfWork
 	public IOfficerRepository Officers { get; set; }
 	public IPriorityRepository Priorities { get; set; }
 	public IRankRepository Ranks { get; set; }
+	public IAttendanceRepository Attendances { get; set; }
+	public IPlaceRepository Places { get; set; }
 	
 
     public UnitOfWork(AppDbContext context)
@@ -23,12 +25,13 @@ public class UnitOfWork : IUnitOfWork
 		DailyPlans = new DailyPlanRepository(context);
 		Branches = new BranchRepository(context);
 		Commitments = new CommitmentRepository(context);
-    CommitmentTypes = new CommitmentTypeRepository(context);
-    Officers = new OfficerRepository(context);
-    Priorities = new PriorityRepository(context);
-    Ranks = new RankRepository(context);
+		CommitmentTypes = new CommitmentTypeRepository(context);
+		Officers = new OfficerRepository(context);
+		Priorities = new PriorityRepository(context);
+		Ranks = new RankRepository(context);
+		 Attendances = new AttendanceRepository(context);
+        Places = new PlaceRepository(context);
 		
-
     }
     public async Task<int> CompleteAsync(CancellationToken cancellationToken = default)
 	{

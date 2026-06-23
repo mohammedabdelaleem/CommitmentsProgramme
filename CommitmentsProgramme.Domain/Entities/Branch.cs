@@ -10,6 +10,7 @@ public class Branch : BaseEntity
   [Display(Name = "الترتيب")]
   public int DisplayOrder { get; set; }
 
-  [Display(Name = "نشط")]
+
+    [Display(Name = "نشط")]
   public bool IsActive { get; set; } = true;
 }

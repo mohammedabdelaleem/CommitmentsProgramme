@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace CommitmentsProgramme.Infrastructure.Services;
+namespace CommitmentsProgramme.Mvc.Services;
 
 public interface IUserService
 {

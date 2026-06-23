@@ -1,4 +1,4 @@
-﻿namespace CommitmentsProgramme.Infrastructure.Services;
+﻿namespace CommitmentsProgramme.Mvc.Services;
 
 public interface IEmailService
 {

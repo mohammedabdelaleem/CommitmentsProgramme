@@ -9,19 +9,19 @@ public class CreateCommitmentVm
   public DateOnly CommitmentDate { get; set; }
 
   [Display(Name = "الضابط العظيم")]
-  public Guid SeniorOfficerId { get; set; }
+  public int SeniorOfficerId { get; set; }
 
   [Display(Name = "الضابط النوبتجي")]
-  public Guid DutyOfficerId { get; set; }
+  public int DutyOfficerId { get; set; }
 
   [Display(Name = "نوع الالتزام")]
-  public Guid CommitmentTypeId { get; set; }
+  public int CommitmentTypeId { get; set; }
 
   [Display(Name = "الأولوية")]
-  public Guid PriorityId { get; set; }
+  public int PriorityId { get; set; }
 
   [Display(Name = "الفروع المختصة")]
-  public List<Guid> BranchIds { get; set; } = new();
+  public List<int> BranchIds { get; set; } = new();
 
   [Display(Name = "اسم الالتزام")]
   public string Title { get; set; } = string.Empty;

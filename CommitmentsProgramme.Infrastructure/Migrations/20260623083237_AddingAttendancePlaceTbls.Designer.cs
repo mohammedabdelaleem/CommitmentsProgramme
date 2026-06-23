@@ -4,6 +4,7 @@ using CommitmentsProgramme.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CommitmentsProgramme.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260623083237_AddingAttendancePlaceTbls")]
+    partial class AddingAttendancePlaceTbls
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,7 +202,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasIndex("CommitmentId");
 
-                    b.ToTable("Attendances", (string)null);
+                    b.ToTable("Attendances");
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Branch", b =>
@@ -241,7 +244,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasIndex("CommitmentId");
 
-                    b.ToTable("Branches", (string)null);
+                    b.ToTable("Branches");
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Commitment", b =>
@@ -298,7 +301,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasIndex("PriorityId");
 
-                    b.ToTable("Commitments", (string)null);
+                    b.ToTable("Commitments");
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.CommitmentType", b =>
@@ -335,7 +338,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CommitmentType", (string)null);
+                    b.ToTable("CommitmentType");
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.DailyPlan", b =>
@@ -374,7 +377,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasIndex("SeniorOfficerId");
 
-                    b.ToTable("DailyPlans", (string)null);
+                    b.ToTable("DailyPlans");
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Officer", b =>
@@ -412,7 +415,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasIndex("RankId");
 
-                    b.ToTable("Officers", (string)null);
+                    b.ToTable("Officers");
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Place", b =>
@@ -446,7 +449,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Places", (string)null);
+                    b.ToTable("Places");
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Priority", b =>
@@ -487,7 +490,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Priorities", (string)null);
+                    b.ToTable("Priorities");
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Rank", b =>
@@ -524,7 +527,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ranks", (string)null);
+                    b.ToTable("Ranks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 using System.Linq.Expressions;
-using CommitmentsProgramme.Infrastructure.Persistance;
 
-namespace CommitmentsProgramme.Infrastructure.Services;
+namespace CommitmentsProgramme.Mvc.Services;
 
 public class UserService(AppDbContext context) : IUserService
 {

@@ -12,6 +12,8 @@ public interface IUnitOfWork : IDisposable
   IOfficerRepository Officers { get; set; }
   IPriorityRepository Priorities { get; set; }
   IRankRepository Ranks { get; set; }
+  IAttendanceRepository Attendances { get; set; }
+    IPlaceRepository Places { get; set; }
 
 
   Task<int> CompleteAsync(CancellationToken cancellationToken = default); // save changes

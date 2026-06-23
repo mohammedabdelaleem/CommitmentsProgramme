@@ -2,7 +2,7 @@
 
 public class CommitmentItemVm
 {
-  public Guid? Id { get; set; }
+  public int? Id { get; set; }
 
   [Display(Name = "الالتزام")]
   [Required(ErrorMessage = "{0} مطلوب")]
@@ -21,11 +21,11 @@ public class CommitmentItemVm
   public string? Notes { get; set; }
 
   [Display(Name = "نوع الالتزام")]
-  public Guid CommitmentTypeId { get; set; }
+  public int CommitmentTypeId { get; set; }
 
   [Display(Name = "الأولوية")]
-  public Guid PriorityId { get; set; }
+  public int PriorityId { get; set; }
 
   [Display(Name = "الفروع المختصة")]
-  public List<Guid> BranchIds { get; set; } = new();
+  public List<int> BranchIds { get; set; } = new();
 }

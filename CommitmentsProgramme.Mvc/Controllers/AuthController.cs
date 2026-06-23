@@ -10,6 +10,7 @@ using Stripe;
 using System.Security.Claims;
 using System.Security.Principal;
 using CommitmentsProgramme.Utilities.Extensions;
+using CommitmentsProgramme.Mvc.Services;
 
 namespace CommitmentsProgramme.Mvc.Controllers;
 

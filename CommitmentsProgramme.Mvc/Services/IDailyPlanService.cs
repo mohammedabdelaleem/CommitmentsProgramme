@@ -1,15 +1,15 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-//namespace CommitmentsProgramme.Infrastructure.Services;
+namespace CommitmentsProgramme.Mvc.Services;
 
-//public interface IDailyPlanService
-//{
-  
-//  Task<DailyPlanVm> GetForEditAsync(int? id,  );
+public interface IDailyPlanService
+{
 
-//  Task SaveAsync(DailyPlanVm vm);
-//}
+    Task<DailyPlanVm> GetForEditAsync(int? id);
+
+    Task SaveAsync(DailyPlanVm vm, string userFullName);
+}
