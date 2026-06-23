@@ -1,5 +1,4 @@
 using CommitmentsProgramme.Utilities.Extensions;
-using Stripe;
 
 namespace CommitmentsProgramme.Mvc;
 
