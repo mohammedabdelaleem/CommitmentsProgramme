@@ -14,6 +14,7 @@ public class DailyPlanVm
 
   public List<CommitmentVm> Commitments { get; set; } = new();
 
+
     // SELECT LISTS
     public List<SelectListItem> Priorities { get; set; } = new();
 

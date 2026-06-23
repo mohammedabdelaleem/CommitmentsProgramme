@@ -36,6 +36,7 @@ public static class DependencyInjection
 
     services.AddTransient<IEmailService, EmailService>();
 
+    services.AddScoped<IDailyPlanService, DailyPlanService>();
     services.AddScoped<IUnitOfWork, UnitOfWork>();
 
     services.AddScoped<AuthService>();

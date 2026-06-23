@@ -1,0 +1,64 @@
+﻿@model CommitmentVm
+
+<div class="card p-3 mb-3 commitment-row">
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <label>العنوان</label>
+            <input name="Commitments[INDEX].Title" class="form-control" />
+        </div>
+
+        <div class="col-md-4">
+            <label>الوقت</label>
+            <input type="time"
+                   name="Commitments[INDEX].Time"
+                   class="form-control" />
+        </div>
+
+        <div class="col-md-4">
+            <label>النوع</label>
+            <select name="Commitments[INDEX].CommitmentTypeId"
+                    class="form-control">
+            </select>
+        </div>
+
+        <div class="col-md-4 mt-2">
+            <label>الأولوية</label>
+            <select name="Commitments[INDEX].PriorityId"
+                    class="form-control">
+            </select>
+        </div>
+
+        <div class="col-md-4 mt-2">
+            <label>المكان</label>
+            <select name="Commitments[INDEX].PlaceId"
+                    class="form-control">
+            </select>
+        </div>
+
+        <div class="col-md-4 mt-2">
+            <label>الفروع</label>
+            <select multiple
+                    name="Commitments[INDEX].BranchIds"
+                    class="form-control">
+            </select>
+        </div>
+
+        <div class="col-md-6 mt-2">
+            <label>الحضور</label>
+            <select multiple
+                    name="Commitments[INDEX].AttendanceIds"
+                    class="form-control">
+            </select>
+        </div>
+
+        <div class="col-md-6 mt-2">
+            <label>ملاحظات</label>
+            <textarea name="Commitments[INDEX].Notes"
+                      class="form-control"></textarea>
+        </div>
+
+    </div>
+
+</div>

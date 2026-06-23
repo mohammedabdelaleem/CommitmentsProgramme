@@ -36,7 +36,9 @@ public class DailyPlanService(IUnitOfWork unitOfWork) : IDailyPlanService
             })
             .ToList();
 
-        vm.Branches = (await _unitOfWork.Branches.GetAllAsync(x => x.IsActive))
+        var branches = await _unitOfWork.Branches.GetAllAsync(x => x.IsActive) ?? [];
+
+        vm.Branches = branches
             .Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),

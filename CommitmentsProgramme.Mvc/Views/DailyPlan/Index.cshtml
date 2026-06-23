@@ -1,0 +1,53 @@
+﻿@model List<DailyPlanListVm>
+
+@{
+    ViewData["Title"] = "الخطط اليومية";
+}
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between mb-3">
+        <h3>الخطط اليومية</h3>
+
+        <a class="btn btn-primary" asp-action="Create">
+            + إنشاء خطة جديدة
+        </a>
+    </div>
+
+    <table class="table table-bordered text-center">
+        <thead>
+            <tr>
+                <th>التاريخ</th>
+                <th>الضابط الكبير</th>
+                <th>الضابط النوبتجي</th>
+                <th>عدد الالتزامات</th>
+                <th>إجراءات</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.PlanDate</td>
+                    <td>@item.SeniorOfficerName</td>
+                    <td>@item.DutyOfficerName</td>
+                    <td>@item.CommitmentsCount</td>
+                    <td>
+                        <a class="btn btn-sm btn-warning"
+                           asp-action="Edit"
+                           asp-route-id="@item.Id">
+                            تعديل
+                        </a>
+
+                        <a class="btn btn-sm btn-danger"
+                           asp-action="Delete"
+                           asp-route-id="@item.Id">
+                            حذف
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

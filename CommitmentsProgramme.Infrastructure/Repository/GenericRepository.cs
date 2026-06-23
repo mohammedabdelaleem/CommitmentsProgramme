@@ -55,7 +55,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity /
 			query = query.Take(size.Value);
 		}
 
-		return await query.ToListAsync(cancellationToken);
+			return await query.ToListAsync(cancellationToken);
 	}
 
 	public async Task<IEnumerable<SimpleEntity>> GetAllInShortAsync(

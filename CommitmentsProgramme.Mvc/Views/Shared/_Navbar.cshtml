@@ -2,7 +2,7 @@
 
     <div class="container">
 
-        <a asp-controller="Home"
+        <a asp-controller="DailyPlan"
            asp-action="Index"
            class="navbar-brand">
 
@@ -39,7 +39,8 @@
 
                 <li class="nav-item">
 
-                    <a class="nav-link">
+                    <a asp-controller="DailyPlan"
+                       asp-action="Index" class="nav-link">
 
                         التزامات اليوم
 
@@ -64,7 +65,7 @@
                 @if (User.Identity?.IsAuthenticated == true)
                 {
                     <a asp-area="Admin"
-                       asp-controller="Dashboard"
+                       asp-controller="Home"
                        asp-action="Index"
                        class="btn btn-primary">
 
@@ -74,7 +75,7 @@
                 }
                 else
                 {
-                    <a asp-controller="Account"
+                    <a asp-controller="Auth"
                        asp-action="Login"
                        class="btn btn-outline-primary">
 
