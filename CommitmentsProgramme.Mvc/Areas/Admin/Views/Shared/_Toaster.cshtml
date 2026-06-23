@@ -1,0 +1,30 @@
+﻿@{
+    string message = TempData["success"]?.ToString() ?? "";
+}
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+    <script>
+        const text = "@message";
+
+        if (text.includes("Created")) {
+            toastr.success(text);
+        }
+        else if (text.includes("Updated")) {
+            toastr.info(text);
+        }
+        else if (text.includes("Deleted")) {
+            toastr.error(text); 
+        }
+        else {
+            toastr.warning(text);
+        }
+    </script>
+}
+
+@if (TempData["error"] != null)
+{
+    <script>
+        toastr.error("@TempData["error"]");
+    </script>
+}

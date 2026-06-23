@@ -1,0 +1,102 @@
+﻿ @model LoginRequestVm
+
+<section class="auth-page">
+    <div class="container-fluid">
+        <div class="row min-vh-100">
+
+            <!-- LEFT -->
+            <div class="left-auth col-lg-5 d-flex align-items-center justify-content-center bg-light">
+                <div class="w-75">
+
+                    <h2 class="fw-bold mb-2">Sign in to your account</h2>
+                    <p class="text-muted mb-4">
+                        Don’t have an account?
+                        <a asp-action="Register">Register here</a>
+                    </p>
+
+                    <form asp-action="Login" method="post">
+                        <div asp-validation-summary="All" class="text-danger small"></div>
+
+                        <input name="returnUrl" value="@ViewBag.ReturnUrl" hidden />
+
+                        <div class="mb-3">
+                            <input asp-for="Email" class="form-control form-control-lg"
+                                   placeholder="Email">
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                          <div class="position-relative">
+                                <input asp-for="Password" type="password"
+                                       class="form-control form-control-lg"
+                                       placeholder="Password"
+                                       id="passwordInput">
+
+                                <i class="fa-solid fa-eye toggle-password-login"
+                                   onclick="togglePassword('passwordInput', this)"></i>
+
+                          </div>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <input asp-for="RememberMe" class="form-check-input"> Remember me
+                            </div>
+                            <a asp-action="VerifyEmail">Forgot password?</a>
+                        </div>
+
+                        <button class="btn btn-primary w-100 btn-lg">
+                            Sign in
+                        </button>
+                        <div class="text-center mt-4 mb-4">
+
+                            <span class="text-muted">Or continue with</span>
+                            <div class="d-flex gap-2 mt-3">
+                                <a asp-controller="Auth" asp-action="ExternalLogin" asp-route-provider="Google" class="btn btn-outline-primary w-50">
+                                    <i class="fa-brands fa-google me-2"></i>Google
+                                </a>
+                                <a asp-controller="Auth" asp-action="ExternalLogin" asp-route-provider="GitHub" class="btn btn-dark w-50">
+                                    <i class="fa-brands fa-github me-2"></i>GitHub
+                                </a>
+                                <a asp-controller="Auth" asp-action="ExternalLogin" asp-route-provider="Facebook" class="btn btn-primary w-50">
+                                    <i class="fa-brands fa-facebook me-2"></i>Facebook
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="col-lg-7 d-none d-lg-block p-0">
+                @await Html.PartialAsync("_AuthCarousel")
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+            // 🔥 Password
+        const password = document.getElementById("passwordInput");
+     
+        function togglePassword(id, icon) {
+            const input = document.getElementById(id);
+
+            const isHidden = input.type === "password";
+            input.type = isHidden ? "text" : "password";
+
+            icon.classList.toggle("fa-eye");
+            icon.classList.toggle("fa-eye-slash");
+
+            icon.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+        }
+
+
+    </script>
+}

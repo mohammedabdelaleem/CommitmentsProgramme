@@ -1,0 +1,72 @@
+﻿@model List<UserRolesVm>
+
+	@{
+	TempData[SharedData.MainTitle] = "User Management";
+}
+
+<table class="table table-hover">
+
+	<thead class="table-dark">
+		<tr>
+			<th>Name</th>
+			<th>Phone</th>
+			<th>Roles</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		@foreach(var item in Model)
+		{
+			<tr class="white-td " data-id="@item.User.Id">
+				
+					<td>@item.User.UserName</td>
+					<td>@item.User.PhoneNumber</td>
+					<td>
+						@foreach (var role in ViewBag.AllRoles)
+					{
+							@if (item.UserRoles.Contains(role.ToString()))
+						{
+								<a class ="btn btn-primary" asp-action="UpdateUserRole" asp-route-UserId="@item.User.Id" asp-route-RoleName="@role">@role</a>
+						}
+						else
+						{
+								<a class="btn btn-outline-primary" asp-action="UpdateUserRole" asp-route-UserId="@item.User.Id" asp-route-RoleName="@role">@role</a>
+							}
+						}
+					</td>
+
+					<td >
+						<a class="btn @(item.User.LockoutEnd != null && item.User.LockoutEnd > DateTime.UtcNow ? "btn-danger" : "btn-success")"
+						   asp-action="LockUnlock"
+						   asp-controller="User"
+						   asp-route-id="@item.User.Id">
+							<i class="fas @(item.User.LockoutEnd != null && item.User.LockoutEnd > DateTime.UtcNow ? "fa-lock" : "fa-lock-open")"></i>
+						</a>
+
+					<a class="btn btn-danger"
+					   onclick="deleteItem('@item.User.Id', 'User')">
+						<i class="bi bi-trash"></i> Delete
+					</a>
+
+					</td>
+				</tr>
+		}
+	</tbody>
+</table>
+
+<form id="deleteForm">
+	@Html.AntiForgeryToken()
+</form>
+
+@section Styles {
+
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+	
+}
+
+@section Scripts {
+	<script src="~/js/deleteitem.js"></script>
+
+}
+

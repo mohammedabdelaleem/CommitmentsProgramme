@@ -1,0 +1,46 @@
+﻿﻿@{
+string style = "success";
+string message = "";
+
+if (TempData["success"] != null)
+{
+    message = TempData["success"].ToString();
+
+    if (message.Contains("Created"))
+    {
+        style = "success";
+    }
+    else if (message.Contains("Updated"))
+    {
+        style = "info";
+    }
+    else if (message.Contains("Deleted"))
+    {
+        style = "error";
+    }
+    else
+    {
+        style = "warning"; // like shipped
+    }
+}
+}
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script type="text/javascript">
+        toastr["@(style)"]("@message");
+    </script>
+}
+
+@if (TempData["error"] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script type="text/javascript">
+        toastr["error"]("@TempData["error"]");
+    </script>
+}

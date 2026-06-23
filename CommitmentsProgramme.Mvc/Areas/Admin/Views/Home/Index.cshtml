@@ -1,0 +1,220 @@
+﻿
+<div class="row">
+    <div class="col-md-4 stretch-card grid-margin">
+
+        <div class="card bg-gradient-danger card-img-holder text-white">
+            <div class="card-body">
+                <img src="~/Admin/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                <h4 class="font-weight-normal mb-3">
+                    عدد المستخدمين <i class="mdi mdi-chart-line mdi-24px float-end"></i>
+                </h4>
+                <h2 class="mb-5">13 </h2>
+                @* <h6 class="card-text">Increased by 60%</h6> *@
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-info card-img-holder text-white">
+            <div class="card-body">
+                <img src="~/Admin/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                <h4 class="font-weight-normal mb-3">
+                    عدد الضباط <i class="mdi mdi-bookmark-outline mdi-24px float-end"></i>
+                </h4>
+                <h2 class="mb-5">20 </h2>
+                @* <h6 class="card-text">Decreased by 10%</h6> *@
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-success card-img-holder text-white">
+            <div class="card-body">
+                <img src="~/Admin/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                <h4 class="font-weight-normal mb-3">
+                    <a class="nav-link text-decoration-none font-weight-bold" asp-area="Admin" asp-controller="Reports" asp-action="Index">
+                        عدد ضباط الصف <i class="mdi mdi-diamond mdi-24px float-end"></i>
+                    </a>
+                </h4>
+
+
+                <h2 class="mb-5">22 </h2>
+                @* <h6 class="card-text">Increased by 5%</h6> *@
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-warning card-img-holder text-white">
+            <div class="card-body">
+                <img src="~/Admin/images/dashboard/circle.svg"
+                     class="card-img-absolute"
+                     alt="circle-image" />
+
+                <h4 class="font-weight-normal mb-3">
+                   عدد الافرع
+                    <i class="mdi mdi-alert-circle mdi-24px float-end"></i>
+                </h4>
+
+                <h2 class="mb-5">33</h2>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+@* <div class="row">
+
+    <div class="col-lg-8">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header d-flex justify-content-between">
+
+                <h5 class="mb-0">
+                    Recent Reports
+                </h5>
+
+                <a asp-area="Admin"
+                   asp-controller="Reports"
+                   asp-action="Index">
+
+                    View All
+
+                </a>
+
+            </div>
+
+            <div class="card-body p-0">
+
+                <table class="table mb-0">
+
+                    <thead>
+                        <tr>
+                            <th>Owner</th>
+                            <th>Reports</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var report in Model.RecentReports)
+                        {
+                            <tr>
+
+                                <td>
+                                    @report.PostOwnerName
+                                </td>
+
+                                <td>
+
+                                    <span class="badge bg-danger">
+                                        @report.ReportsCount
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <a asp-area="Admin"
+                                       asp-controller="Reports"
+                                       asp-action="Review"
+                                       asp-route-postId="@report.PostId"
+                                       class="btn btn-sm btn-outline-primary">
+
+                                        Review
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+
+                <h5 class="mb-0">
+                    Recent Users
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                @foreach (var user in Model.RecentUsers)
+                {
+                    <div class="d-flex align-items-center mb-3">
+
+                        <img src="~/Uploads/Users/@user.ImageName"
+                             class="rounded-circle me-3"
+                             width="45"
+                             height="45" />
+
+                        <div>
+
+                            <div class="fw-bold">
+                                @user.FullName
+                            </div>
+
+                            <small class="text-muted">
+                                @user.CreatedDate.ToString("dd MMM")
+                            </small>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-header">
+
+        <h5 class="mb-0">
+            Trending Hashtags
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        @foreach (var hashtag in Model.TopHashtags)
+        {
+            <span class="badge bg-primary me-2 mb-2 p-2">
+
+                #@hashtag.Title
+
+                <span class="ms-1">
+                    (@hashtag.Count)
+                </span>
+
+            </span>
+        }
+
+    </div>
+
+</div> *@

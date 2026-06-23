@@ -1,0 +1,217 @@
+﻿@model RegisterVm
+
+<section class="auth-page">
+	<div class="container-fluid">
+		<div class="row min-vh-100">
+
+			<!-- LEFT -->
+			<div class="col-lg-5 d-flex align-items-center justify-content-center bg-light py-5">
+				<div class="w-75">
+
+					<h2 class="fw-bold mb-2">Create your account</h2>
+					<p class="text-muted mb-4">
+						Already have an account?
+						<a asp-action="Login">Login here</a>
+					</p>
+
+					<form asp-action="Register"
+						  method="post"
+						  enctype="multipart/form-data">
+
+						<div asp-validation-summary="All" class="text-danger small"></div>
+						<input name="returnUrl" value="@ViewBag.ReturnUrl" hidden />
+						
+
+						<!-- Full Name -->
+						<div class="mb-3">
+							<input asp-for="RegisterReq.FullName"
+								   class="form-control form-control-lg"
+								   placeholder="Full Name">
+							<span asp-validation-for="RegisterReq.FullName" class="text-danger small"></span>
+						</div>
+
+						<!-- Email -->
+						<div class="mb-3">
+							<input asp-for="RegisterReq.Email"
+								   class="form-control form-control-lg"
+								   placeholder="Email">
+							<span asp-validation-for="RegisterReq.Email" class="text-danger small"></span>
+						</div>
+
+						<!-- Passwords -->
+						<div class="row">
+
+							<!-- Password -->
+							<div class="col-md-6 mb-3">
+								<div class="input-wrapper">
+									<input asp-for="RegisterReq.Password"
+										   type="password"
+										   id="passwordInput"
+										   class="form-control form-control-lg pe-5"
+										   placeholder="Password">
+
+									<i class="fa-solid fa-eye toggle-password"
+									   onclick="togglePassword('passwordInput', this)"></i>
+								</div>
+
+								<span asp-validation-for="RegisterReq.Password"
+									  class="text-danger small d-block mt-1"></span>
+							</div>
+
+							<!-- Confirm Password -->
+							<div class="col-md-6 mb-3">
+								<div class="input-wrapper">
+									<input asp-for="RegisterReq.ConfirmPassword"
+										   type="password"
+										   id="confirmPasswordInput"
+										   class="form-control form-control-lg pe-5"
+										   placeholder="Confirm Password">
+
+									<i class="fa-solid fa-eye toggle-password"
+									   onclick="togglePassword('confirmPasswordInput', this)"></i>
+								</div>
+
+								<span asp-validation-for="RegisterReq.ConfirmPassword"
+									  class="text-danger small d-block mt-1"></span>
+							</div>
+
+						</div>
+
+						<!-- Match Message -->
+						<div class="mb-3">
+							<small id="passwordMatch" class="small"></small>
+						</div>
+
+						<!-- 🔥 Live Match Feedback (outside row for better layout) -->
+						<div class="mb-3">
+							<small id="passwordMatch" class="small"></small>
+						</div>
+						<!-- Phone -->
+						<div class="mb-3">
+							<input asp-for="RegisterReq.Phone"
+								   class="form-control form-control-lg"
+								   placeholder="Phone Number">
+							<span asp-validation-for="RegisterReq.Phone" class="text-danger small"></span>
+						</div>
+
+						<div class="mb-3">
+							<textarea asp-for="RegisterReq.Bio"
+									  class="form-control"
+									  rows="3"
+									  placeholder="Tell something about yourself..."
+									  autocomplete="off"></textarea>
+							<span asp-validation-for="RegisterReq.Bio" class="text-danger"></span>
+						</div>
+
+					
+
+						<!-- Role (Admin Only) -->
+						@if (User.IsInRole(DefaultRoles.Admin))
+						{
+							<div class="mb-3">
+								<select asp-for="RegisterReq.Role"
+										class="form-select">
+									<option value="">Select Role</option>
+									@foreach (var role in Model.Roles)
+									{
+										<option value="@role.Name">@role.Name</option>
+									}
+								</select>
+							</div>
+						}
+
+						<!-- Submit -->
+						<button class="btn btn-primary w-100 btn-lg">
+							Create Account
+						</button>
+
+
+						<div class="text-center mt-4 mb-4">
+
+							<span class="text-muted">Or continue with</span>
+							<div class="d-flex gap-2 mt-3">
+								<a asp-controller="Auth" asp-action="ExternalLogin" asp-route-provider="Google" class="btn btn-outline-primary w-50">
+									<i class="fa-brands fa-google me-2"></i>Google
+								</a>
+								<a asp-controller="Auth" asp-action="ExternalLogin" asp-route-provider="GitHub" class="btn btn-dark w-50">
+									<i class="fa-brands fa-github me-2"></i>GitHub
+								</a>
+								<a asp-controller="Auth" asp-action="ExternalLogin" asp-route-provider="Facebook" class="btn btn-primary w-50">
+									<i class="fa-brands fa-facebook me-2"></i>Facebook
+								</a>
+							</div>
+						</div>
+					</form>
+
+				</div>
+			</div>
+
+			<!-- RIGHT -->
+			<div class="col-lg-7 d-none d-lg-block p-0">
+				@await Html.PartialAsync("_AuthCarousel")
+			</div>
+
+		</div>
+	</div>
+</section>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+
+	<script>
+	
+
+			// 🔥 Password
+		const password = document.getElementById("passwordInput");
+		const confirmPassword = document.getElementById("confirmPasswordInput");
+		const matchText = document.getElementById("passwordMatch");
+
+		function togglePassword(id, icon) {
+			const input = document.getElementById(id);
+
+			const isHidden = input.type === "password";
+			input.type = isHidden ? "text" : "password";
+
+			icon.classList.toggle("fa-eye");
+			icon.classList.toggle("fa-eye-slash");
+
+			icon.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+		}
+
+		function checkPasswordMatch() {
+			const pass = password.value.trim();
+			const confirm = confirmPassword.value.trim();
+
+			if (!confirm) {
+				matchText.textContent = "";
+				return;
+			}
+
+			if (pass === confirm) {
+				matchText.textContent = "Passwords match ✔";
+				matchText.className = "text-success small";
+			} else {
+				matchText.textContent = "Passwords do not match";
+				matchText.className = "text-danger small";
+			}
+		}
+
+		// 🔥 Handle typing + paste + autofill
+		["input", "keyup", "change"].forEach(evt => {
+			password.addEventListener(evt, checkPasswordMatch);
+			confirmPassword.addEventListener(evt, checkPasswordMatch);
+		});
+
+		// 🔥 Prevent form submit if mismatch
+		document.querySelector("form").addEventListener("submit", function (e) {
+			if (password.value !== confirmPassword.value) {
+				e.preventDefault();
+				matchText.textContent = "Passwords must match before submitting";
+				matchText.className = "text-danger small";
+
+				confirmPassword.focus();
+			}
+		});
+
+	</script>
+}

@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Abstractions\**" />
+    <EmbeddedResource Remove="Abstractions\**" />
+    <None Remove="Abstractions\**" />
+  </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.9" />
+    </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CommitmentsProgramme.Domain\CommitmentsProgramme.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CommitmentsProgramme.Infrastructure">
+      <HintPath>..\CommitmentsProgramme.Infrastructure\bin\Debug\net9.0\CommitmentsProgramme.Infrastructure.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DTOs\" />
+  </ItemGroup>
+
+</Project>
+
+

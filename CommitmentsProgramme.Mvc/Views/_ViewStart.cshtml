@@ -1,0 +1,11 @@
+@* @if(User.IsInRole(DefaultRoles.Admin))
+{
+    Layout = "/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+else{ *@
+
+@{
+  Layout = "_Layout";
+}
+
+

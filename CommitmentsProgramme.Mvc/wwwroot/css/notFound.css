@@ -1,0 +1,287 @@
+﻿
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+  font-family: 'Open Sans', system-ui, sans-serif;
+  background: #1e3a5f;
+}
+
+/* Main Container */
+.not-found {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  cursor: default;
+}
+
+/* Sky Background */
+.sky-bg {
+  position: absolute;
+  inset: 0;
+  background: url("https://res.cloudinary.com/andrewhani/image/upload/v1524821915/404/bg-1_gvybzk.svg") center/cover no-repeat;
+  z-index: 0;
+}
+
+/* Waves */
+.wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  will-change: transform;
+}
+
+/*.wave-1 {
+  height: 18%;
+  z-index: 1;
+  opacity: 0.95;
+  background-image: url("https://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-1.svg");
+}
+
+.wave-2 {
+  height: 22%;
+  z-index: 2;
+  opacity: 0.88;
+  background-image: url("https://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-2.svg");
+}
+
+.wave-3 {
+  height: 26%;
+  z-index: 3;
+  opacity: 0.80;
+  background-image: url("https://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-3.svg");
+}
+
+.wave-4 {
+  height: 30%;
+  z-index: 4;
+  opacity: 0.72;
+  background-image: url("https://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-4.svg");
+}
+
+.wave-5 {
+  height: 34%;
+  z-index: 5;
+  opacity: 0.65;
+  background-image: url("https://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-5.svg");
+}
+
+.wave-6 {
+  height: 38%;
+  z-index: 6;
+  opacity: 0.58;
+  background-image: url("https://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-6.svg");
+}
+
+.wave-7 {
+  height: 42%;
+  z-index: 7;
+  opacity: 0.50;
+  background-image: url("https://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-7.svg");
+}
+*/
+
+.wave-1 {
+  height: 18%;
+  z-index: 1;
+  opacity: 0.9;
+  background-image: url("https://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-1.svg");
+background-position-y:top;
+}
+
+.wave-2 {
+  height: 22%;
+  z-index: 2;
+  opacity: 0.85;
+  background-image: url("https://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-2.svg");
+  background-position-y: top;
+}
+
+.wave-3 {
+  height: 26%;
+  z-index: 3;
+  opacity: 0.8;
+  background-image: url("https://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-3.svg");
+  background-position-y: top;
+}
+
+.wave-4 {
+  height: 30%;
+  z-index: 4;
+  opacity: 0.75;
+  background-image: url("https://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-4.svg");
+  background-position-y: top;
+}
+
+.wave-5 {
+  height: 34%;
+  z-index: 5;
+  opacity: 0.7;
+  background-image: url("https://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-5.svg");
+  background-position-y: top;
+}
+
+
+.wave-6 {
+  height: 38%;
+  z-index: 6;
+  opacity: 0.65;
+  background-image: url("https://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-6.svg");
+  background-position-y: top;
+}
+
+.wave-7 {
+  height: 42%;
+  z-index: 7;
+  opacity: 0.6;
+  background-image: url("https://res.cloudinary.com/andrewhani/image/upload/v1524501869/404/wave-7.svg");
+  background-position-y: top;
+}
+
+
+/* Island */
+.wave-island {
+  position: absolute;
+  top: 12%;
+  left: 12%;
+  width: 140px;
+  z-index: 2000;
+  transition: transform 0.3s ease;
+}
+
+  .wave-island:hover {
+    transform: scale(1.08);
+  }
+
+  .wave-island img {
+    width: 100%;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+  }
+
+/* 404 Text */
+.wave-lost {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 9rem;
+  font-weight: 700;
+  letter-spacing: 12px;
+  color: rgba(255, 255, 255, 0.75);
+  text-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  display: flex;
+  z-index: 30;
+  user-select: none;
+}
+
+  .wave-lost span {
+    animation: float 3.5s ease-in-out infinite;
+  }
+
+    .wave-lost span:nth-child(2) {
+      animation-delay: 0.8s;
+    }
+
+    .wave-lost span:nth-child(3) {
+      animation-delay: 1.6s;
+    }
+
+/* Boat */
+.wave-boat {
+  position: absolute;
+  top: 32%;
+  right: 8%;
+  z-index: 25;
+}
+
+.boat {
+  width: 110px;
+  animation: boat 14s linear infinite;
+  filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
+}
+
+/* Message */
+.wave-message {
+  position: absolute;
+  bottom: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  z-index: 40;
+}
+
+  .wave-message p {
+    margin: 8px 0;
+  }
+
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(-12px);
+  }
+
+  50% {
+    transform: translateY(12px);
+  }
+}
+
+@keyframes boat {
+  0% {
+    transform: translateX(180px) rotate(-8deg);
+  }
+
+  50% {
+    transform: translateX(-80px) rotate(8deg);
+  }
+
+  100% {
+    transform: translateX(-380px) rotate(-4deg);
+  }
+}
+
+/* Parallax Reset */
+.wave {
+  transition: transform 0.6s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wave-lost {
+    font-size: 5.5rem;
+    letter-spacing: 6px;
+  }
+
+  .boat {
+    width: 75px;
+  }
+
+  .wave-message {
+    font-size: 1.1rem;
+  }
+
+  .wave-island {
+    width: 100px;
+    top: 15%;
+  }
+}
+
+@media (max-width: 480px) {
+  .wave-lost {
+    font-size: 4rem;
+  }
+}
+
+

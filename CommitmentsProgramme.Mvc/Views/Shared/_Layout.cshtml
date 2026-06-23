@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1" />
+
+    <title>
+
+        @ViewData["Title"] - نظام الالتزامات اليومية
+
+    </title>
+
+    <partial name="_Styles" />
+
+</head>
+
+<body>
+
+    <partial name="_Navbar" />
+
+    <main class="website-body">
+
+        @RenderBody()
+
+    </main>
+
+    <partial name="_Footer" />
+
+    <partial name="_Toaster" />
+
+    <partial name="_Scripts" />
+
+    @await RenderSectionAsync("Scripts", false)
+
+</body>
+
+</html>

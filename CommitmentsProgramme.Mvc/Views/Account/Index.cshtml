@@ -1,0 +1,184 @@
+﻿@using static CommitmentsProgramme.Utilities.Abstractions.Consts.SharedData
+@model UpdateProfileVM
+
+@{
+    ViewData["Title"] = "Account Settings Page";
+    var signInUser = Context.Items["CurrentUser"] as ApplicationUser;
+}
+
+<div class="row">
+
+    <div class="col-md-2 p-0 ">
+        <partial name="_Sidebar" model="SidebarOptions.Favourites" />
+    </div>
+
+
+    <div class="col-md-7">
+
+        <div class="settings-card">
+
+            <!--  PROFILE HEADER -->
+            <div class="profile-header d-flex align-items-center justify-content-between p-4">
+
+                <!-- Left side -->
+                <div class="d-flex align-items-center gap-3">
+
+                    <!-- Avatar -->
+                    <div class="avatar-wrapper">
+                        <img src="~/Uploads/Users/user.jpg" class="avatar-img" />
+
+                        <!-- Camera overlay -->
+                        <label class="avatar-overlay">
+                            <i class="fa-solid fa-camera"></i>
+                            <input type="file" class="d-none" id="profileImageInput" />
+                        </label>
+                    </div>
+
+                    <!-- User info -->
+                    <div>
+                        <p class="mb-0 fw-bold">@Model.FullName</p>
+                        <small class="text-muted">@Model.UserName</small>
+                    </div>
+
+                </div>
+
+                <!-- Save button -->
+                <button class="btn btn-primary d-none" id="saveProfileImage">
+                    Save
+                </button>
+
+            </div>
+
+            <!-- Tabs -->
+            <ul class="nav nav-tabs settings-tabs" id="settingsTabs">
+
+                <li class="nav-item">
+                    <button class="nav-link active"
+                            data-bs-toggle="tab"
+                            data-bs-target="#info">
+                        <i class="fa-regular fa-user me-1"></i> Info
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link"
+                            data-bs-toggle="tab"
+                            data-bs-target="#password">
+                        <i class="fa-solid fa-lock me-1"></i> Password
+                    </button>
+                </li>
+
+            </ul>
+
+            <!-- Content -->
+            <div class="tab-content p-4">
+
+                <!-- USER INFO -->
+                <div class="tab-pane fade show active" id="info">
+
+                    <form id="profileForm" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <h5 class="mb-3">Profile Information</h5>
+
+                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="FullName" class="form-label"></label>
+                            <input asp-for="FullName" class="form-control" autocomplete="name" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="UserName" class="form-label"></label>
+                            <input asp-for="UserName" class="form-control" autocomplete="username" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control disabled-input" autocomplete="email" readonly/>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Bio" class="form-label"></label>
+                            <textarea asp-for="Bio"
+                                      class="form-control"
+                                      rows="3"
+                                      placeholder="Tell something about yourself..."
+                                      autocomplete="off"
+                                      required></textarea>
+                            <span asp-validation-for="Bio" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="d-flex align-items-center gap-2">
+                            <button type="submit" class="btn btn-primary px-4">
+                                Save
+                            </button>
+                            <span class="save-status text-success d-none"></span>
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+                <!-- PASSWORD -->
+                <div class="tab-pane fade" id="password">
+
+                    <form id="passwordForm">
+                        @Html.AntiForgeryToken()
+
+                        <div id="password-summary-error" class="text-danger mb-2"></div>
+
+                        <h5 class="mb-3">Change Password</h5>
+
+                        <div class="mb-3">
+                            <label class="form-label">Current Password</label>
+                            <input name="CurrentPassword" type="password" class="form-control"  />
+                            <span class="text-danger" data-valmsg-for="CurrentPassword"></span>
+                            @* These mimic asp-validation-for *@
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">New Password</label>
+                            <input name="NewPassword" type="password" class="form-control"  />
+                            <span class="text-danger" data-valmsg-for="NewPassword"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Confirm Password</label>
+                            <input name="ConfirmedPassword" type="password" class="form-control"  />
+                            <span class="text-danger" data-valmsg-for="ConfirmedPassword"></span>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-danger px-4">
+                                Update Password
+                            </button>
+
+                            <span class="save-pass text-success d-none"></span>
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+   <script src="~/js/userprofile.js"></script>
+}
+
+@section Styles {
+    <link href="~/css/userprofile.css" rel="stylesheet">
+}

@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "الرئيسية";
+}
+
+<section class="hero-section">
+
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-7">
+
+                <span class="hero-badge">
+
+                    منصة داخلية
+
+                </span>
+
+                <h1>
+
+                    نظام إدارة الالتزامات اليومية
+
+                </h1>
+
+                <p>
+
+                    متابعة وتنظيم الاجتماعات والزيارات والالتزامات اليومية داخل المؤسسة بطريقة احترافية.
+
+                </p>
+
+                <div class="mt-4">
+
+                    <a class="btn btn-primary btn-lg">
+
+                        عرض التزامات اليوم
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-5 text-center">
+
+                <i class="fa-solid fa-calendar-days hero-icon"></i>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="container py-5">
+
+    <div class="row g-4">
+
+        @for (int i = 0; i < 4; i++)
+        {
+            <div class="col-lg-3 col-md-6">
+
+                <div class="info-card">
+
+                    <i class="fa-solid fa-chart-column"></i>
+
+                    <h2>15</h2>
+
+                    <p>
+
+                        التزامات اليوم
+
+                    </p>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</section>

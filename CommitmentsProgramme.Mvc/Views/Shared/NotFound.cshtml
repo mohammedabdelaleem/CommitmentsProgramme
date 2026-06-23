@@ -1,0 +1,105 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Not Found</title>
+    <link rel="stylesheet" href="~/css/notFound.css">
+</head>
+<body>
+
+    <div class="not-found" id="parallaxContainer">
+
+        <div class="sky-bg"></div>
+
+        <!-- Waves -->
+        <div class="wave wave-7"></div>
+        <div class="wave wave-6"></div>
+        <div class="wave wave-5"></div>
+        <div class="wave wave-4"></div>
+        <div class="wave wave-3"></div>
+        <div class="wave wave-2"></div>
+        <div class="wave wave-1"></div>
+
+        <!-- Island (Clickable) -->
+        <a href="/" class="wave-island" title="Go Home">
+            <img src="~/uploads/website/island.svg" alt="Island">
+        </a>
+
+        <!-- 404 Text -->
+        <div class="wave-lost">
+            <span>4</span>
+            <span>0</span>
+            <span>4</span>
+        </div>
+
+        <!-- Boat -->
+        <div class="wave-boat">
+            <img class="boat" src="~/uploads/website/boat.svg" alt="Boat"/>
+        </div>
+
+        <!-- Message -->
+        <div class="wave-message">
+            <p>You're lost at sea...</p>
+            <p>Click the island to return home</p>
+        </div>
+
+    </div>
+
+    <script>
+        const container = document.getElementById('parallaxContainer');
+
+        function parallax(e) {
+            if (window.innerWidth < 768) return;
+
+            const rect = container.getBoundingClientRect();
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const x = (e.clientX - rect.left) - centerX;
+            const y = (e.clientY - rect.top) - centerY;
+
+            const waves = document.querySelectorAll('.wave');
+
+            waves.forEach((wave, index) => {
+                const depth = (index + 1) * 0.8;   // stronger movement on closer waves
+                const moveX = x * depth / 45;
+                const moveY = y * depth / 55;
+
+                wave.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+            });
+        }
+
+        function resetParallax() {
+            const waves = document.querySelectorAll('.wave');
+            waves.forEach(wave => {
+                wave.style.transition = 'transform 0.7s ease';
+                wave.style.transform = 'translate3d(0, 0, 0)';
+            });
+
+            setTimeout(() => {
+                waves.forEach(wave => {
+                    wave.style.transition = '';
+                });
+            }, 700);
+        }
+
+        // Event Listeners
+        container.addEventListener('mousemove', parallax);
+        container.addEventListener('mouseleave', resetParallax);
+
+        // Optional: Touch support for tablets
+        container.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                const touch = e.touches[0];
+                parallax(touch);
+            }
+        });
+    </script>
+
+</body>
+</html>tml>

@@ -1,0 +1,138 @@
+/*
+  ======================
+       global
+  ======================
+*/
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+.sticky {
+    position: sticky;
+    top: 10px;
+    height: fit-content !important;
+    padding-bottom: 50px;
+    overflow-y: auto
+}
+
+body {
+    background-color: #DEE3E9
+}
+/*
+  ======================
+   Header
+  ======================
+*/
+
+header {
+    border-bottom: 3px solid #B7BE9D !important;
+    border-radius: 0 15px 15px
+}
+
+.my-nav {
+    border-radius: 0 15px 15px
+}
+
+.my-logo {
+    width: 40px;
+    height: 40px;
+}
+
+@keyframes title {
+    0% {
+        letter-spacing: 1.5px
+    }
+
+    50% {
+        letter-spacing: .5px
+    }
+
+    100% {
+        letter-spacing: 1.5px
+    }
+}
+
+.my-title {
+    /*  border:1px solid red;*/
+    width: 110px;
+    overflow: hidden;
+    animation: title infinite 7s ease
+}
+
+
+/* Right sidebar container */
+.right-sidebar {
+    position: sticky;
+    top: 10px; /* distance from top */
+    height: calc(100vh - 20px); /* full viewport height */
+    overflow-y: auto; /* enable vertical scroll */
+    padding-right: 5px; /* avoid scrollbar overlap */
+}
+
+.profile {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    margin-left: 16px;
+    transition: 0.6s all;
+}
+
+    .profile:hover {
+        cursor: pointer;
+        scale: 1.1
+    }
+
+/* increase hover area */
+.profile-menu::after {
+    content: "";
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 100%;
+    height: 20px;
+}
+
+/* Dropdown */
+.profile-dropdown {
+    position: absolute;
+    top: 43px;
+    right: 0;
+    width: 260px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 8px 10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: 0.2s ease;
+    z-index: 1000;
+}
+
+/* Show on hover */
+.profile-menu:hover .profile-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Items */
+.profile-dropdown .dropdown-item {
+    padding: 8px 15px;
+    display: block;
+    color: #333;
+    text-decoration: none;
+}
+
+    .profile-dropdown .dropdown-item:hover {
+        background: #f1f3f5;
+    }
+
+
+.frm-search {
+    width: 30px !important
+}

@@ -1,0 +1,80 @@
+﻿@import url("variables.css");
+
+body {
+  background: var(--background);
+  font-family: Cairo,sans-serif;
+  direction: rtl;
+}
+
+.website-body {
+  min-height: 100vh;
+}
+
+.website-navbar {
+  background: white;
+  box-shadow: 0 2px 15px rgba(0,0,0,.05);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--primary);
+}
+
+.nav-link {
+  font-weight: 600;
+  margin-inline: 8px;
+}
+
+.hero-section {
+  padding: 90px 0;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: #EAF2FF;
+  color: var(--primary);
+  padding: 8px 18px;
+  border-radius: 50px;
+  margin-bottom: 20px;
+}
+
+.hero-section h1 {
+  font-size: 54px;
+  font-weight: 800;
+}
+
+.hero-section p {
+  font-size: 19px;
+  color: #6c757d;
+  margin-top: 20px;
+}
+
+.hero-icon {
+  font-size: 180px;
+  color: var(--primary);
+  opacity: .85;
+}
+
+.info-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 35px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: .3s;
+}
+
+  .info-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .info-card i {
+    font-size: 38px;
+    color: var(--primary);
+  }
+
+  .info-card h2 {
+    margin: 20px 0 10px;
+    font-weight: 800;
+  }

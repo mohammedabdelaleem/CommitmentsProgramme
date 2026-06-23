@@ -1,0 +1,142 @@
+﻿.settings-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+
+/* profile*/
+/* Profile header */
+.profile-header {
+  border-bottom: 1px solid #eee;
+}
+
+/* Avatar container */
+.avatar-wrapper {
+  position: relative;
+  width: 70px;
+  height: 70px;
+}
+
+/* Avatar image */
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border: 2px solid #eee;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Overlay */
+.avatar-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.4);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+/* Show overlay on hover */
+.avatar-wrapper:hover .avatar-overlay {
+  opacity: 1;
+}
+
+/* Camera icon */
+.avatar-overlay i {
+  font-size: 16px;
+}
+
+/* Smooth hover effect */
+.avatar-img:hover {
+  filter: brightness(0.9);
+}
+
+/* Tabs */
+.settings-tabs {
+  border-bottom: 1px solid #eee;
+  padding: 0 20px;
+}
+
+  .settings-tabs .nav-link {
+    border: none;
+    color: #777;
+    font-weight: 500;
+    padding: 15px 10px;
+    margin-right: 15px;
+    position: relative;
+  }
+
+
+    /* unset active because it take values from the gobal section  */
+    /* .settings-tabs .active {
+                                  color: unset;
+                                  transform: unset;
+                              } */
+
+    .settings-tabs .nav-link.active {
+      color: #000;
+      background: none;
+    }
+
+    .settings-tabs .nav-link:hover {
+      color: #000;
+    }
+
+    /* Active underline */
+    .settings-tabs .nav-link.active::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: #1d1d1d;
+      border-radius: 2px;
+    }
+
+/* Inputs */
+.form-control {
+  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+}
+
+  .form-control:focus {
+    box-shadow: none;
+    border-color: #0d6efd;
+  }
+
+.btn {
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+/* Section titles */
+h5 {
+  font-weight: 600;
+}
+
+.tab-content {
+  min-height: 300px;
+}
+
+.tab-pane {
+  transition: opacity 0.2s ease;
+}
+
+.save-status {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.disabled-input:hover {
+    cursor:not-allowed;
+}
