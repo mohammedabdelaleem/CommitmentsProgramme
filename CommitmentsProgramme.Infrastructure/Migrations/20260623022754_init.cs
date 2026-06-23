@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CommitmentsProgramme.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class startupDbAgain : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -245,24 +245,76 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Officer",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RankId = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Officer", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Officer_Ranks_RankId",
+                        column: x => x.RankId,
+                        principalTable: "Ranks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DailyPlan",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PlanDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    SeniorOfficerId = table.Column<int>(type: "int", nullable: false),
+                    DutyOfficerId = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DailyPlan", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DailyPlan_Officer_DutyOfficerId",
+                        column: x => x.DutyOfficerId,
+                        principalTable: "Officer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DailyPlan_Officer_SeniorOfficerId",
+                        column: x => x.SeniorOfficerId,
+                        principalTable: "Officer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Commitments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CommitmentTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CommitmentTypeId1 = table.Column<int>(type: "int", nullable: false),
-                    PriorityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PriorityId1 = table.Column<int>(type: "int", nullable: false),
-                    BranchId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BranchId1 = table.Column<int>(type: "int", nullable: false),
-                    CommitmentDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    CommitmentTime = table.Column<TimeOnly>(type: "time", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    Time = table.Column<TimeOnly>(type: "time", nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Attendance = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BranchId = table.Column<int>(type: "int", nullable: false),
+                    CommitmentTypeId = table.Column<int>(type: "int", nullable: false),
+                    PriorityId = table.Column<int>(type: "int", nullable: false),
+                    DailyPlanId = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -272,20 +324,26 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Commitments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Commitments_Branches_BranchId1",
-                        column: x => x.BranchId1,
+                        name: "FK_Commitments_Branches_BranchId",
+                        column: x => x.BranchId,
                         principalTable: "Branches",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Commitments_CommitmentType_CommitmentTypeId1",
-                        column: x => x.CommitmentTypeId1,
+                        name: "FK_Commitments_CommitmentType_CommitmentTypeId",
+                        column: x => x.CommitmentTypeId,
                         principalTable: "CommitmentType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Commitments_Priorities_PriorityId1",
-                        column: x => x.PriorityId1,
+                        name: "FK_Commitments_DailyPlan_DailyPlanId",
+                        column: x => x.DailyPlanId,
+                        principalTable: "DailyPlan",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Commitments_Priorities_PriorityId",
+                        column: x => x.PriorityId,
                         principalTable: "Priorities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -306,6 +364,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 values: new object[,]
                 {
                     { "01978f6e-267c-7c96-b179-d2e08d73f69b", 0, null, "01078f6e-267c-7c96-b179-d2e127b3bb2c", new DateTime(2026, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@gso.com", true, "gso admin", false, false, null, "ADMIN@GSO.COM", "ADMIN@GSO.COM", "AQAAAAIAAYagAAAAEOm19rPH9+gX4oopeWRXkyo+gPyFA3OBPZVkNori56HqKq38sCBNntaiBa7n8sADpA==", "01030608090", false, "35744942C16C49B9B2300A03094FAF85", false, "admin@gso.com" },
+                    { "8f6b2a34-0b19-4b27-91d0-ec4f74f1a016", 0, null, "b63b1db4-7a34-4c1a-93c1-83f312cd1016", new DateTime(2026, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "dummy@wegoo.com", true, "dummy user", false, false, null, "DUMMY@WEGOO.COM", "DUMMY@WEGOO.COM", "AQAAAAIAAYagAAAAEOm19rPH9+gX4oopeWRXkyo+gPyFA3OBPZVkNori56HqKq38sCBNntaiBa7n8sADpA==", "01030632216", false, "A92F1E67F4514B47B2A2C0D384C92A16", false, "dummy@wegoo.com" },
                     { "8f6b2a34-0b19-4b27-91d0-ec4f74f1a29c", 0, null, "b63b1db4-7a34-4c1a-93c1-83f312cd12d7", new DateTime(2026, 12, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "user@gso.com", true, "gso user", false, false, null, "USER@GSO.COM", "USER@GSO.COM", "AQAAAAIAAYagAAAAEOm19rPH9+gX4oopeWRXkyo+gPyFA3OBPZVkNori56HqKq38sCBNntaiBa7n8sADpA==", "01030632200", false, "A92F1E67F4514B47B2A2C0D384C92A7D", false, "user@gso.com" }
                 });
 
@@ -358,19 +417,39 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Commitments_BranchId1",
+                name: "IX_Commitments_BranchId",
                 table: "Commitments",
-                column: "BranchId1");
+                column: "BranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Commitments_CommitmentTypeId1",
+                name: "IX_Commitments_CommitmentTypeId",
                 table: "Commitments",
-                column: "CommitmentTypeId1");
+                column: "CommitmentTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Commitments_PriorityId1",
+                name: "IX_Commitments_DailyPlanId",
                 table: "Commitments",
-                column: "PriorityId1");
+                column: "DailyPlanId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Commitments_PriorityId",
+                table: "Commitments",
+                column: "PriorityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DailyPlan_DutyOfficerId",
+                table: "DailyPlan",
+                column: "DutyOfficerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DailyPlan_SeniorOfficerId",
+                table: "DailyPlan",
+                column: "SeniorOfficerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Officer_RankId",
+                table: "Officer",
+                column: "RankId");
         }
 
         /// <inheritdoc />
@@ -395,9 +474,6 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 name: "Commitments");
 
             migrationBuilder.DropTable(
-                name: "Ranks");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -410,7 +486,16 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 name: "CommitmentType");
 
             migrationBuilder.DropTable(
+                name: "DailyPlan");
+
+            migrationBuilder.DropTable(
                 name: "Priorities");
+
+            migrationBuilder.DropTable(
+                name: "Officer");
+
+            migrationBuilder.DropTable(
+                name: "Ranks");
         }
     }
 }

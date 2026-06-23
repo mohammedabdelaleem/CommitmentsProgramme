@@ -7,35 +7,10 @@ public class Commitment : BaseEntity
   [StringLength(500)]
   public string Title { get; set; } = string.Empty;
 
-  [Display(Name = "الوصف")]
-  public string? Description { get; set; }
-
-  [Required(ErrorMessage = "{0} مطلوب")]
-  [Display(Name = "نوع الالتزام")]
-  public Guid CommitmentTypeId { get; set; }
-
-  public CommitmentType CommitmentType { get; set; } = default!;
-
-  [Required(ErrorMessage = "{0} مطلوب")]
-  [Display(Name = "الأولوية")]
-  public Guid PriorityId { get; set; }
-
-  public Priority Priority { get; set; } = default!;
-
-  [Required(ErrorMessage = "{0} مطلوب")]
-  [Display(Name = "الفرع المختص")]
-  public Guid BranchId { get; set; }
-
-  public Branch Branch { get; set; } = default!;
-
-  [Display(Name = "التاريخ")]
-  public DateOnly CommitmentDate { get; set; }
-
-  [Display(Name = "الوقت")]
-  public TimeOnly CommitmentTime { get; set; }
+  [Display(Name = "التوقيت")]
+  public TimeOnly? Time { get; set; }
 
   [Display(Name = "المكان")]
-  [StringLength(300)]
   public string? Location { get; set; }
 
   [Display(Name = "الحضور")]
@@ -43,4 +18,23 @@ public class Commitment : BaseEntity
 
   [Display(Name = "ملاحظات")]
   public string? Notes { get; set; }
+
+  //[Display(Name = "الفرع المختص")]
+  //public int BranchId { get; set; }
+
+  //public Branch Branch { get; set; } = default!;
+
+  [Display(Name = "نوع الالتزام")]
+  public int CommitmentTypeId { get; set; }
+
+  public CommitmentType CommitmentType { get; set; } = default!;
+
+  [Display(Name = "الأولوية")]
+  public int PriorityId { get; set; }
+
+  public Priority Priority { get; set; } = default!;
+
+  public int DailyPlanId { get; set; }
+
+  public DailyPlan DailyPlan { get; set; } = default!;
 }

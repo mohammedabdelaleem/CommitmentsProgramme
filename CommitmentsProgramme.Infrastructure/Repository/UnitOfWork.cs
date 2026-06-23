@@ -1,3 +1,5 @@
+using CommitmentsProgramme.Application.DTOs;
+
 namespace CommitmentsProgramme.Infrastructure.Repository;
 
 public class UnitOfWork : IUnitOfWork
@@ -5,14 +7,26 @@ public class UnitOfWork : IUnitOfWork
 	private readonly AppDbContext context;
 
 
-	//public IVillaRepository Villa { get; set; }
+	public IDailyPlanRepository DailyPlans { get; set; }
+	public IBranchRepository Branches { get; set; }
+	public ICommitmentRepository Commitments { get; set; }
+	public ICommitmentTypeRepository CommitmentTypes { get; set; }
+	public IOfficerRepository Officers { get; set; }
+	public IPriorityRepository Priorities { get; set; }
+	public IRankRepository Ranks { get; set; }
 	
 
     public UnitOfWork(AppDbContext context)
 	{
 		this.context = context;
 
-		//Villa = new VillaRepository(context);
+		DailyPlans = new DailyPlanRepository(context);
+		Branches = new BranchRepository(context);
+		Commitments = new CommitmentRepository(context);
+    CommitmentTypes = new CommitmentTypeRepository(context);
+    Officers = new OfficerRepository(context);
+    Priorities = new PriorityRepository(context);
+    Ranks = new RankRepository(context);
 		
 
     }

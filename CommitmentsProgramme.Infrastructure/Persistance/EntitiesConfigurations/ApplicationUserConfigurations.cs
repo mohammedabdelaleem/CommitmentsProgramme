@@ -34,11 +34,26 @@ public class ApplicationUserConfigurations : IEntityTypeConfiguration<Applicatio
 			PasswordHash = DefaultUsers.UserPasswordHash,
 			PhoneNumber = DefaultUsers.UserPhoneNumber,
 			CreatedAt = new DateTime(2026, 12, 10)
-		}
+		},
+        new ApplicationUser
+        {
+          Id = DefaultUsers.DummyUserId,
+          FullName = DefaultUsers.DummyUserName,
+          Email = DefaultUsers.DummyUserEmail,
+          NormalizedEmail = DefaultUsers.DummyUserEmail.ToUpper(),
+          UserName = DefaultUsers.DummyUserEmail,
+          NormalizedUserName = DefaultUsers.DummyUserEmail.ToUpper(),
+          ConcurrencyStamp = DefaultUsers.DummyUserConcurrencyStamp,
+          SecurityStamp = DefaultUsers.DummyUserSecurityStamp,
+          EmailConfirmed = true,
+          PasswordHash = DefaultUsers.DummyUserPasswordHash,
+          PhoneNumber = DefaultUsers.DummyUserPhoneNumber,
+          CreatedAt = new DateTime(2026, 12, 10)
+        }
 
-		
 
-		);
+
+        );
 
 	}
 }

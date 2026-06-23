@@ -21,7 +21,7 @@ public class UserController(
 		var model = new List<UserRolesVm>();
 
 		// all users without { me [login user] }
-		var users = await _userManager.Users.Where(x => x.Id != User.GetUserId()).ToListAsync(cancellationToken);
+		var users = await _userManager.Users.Where(x => x.Id != User.GetUserId() && x.Id != DefaultUsers.DummyUserId).ToListAsync(cancellationToken);
 
 		foreach (var user in users)
 		{

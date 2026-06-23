@@ -88,7 +88,7 @@
 .toggle-password {
     position: absolute;
     top: 50%;
-    right: 15px;
+    left: 15px;
     transform: translateY(-50%);
     cursor: pointer;
     z-index: 12;
@@ -97,7 +97,7 @@
 .toggle-password-login {
     position: absolute;
     top: 40%;
-    right: 15px;
+    left: 15px;
 /*    transform: translateY(-50%);*/
     cursor: pointer;
     z-index: 12;

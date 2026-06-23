@@ -1,0 +1,45 @@
+﻿<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+<script src="~/js/externalfiles/toastr.min.js"></script>
+
+<script src="~/js/externalfiles/sweetalert2.all.min.js"></script>
+
+<script src="~/js/notifications.js" asp-append-version="true"></script>
+
+<script src="~/admin/vendors/select2/select2.min.js"></script>
+<script>
+
+    $(function () {
+
+    $(".select2").select2({
+
+    theme: "bootstrap-5",
+
+    width: "100%",
+
+    dir: "rtl",
+
+    placeholder: "اختر",
+
+    allowClear: true
+
+    });
+
+    $(".select2-multiple").select2({
+
+    theme: "bootstrap-5",
+
+    width: "100%",
+
+    dir: "rtl",
+
+    placeholder: "اختر الفروع",
+
+    closeOnSelect: false
+
+    });
+
+    });
+</script>

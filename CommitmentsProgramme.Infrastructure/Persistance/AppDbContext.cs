@@ -15,6 +15,8 @@ namespace CommitmentsProgramme.Infrastructure.Persistance
     public DbSet<Rank> Ranks { get; set; }
     public DbSet<Priority> Priorities { get; set; }
     public DbSet<Branch> Branches { get; set; }
+    public DbSet<DailyPlan> DailyPlans { get; set; }
+    public DbSet<Officer> Officers { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)

@@ -11,12 +11,12 @@
 
     <title>
 
-        @ViewData["Title"] - نظام الالتزامات اليومية
+        @(ViewData["Title"] ?? "نظام الالتزامات اليومية")
 
     </title>
 
     <partial name="_Styles" />
-
+    @RenderSection("Styles", required: false)
 </head>
 
 <body>
@@ -34,9 +34,7 @@
     <partial name="_Toaster" />
 
     <partial name="_Scripts" />
-
-    @await RenderSectionAsync("Scripts", false)
-
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>
