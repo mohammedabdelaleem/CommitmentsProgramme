@@ -19,15 +19,17 @@ public class CommitmentBranchConfigurations : IEntityTypeConfiguration<Commitmen
              x.BranchId
          });
 
-      
+
 
         builder.HasOne(x => x.Commitment)
-            .WithMany(x => x.CommitmentBranches)
-            .HasForeignKey(x => x.CommitmentId);
+     .WithMany(x => x.CommitmentBranches)
+     .HasForeignKey(x => x.CommitmentId)
+     .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(x => x.Branch)
             .WithMany(x => x.CommitmentBranches)
-            .HasForeignKey(x => x.BranchId);
+            .HasForeignKey(x => x.BranchId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

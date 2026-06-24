@@ -13,7 +13,6 @@ public class DailyPlanVm
   public int DutyOfficerId { get; set; }
 
   public List<CommitmentVm> Commitments { get; set; } = new();
-  //public List<CommitmentDetailsVM> CommitmentsDetails { get; set; } = new();
 
 
     // SELECT LISTS

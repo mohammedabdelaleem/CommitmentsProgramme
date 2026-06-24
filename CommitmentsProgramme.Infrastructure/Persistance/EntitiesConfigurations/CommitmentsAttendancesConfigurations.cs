@@ -20,12 +20,14 @@ public class CommitmentsAttendancesConfigurations : IEntityTypeConfiguration<Com
          });
 
         builder.HasOne(x => x.Commitment)
-         .WithMany(x => x.CommitmentsAttendances)
-         .HasForeignKey(x => x.CommitmentId);
+      .WithMany(x => x.CommitmentsAttendances)
+      .HasForeignKey(x => x.CommitmentId)
+      .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(x => x.Attendance)
             .WithMany(x => x.CommitmentsAttendances)
-            .HasForeignKey(x => x.AttendanceId);
+            .HasForeignKey(x => x.AttendanceId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
 

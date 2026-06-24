@@ -24,7 +24,6 @@ namespace CommitmentsProgramme.Infrastructure.Persistance
         public DbSet<CommitmentsAttendances> CommitmentsAttendances { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
 		{
-			builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
 			// change on delete behaviour
 			var cascadeFKs = builder.Model
@@ -36,7 +35,9 @@ namespace CommitmentsProgramme.Infrastructure.Persistance
 				relationship.DeleteBehavior = DeleteBehavior.Restrict;
 			}
 
-			base.OnModelCreating(builder);
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            base.OnModelCreating(builder);
 		}
 	}
 }
