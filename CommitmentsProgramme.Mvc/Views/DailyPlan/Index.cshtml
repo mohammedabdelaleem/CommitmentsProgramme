@@ -33,18 +33,20 @@
                     <td>@item.SeniorOfficerName</td>
                     <td>@item.DutyOfficerName</td>
                     <td>@item.CommitmentsCount</td>
-                    <td>
+                    <td >
                         <a class="btn btn-sm btn-warning"
                            asp-action="Create"
                            asp-route-id="@item.Id">
                             تعديل
                         </a>
 
-                        <a class="btn btn-sm btn-danger"
-                           asp-action="Delete"
-                           asp-route-id="@item.Id">
-                            حذف
-                        </a>
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                حذف
+                            </button>
+                        </form>
+
                     </td>
                 </tr>
             }

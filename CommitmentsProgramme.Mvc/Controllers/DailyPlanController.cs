@@ -86,37 +86,36 @@ namespace CommitmentsProgramme.Mvc.Controllers
             }
           
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var plan = await _unitOfWork.DailyPlans.GetAsync(
+                x => x.Id == id,
+                include: q => q
+                    .Include(x => x.Commitments)
+                        .ThenInclude(x => x.CommitmentBranches)
+                    .Include(x => x.Commitments)
+                        .ThenInclude(x => x.CommitmentsAttendances));
+
+            if (plan is null)
+            {
+                return NotFound();
+            }
 
 
+            foreach (var commitment in plan.Commitments)
+            {
+                commitment.CommitmentBranches.Clear();
+                commitment.CommitmentsAttendances.Clear();
+            }
+            _unitOfWork.Commitments.RemoveRange(plan.Commitments);
+            _unitOfWork.DailyPlans.Remove(plan);
+            await _unitOfWork.CompleteAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
 
 
-
-        //[HttpGet]
-        //public async Task<IActionResult> Edit(int id)
-        //{
-        //    var vm = await _dailyPlanService.GetForEditAsync(id);
-
-        //    // calculate the current items
-        //    ViewBag.CommitmentIndex = vm.Commitments.Count;
-
-        //    return View("Create", vm);
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(DailyPlanVm vm)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        vm = await _dailyPlanService.GetForEditAsync(vm.Id);
-
-        //        return View("Create", vm);
-        //    }
-
-        //    var userId = User.GetUserId();
-        //    await _dailyPlanService.SaveAsync(vm, userId);
-
-        //    return RedirectToAction(nameof(Index));
-        //}
     }
 }

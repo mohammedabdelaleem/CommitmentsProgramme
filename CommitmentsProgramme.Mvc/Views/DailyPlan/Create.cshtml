@@ -3,9 +3,6 @@
 @{
     ViewData["Title"] = "إنشاء خطة يومية";
     var index = Model.Commitments?.Count ?? 0;
-
-    var modelll = Model;
-    var x = 0;
 }
 
 <div class="container py-4">
@@ -47,7 +44,6 @@
 
         <div class="d-flex justify-content-between align-items-center mb-3">
 
-            <h5 class="mb-0">الالتزامات</h5>
 
             <button type="button"
                     id="btnAddCommitment"
@@ -55,7 +51,6 @@
 
                 <i class="fa fa-plus"></i>
                 إضافة التزام
-
             </button>
 
         </div>
@@ -95,7 +90,6 @@
 </div>
 
 <partial name="_CommitmentModal" model="Model" />
-
 
 @section Scripts
 {
