@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "إنشاء خطة يومية";
     var index = Model.Commitments?.Count ?? 0;
+
+    var modelll = Model;
+    var x = 0;
 }
 
 <div class="container py-4">
@@ -12,7 +15,7 @@
     <form asp-action="Create" method="post" id="dailyPlanForm">
 
         <!-- ================= HEADER ================= -->
-
+        <input type="hidden" asp-for="Id" />
         <div class="row mb-3">
 
             <div class="col-md-4">
@@ -92,7 +95,6 @@
 </div>
 
 <partial name="_CommitmentModal" model="Model" />
-@* <partial name="_CommitmentScripts" model="Model" /> *@
 
 
 @section Scripts

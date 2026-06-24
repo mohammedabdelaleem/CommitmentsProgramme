@@ -1,228 +1,345 @@
-﻿<script>
+﻿@using System.Text.Json
 
-    let commitments = [];
-    let editIndex = -1;
-    let modal;
+<script>
 
-    $(document).ready(function () {
+let commitments = [];
+let editIndex = -1;
+let modal;
 
-        // =====================
-        // INIT MODAL (IMPORTANT)
-        // =====================
-        modal = new bootstrap.Modal(
-            document.getElementById("commitmentModal")
-        );
+$(document).ready(function () {
 
-        // =====================
-        // LOAD EDIT DATA
-        // =====================
+// =====================
+// BOOTSTRAP MODAL
+// =====================
+modal = new bootstrap.Modal(
+document.getElementById("commitmentModal")
+);
+
+// =====================
+// SELECT2 INIT (ONCE)
+// =====================
+$(".select2").select2({
+width: "100%",
+dir: "rtl",
+dropdownParent: $("#commitmentModal"),
+placeholder: "",
+allowClear: true
+});
+
+$(".select2-multiple").select2({
+width: "100%",
+dir: "rtl",
+dropdownParent: $("#commitmentModal"),
+placeholder: "",
+closeOnSelect: false
+});
+
+// =====================
+// LOAD EDIT DATA
+// =====================
         @if (Model.Commitments != null && Model.Commitments.Count > 0)
-        {
-                <text>
-                        commitments = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Commitments));
-                        renderTable();
-                </text>
-        }
+{
+    <text>
+        commitments = @Html.Raw(
+                        JsonSerializer.Serialize(
+                                Model.Commitments,
+                                new JsonSerializerOptions
+                                {
+                                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                                }
+                        )
+                                                );
 
-        // =====================
-        // OPEN MODAL
-        // =====================
-        $("#btnAddCommitment").click(function () {
+        console.log("Loaded Commitments:", commitments);
 
-            clearModal();
-            editIndex = -1;
+        renderTable();
+    </text>
+}
 
-            modal.show();
+// =====================
+// OPEN MODAL
+// =====================
+$("#btnAddCommitment").on("click", function () {
 
-        });
+clearModal();
 
-        // =====================
-        // SAVE
-        // =====================
-        $("#btnSaveCommitment").click(function () {
+editIndex = -1;
 
-            if (!$("#cTitle").val()) {
-                toastr.error("من فضلك أدخل عنوان الالتزام");
-                return;
-            }
+modal.show();
+});
 
-            const commitment = {
-                title: $("#cTitle").val(),
-                time: $("#cTime").val(),
-                commitmentTypeId: $("#cType").val(),
-                priorityId: $("#cPriority").val(),
-                placeId: $("#cPlace").val(),
-                branchIds: $("#cBranches").val() || [],
-                attendanceIds: $("#cAttendances").val() || [],
-                notes: $("#cNotes").val(),
-                typeText: $("#cType option:selected").text(),
-                placeText: $("#cPlace option:selected").text()
-            };
+// =====================
+// SAVE COMMITMENT
+// =====================
+$("#btnSaveCommitment").on("click", function () {
 
-            if (editIndex >= 0)
-                commitments[editIndex] = commitment;
-            else
-                commitments.push(commitment);
+if (!$("#cTitle").val()) {
 
-            renderTable();
-            modal.hide();
-        });
+toastr.error("من فضلك أدخل عنوان الالتزام");
 
-        // =====================
-        // DELETE
-        // =====================
-        $(document).on("click", ".delete-btn", function () {
+return;
+}
 
-            let index = $(this).data("index");
-            commitments.splice(index, 1);
-            renderTable();
-        });
+const commitment = {
 
-        // =====================
-        // EDIT
-        // =====================
-        $(document).on("click", ".edit-btn", function () {
+id: 0,
 
-            editIndex = $(this).data("index");
+title: $("#cTitle").val(),
 
-            let c = commitments[editIndex];
+time: $("#cTime").val(),
 
-            $("#cTitle").val(c.title);
-            $("#cTime").val(c.time);
-            $("#cType").val(c.commitmentTypeId).trigger("change");
-            $("#cPriority").val(c.priorityId).trigger("change");
-            $("#cPlace").val(c.placeId).trigger("change");
-            $("#cBranches").val(c.branchIds).trigger("change");
-            $("#cAttendances").val(c.attendanceIds).trigger("change");
-            $("#cNotes").val(c.notes);
+commitmentTypeId: $("#cType").val(),
 
-            modal.show();
-        });
+priorityId: $("#cPriority").val(),
 
-        // =====================
-        // SUBMIT
-        // =====================
-        $("#dailyPlanForm").submit(function () {
-            generateHiddenInputs();
-        });
+placeId: $("#cPlace").val(),
 
-    });
+branchIds: $("#cBranches").val() || [],
 
+attendanceIds: $("#cAttendances").val() || [],
 
-    // =====================
-    // RENDER TABLE
-    // =====================
-    function renderTable() {
+notes: $("#cNotes").val(),
 
-        let tbody = $("#commitmentsTableBody");
-        tbody.empty();
+commitmentTypeName:
+$("#cType option:selected").text(),
 
-        if (commitments.length === 0) {
-            tbody.append(`
-                <tr>
-                    <td colspan="5" class="text-center text-muted">
-                        لا توجد التزامات
-                    </td>
-                </tr>
-            `);
-            generateHiddenInputs();
-            return;
-        }
+placeName:
+$("#cPlace option:selected").text()
+};
 
-        commitments.forEach((c, index) => {
+if (editIndex >= 0)
+commitments[editIndex] = commitment;
+else
+commitments.push(commitment);
 
-            tbody.append(`
-                <tr>
-                    <td>${c.time ?? ''}</td>
-                    <td>${c.title}</td>
-                    <td>${c.typeText ?? ''}</td>
-                    <td>${c.placeText ?? ''}</td>
-                    <td>
-                        <button type="button" class="btn btn-warning btn-sm edit-btn" data-index="${index}">
-                            تعديل
-                        </button>
+renderTable();
 
-                        <button type="button" class="btn btn-danger btn-sm delete-btn" data-index="${index}">
-                            حذف
-                        </button>
-                    </td>
-                </tr>
-            `);
+modal.hide();
+});
 
-        });
+// =====================
+// DELETE
+// =====================
+$(document).on("click", ".delete-btn", function () {
 
-        generateHiddenInputs();
-    }
+const index = $(this).data("index");
 
+commitments.splice(index, 1);
 
-    // =====================
-    // CLEAR MODAL
-    // =====================
-    function clearModal() {
+renderTable();
+});
 
-        $("#cTitle").val('');
-        $("#cTime").val('');
-        $("#cType").val(null).trigger("change");
-        $("#cPriority").val(null).trigger("change");
-        $("#cPlace").val(null).trigger("change");
-        $("#cBranches").val([]).trigger("change");
-        $("#cAttendances").val([]).trigger("change");
-        $("#cNotes").val('');
-    }
+// =====================
+// EDIT
+// =====================
+$(document).on("click", ".edit-btn", function () {
 
+editIndex = $(this).data("index");
 
-    // =====================
-    // HIDDEN INPUTS
-    // =====================
-    function generateHiddenInputs() {
+const c = commitments[editIndex];
 
-        let html = "";
+console.log("Editing:", c);
 
-        commitments.forEach((c, i) => {
+$("#cTitle").val(c.title);
 
-            html += `
-                <input type="hidden" name="Commitments[${i}].Title" value="${c.title}" />
-                <input type="hidden" name="Commitments[${i}].Time" value="${c.time ?? ''}" />
-                <input type="hidden" name="Commitments[${i}].CommitmentTypeId" value="${c.commitmentTypeId}" />
-                <input type="hidden" name="Commitments[${i}].PriorityId" value="${c.priorityId}" />
-                <input type="hidden" name="Commitments[${i}].PlaceId" value="${c.placeId}" />
-                <input type="hidden" name="Commitments[${i}].Notes" value="${c.notes ?? ''}" />
-            `;
+$("#cTime").val(c.time);
 
-            (c.branchIds || []).forEach(b => {
-                html += `<input type="hidden" name="Commitments[${i}].BranchIds" value="${b}" />`;
-            });
+$("#cType")
+.val(c.commitmentTypeId?.toString())
+.trigger("change");
 
-            (c.attendanceIds || []).forEach(a => {
-                html += `<input type="hidden" name="Commitments[${i}].AttendanceIds" value="${a}" />`;
-            });
+$("#cPriority")
+.val(c.priorityId?.toString())
+.trigger("change");
 
-        });
+$("#cPlace")
+.val(c.placeId?.toString())
+.trigger("change");
 
-        $("#hiddenCommitments").html(html);
-    }
+$("#cBranches")
+.val(
+(c.branchIds || [])
+.map(x => x.toString())
+)
+.trigger("change");
 
+$("#cAttendances")
+.val(
+(c.attendanceIds || [])
+.map(x => x.toString())
+)
+.trigger("change");
 
+$("#cNotes").val(c.notes);
 
+modal.show();
+});
 
-        function openModal() {
+// =====================
+// SUBMIT
+// =====================
+$("#dailyPlanForm").on("submit", function () {
 
-        clearModal();
-        editIndex = -1;
+generateHiddenInputs();
 
-        modal.show();
+return true;
+});
 
-        setTimeout(function () {
+});
 
-            $("#cType").select2({ dropdownParent: $("#commitmentModal") });
-            $("#cPriority").select2({ dropdownParent: $("#commitmentModal") });
-            $("#cPlace").select2({ dropdownParent: $("#commitmentModal") });
-            $("#cBranches").select2({ dropdownParent: $("#commitmentModal") });
-            $("#cAttendances").select2({ dropdownParent: $("#commitmentModal") });
+// =====================
+// RENDER TABLE
+// =====================
+function renderTable() {
 
-        }, 200);
-    }
+const tbody = $("#commitmentsTableBody");
 
-    $("#btnAddCommitment").click(openModal);
+tbody.empty();
 
+if (!commitments.length) {
+
+tbody.append(`
+<tr>
+    <td colspan="5"
+        class="text-center text-muted">
+        لا توجد التزامات
+    </td>
+</tr>
+`);
+
+generateHiddenInputs();
+
+return;
+}
+
+commitments.forEach((c, index) => {
+
+tbody.append(`
+<tr>
+
+    <td>${c.time ?? ""}</td>
+
+    <td>${c.title ?? ""}</td>
+
+    <td>${c.commitmentTypeName ?? ""}</td>
+
+    <td>${c.placeName ?? ""}</td>
+
+    <td>
+
+        <button type="button"
+                class="btn btn-warning btn-sm edit-btn"
+                data-index="${index}">
+            تعديل
+        </button>
+
+        <button type="button"
+                class="btn btn-danger btn-sm delete-btn"
+                data-index="${index}">
+            حذف
+        </button>
+
+    </td>
+
+</tr>
+`);
+
+});
+
+generateHiddenInputs();
+}
+
+// =====================
+// CLEAR MODAL
+// =====================
+function clearModal() {
+
+$("#cTitle").val("");
+
+$("#cTime").val("");
+
+$("#cType")
+.val(null)
+.trigger("change");
+
+$("#cPriority")
+.val(null)
+.trigger("change");
+
+$("#cPlace")
+.val(null)
+.trigger("change");
+
+$("#cBranches")
+.val([])
+.trigger("change");
+
+$("#cAttendances")
+.val([])
+.trigger("change");
+
+$("#cNotes").val("");
+}
+
+// =====================
+// HIDDEN INPUTS
+// =====================
+function generateHiddenInputs() {
+
+let html = "";
+
+commitments.forEach((c, i) => {
+
+html += `
+<input type="hidden"
+       name="Commitments[${i}].Id"
+       value="${c.id ?? 0}" />
+
+<input type="hidden"
+       name="Commitments[${i}].Title"
+       value="${c.title ?? ''}" />
+
+<input type="hidden"
+       name="Commitments[${i}].Time"
+       value="${c.time ?? ''}" />
+
+<input type="hidden"
+       name="Commitments[${i}].CommitmentTypeId"
+       value="${c.commitmentTypeId}" />
+
+<input type="hidden"
+       name="Commitments[${i}].PriorityId"
+       value="${c.priorityId}" />
+
+<input type="hidden"
+       name="Commitments[${i}].PlaceId"
+       value="${c.placeId}" />
+
+<input type="hidden"
+       name="Commitments[${i}].Notes"
+       value="${c.notes ?? ''}" />
+`;
+
+(c.branchIds || []).forEach(b => {
+
+html += `
+<input type="hidden"
+       name="Commitments[${i}].BranchIds"
+       value="${b}" />
+`;
+});
+
+(c.attendanceIds || []).forEach(a => {
+
+html += `
+<input type="hidden"
+       name="Commitments[${i}].AttendanceIds"
+       value="${a}" />
+`;
+});
+
+});
+
+$("#hiddenCommitments").html(html);
+}
 </script>

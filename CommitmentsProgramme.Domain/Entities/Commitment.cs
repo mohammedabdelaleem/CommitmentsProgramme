@@ -29,8 +29,10 @@ public class Commitment : BaseEntity
 
   public DailyPlan DailyPlan { get; set; } = default!;
 
-    public List<Attendance> Attendances { get; set; } = [];
-    public List<Branch> Branches { get; set; } = [];
+
+    public List<CommitmentBranch> CommitmentBranches { get; set; } = [];
+
+    public List<CommitmentsAttendances> CommitmentsAttendances { get; set; } = [];
 
     public int PlaceId { get; set; }
     public Place Place { get; set; } 

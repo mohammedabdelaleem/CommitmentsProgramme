@@ -10,9 +10,10 @@ public class Branch : BaseEntity
   [Display(Name = "الترتيب")]
   public int DisplayOrder { get; set; }
 
-    [ValidateNever]
-    public int CommitmentId { get; set; }
-
+  
     [Display(Name = "نشط")]
   public bool IsActive { get; set; } = true;
+
+    public ICollection<CommitmentBranch> CommitmentBranches { get; set; } = [];
+
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CommitmentsProgramme.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260623022754_init")]
-    partial class init
+    [Migration("20260624122006_NullableCreatedBy")]
+    partial class NullableCreatedBy
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -166,6 +166,39 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Attendance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Attendances");
+                });
+
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Branch", b =>
                 {
                     b.Property<int>("Id")
@@ -175,7 +208,6 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -211,17 +243,10 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Attendance")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CommitmentTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -230,11 +255,11 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                     b.Property<int>("DailyPlanId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlaceId")
+                        .HasColumnType("int");
 
                     b.Property<int>("PriorityId")
                         .HasColumnType("int");
@@ -255,15 +280,32 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BranchId");
-
                     b.HasIndex("CommitmentTypeId");
 
                     b.HasIndex("DailyPlanId");
 
+                    b.HasIndex("PlaceId");
+
                     b.HasIndex("PriorityId");
 
                     b.ToTable("Commitments");
+                });
+
+            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.CommitmentBranch", b =>
+                {
+                    b.Property<int>("CommitmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BranchId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CommitmentId", "BranchId");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("CommitmentId", "BranchId");
+
+                    b.ToTable("CommitmentBranches");
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.CommitmentType", b =>
@@ -275,7 +317,6 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -303,6 +344,23 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                     b.ToTable("CommitmentType");
                 });
 
+            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.CommitmentsAttendances", b =>
+                {
+                    b.Property<int>("CommitmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AttendanceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CommitmentId", "AttendanceId");
+
+                    b.HasIndex("AttendanceId");
+
+                    b.HasIndex("CommitmentId", "AttendanceId");
+
+                    b.ToTable("CommitmentsAttendances");
+                });
+
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.DailyPlan", b =>
                 {
                     b.Property<int>("Id")
@@ -312,7 +370,6 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -339,7 +396,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasIndex("SeniorOfficerId");
 
-                    b.ToTable("DailyPlan");
+                    b.ToTable("DailyPlans");
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Officer", b =>
@@ -351,7 +408,6 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -377,7 +433,40 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasIndex("RankId");
 
-                    b.ToTable("Officer");
+                    b.ToTable("Officers");
+                });
+
+            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Place", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Places");
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Priority", b =>
@@ -389,7 +478,6 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -430,7 +518,6 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -659,12 +746,6 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Commitment", b =>
                 {
-                    b.HasOne("CommitmentsProgramme.Domain.Entities.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("CommitmentsProgramme.Domain.Entities.CommitmentType", "CommitmentType")
                         .WithMany()
                         .HasForeignKey("CommitmentTypeId")
@@ -677,19 +758,63 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("CommitmentsProgramme.Domain.Entities.Place", "Place")
+                        .WithMany()
+                        .HasForeignKey("PlaceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("CommitmentsProgramme.Domain.Entities.Priority", "Priority")
                         .WithMany()
                         .HasForeignKey("PriorityId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Branch");
-
                     b.Navigation("CommitmentType");
 
                     b.Navigation("DailyPlan");
 
+                    b.Navigation("Place");
+
                     b.Navigation("Priority");
+                });
+
+            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.CommitmentBranch", b =>
+                {
+                    b.HasOne("CommitmentsProgramme.Domain.Entities.Branch", "Branch")
+                        .WithMany("CommitmentBranches")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CommitmentsProgramme.Domain.Entities.Commitment", "Commitment")
+                        .WithMany("CommitmentBranches")
+                        .HasForeignKey("CommitmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Commitment");
+                });
+
+            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.CommitmentsAttendances", b =>
+                {
+                    b.HasOne("CommitmentsProgramme.Domain.Entities.Attendance", "Attendance")
+                        .WithMany("CommitmentsAttendances")
+                        .HasForeignKey("AttendanceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CommitmentsProgramme.Domain.Entities.Commitment", "Commitment")
+                        .WithMany("CommitmentsAttendances")
+                        .HasForeignKey("CommitmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Attendance");
+
+                    b.Navigation("Commitment");
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.DailyPlan", b =>
@@ -771,6 +896,23 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Attendance", b =>
+                {
+                    b.Navigation("CommitmentsAttendances");
+                });
+
+            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Branch", b =>
+                {
+                    b.Navigation("CommitmentBranches");
+                });
+
+            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Commitment", b =>
+                {
+                    b.Navigation("CommitmentBranches");
+
+                    b.Navigation("CommitmentsAttendances");
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.DailyPlan", b =>

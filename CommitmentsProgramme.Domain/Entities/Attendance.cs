@@ -14,5 +14,8 @@ namespace CommitmentsProgramme.Domain.Entities
         public string Title { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public ICollection<CommitmentsAttendances> CommitmentsAttendances { get; set; } = [];
+
     }
 }

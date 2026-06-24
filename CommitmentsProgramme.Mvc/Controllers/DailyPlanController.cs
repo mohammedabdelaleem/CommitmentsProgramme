@@ -33,56 +33,90 @@ namespace CommitmentsProgramme.Mvc.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(int? id)
         {
-            var vm = await _dailyPlanService.GetForEditAsync(null);
+            if(id == null)
+            {
+                var vm = await _dailyPlanService.GetForEditAsync(0);
 
-            return View(vm);
+                return View(vm);
+            }
+            else
+            {
+                var vm = await _dailyPlanService.GetForEditAsync(id.Value);
+
+                // calculate the current items
+                ViewBag.CommitmentIndex = vm.Commitments.Count;
+
+                return View("Create", vm);
+            }
+           
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DailyPlanVm vm)
         {
-            if (!ModelState.IsValid)
+            if(vm.Id == 0)
             {
-                vm = await _dailyPlanService.GetForEditAsync(null);
+                if (!ModelState.IsValid)
+                {
+                    vm = await _dailyPlanService.GetForEditAsync(0);
+                    return View(vm);
+                }
 
-                return View(vm);
+                var userId = User.GetUserId();
+                await _dailyPlanService.SaveAsync(vm, userId);
+
+                return RedirectToAction(nameof(Index));
             }
-
-            var userId = User.GetUserId();
-            await _dailyPlanService.SaveAsync(vm,userId);
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var vm = await _dailyPlanService.GetForEditAsync(id);
-
-            // calculate the current items
-            ViewBag.CommitmentIndex = vm.Commitments.Count;
-
-            return View("Create", vm);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(DailyPlanVm vm)
-        {
-            if (!ModelState.IsValid)
+            else
             {
-                vm = await _dailyPlanService.GetForEditAsync(vm.Id);
+                if (!ModelState.IsValid)
+                {
+                    vm = await _dailyPlanService.GetForEditAsync(vm.Id);
 
-                return View("Create", vm);
+                    return View("Create", vm);
+                }
+
+                var userId = User.GetUserId();
+                await _dailyPlanService.SaveAsync(vm, userId);
+
+                return RedirectToAction(nameof(Index));
             }
-
-            var userId = User.GetUserId();
-            await _dailyPlanService.SaveAsync(vm, userId);
-
-            return RedirectToAction(nameof(Index));
+          
         }
+
+
+
+
+
+        //[HttpGet]
+        //public async Task<IActionResult> Edit(int id)
+        //{
+        //    var vm = await _dailyPlanService.GetForEditAsync(id);
+
+        //    // calculate the current items
+        //    ViewBag.CommitmentIndex = vm.Commitments.Count;
+
+        //    return View("Create", vm);
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(DailyPlanVm vm)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        vm = await _dailyPlanService.GetForEditAsync(vm.Id);
+
+        //        return View("Create", vm);
+        //    }
+
+        //    var userId = User.GetUserId();
+        //    await _dailyPlanService.SaveAsync(vm, userId);
+
+        //    return RedirectToAction(nameof(Index));
+        //}
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CommitmentsProgramme.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class startup : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -62,25 +62,6 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Branches",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    DisplayOrder = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Branches", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CommitmentType",
                 columns: table => new
                 {
@@ -97,6 +78,24 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CommitmentType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Places",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Places", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -245,7 +244,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Officer",
+                name: "Officers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -260,9 +259,9 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Officer", x => x.Id);
+                    table.PrimaryKey("PK_Officers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Officer_Ranks_RankId",
+                        name: "FK_Officers_Ranks_RankId",
                         column: x => x.RankId,
                         principalTable: "Ranks",
                         principalColumn: "Id",
@@ -270,7 +269,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DailyPlan",
+                name: "DailyPlans",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -285,17 +284,17 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DailyPlan", x => x.Id);
+                    table.PrimaryKey("PK_DailyPlans", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DailyPlan_Officer_DutyOfficerId",
+                        name: "FK_DailyPlans_Officers_DutyOfficerId",
                         column: x => x.DutyOfficerId,
-                        principalTable: "Officer",
+                        principalTable: "Officers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_DailyPlan_Officer_SeniorOfficerId",
+                        name: "FK_DailyPlans_Officers_SeniorOfficerId",
                         column: x => x.SeniorOfficerId,
-                        principalTable: "Officer",
+                        principalTable: "Officers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -308,13 +307,11 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Time = table.Column<TimeOnly>(type: "time", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Attendance = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BranchId = table.Column<int>(type: "int", nullable: false),
                     CommitmentTypeId = table.Column<int>(type: "int", nullable: false),
                     PriorityId = table.Column<int>(type: "int", nullable: false),
                     DailyPlanId = table.Column<int>(type: "int", nullable: false),
+                    PlaceId = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -324,27 +321,78 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Commitments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Commitments_Branches_BranchId",
-                        column: x => x.BranchId,
-                        principalTable: "Branches",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Commitments_CommitmentType_CommitmentTypeId",
                         column: x => x.CommitmentTypeId,
                         principalTable: "CommitmentType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Commitments_DailyPlan_DailyPlanId",
+                        name: "FK_Commitments_DailyPlans_DailyPlanId",
                         column: x => x.DailyPlanId,
-                        principalTable: "DailyPlan",
+                        principalTable: "DailyPlans",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Commitments_Places_PlaceId",
+                        column: x => x.PlaceId,
+                        principalTable: "Places",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Commitments_Priorities_PriorityId",
                         column: x => x.PriorityId,
                         principalTable: "Priorities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Attendances",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CommitmentId = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attendances", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Attendances_Commitments_CommitmentId",
+                        column: x => x.CommitmentId,
+                        principalTable: "Commitments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Branches",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    DisplayOrder = table.Column<int>(type: "int", nullable: false),
+                    CommitmentId = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Branches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Branches_Commitments_CommitmentId",
+                        column: x => x.CommitmentId,
+                        principalTable: "Commitments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -417,9 +465,14 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Commitments_BranchId",
-                table: "Commitments",
-                column: "BranchId");
+                name: "IX_Attendances_CommitmentId",
+                table: "Attendances",
+                column: "CommitmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Branches_CommitmentId",
+                table: "Branches",
+                column: "CommitmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Commitments_CommitmentTypeId",
@@ -432,23 +485,28 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 column: "DailyPlanId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Commitments_PlaceId",
+                table: "Commitments",
+                column: "PlaceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Commitments_PriorityId",
                 table: "Commitments",
                 column: "PriorityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DailyPlan_DutyOfficerId",
-                table: "DailyPlan",
+                name: "IX_DailyPlans_DutyOfficerId",
+                table: "DailyPlans",
                 column: "DutyOfficerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DailyPlan_SeniorOfficerId",
-                table: "DailyPlan",
+                name: "IX_DailyPlans_SeniorOfficerId",
+                table: "DailyPlans",
                 column: "SeniorOfficerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Officer_RankId",
-                table: "Officer",
+                name: "IX_Officers_RankId",
+                table: "Officers",
                 column: "RankId");
         }
 
@@ -471,7 +529,10 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Commitments");
+                name: "Attendances");
+
+            migrationBuilder.DropTable(
+                name: "Branches");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -480,19 +541,22 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Branches");
+                name: "Commitments");
 
             migrationBuilder.DropTable(
                 name: "CommitmentType");
 
             migrationBuilder.DropTable(
-                name: "DailyPlan");
+                name: "DailyPlans");
+
+            migrationBuilder.DropTable(
+                name: "Places");
 
             migrationBuilder.DropTable(
                 name: "Priorities");
 
             migrationBuilder.DropTable(
-                name: "Officer");
+                name: "Officers");
 
             migrationBuilder.DropTable(
                 name: "Ranks");

@@ -4,7 +4,7 @@ namespace CommitmentsProgramme.Mvc.ViewModels;
 
 public class DailyPlanVm
 {
-  public int? Id { get; set; }
+  public int Id { get; set; }
 
   public DateOnly PlanDate { get; set; }
 
@@ -13,6 +13,7 @@ public class DailyPlanVm
   public int DutyOfficerId { get; set; }
 
   public List<CommitmentVm> Commitments { get; set; } = new();
+  //public List<CommitmentDetailsVM> CommitmentsDetails { get; set; } = new();
 
 
     // SELECT LISTS

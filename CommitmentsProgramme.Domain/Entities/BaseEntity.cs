@@ -5,7 +5,7 @@ public abstract class BaseEntity
 	public int Id { get; set; }
 
   [Display(Name = "انشاء بواسطة")]
-  public string CreatedBy { get; set; } = "admin";
+  public string? CreatedBy { get; set; } = "admin";
 
   [Display(Name = "تعديل بواسطة")]
   public string? UpdatedBy { get; set; }

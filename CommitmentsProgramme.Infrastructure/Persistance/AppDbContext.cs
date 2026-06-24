@@ -19,8 +19,10 @@ namespace CommitmentsProgramme.Infrastructure.Persistance
     public DbSet<Officer> Officers { get; set; }
     public DbSet<Place> Places { get; set; }
     public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<CommitmentBranch> CommitmentBranches { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder builder)
+        public DbSet<CommitmentsAttendances> CommitmentsAttendances { get; set; }
+        protected override void OnModelCreating(ModelBuilder builder)
 		{
 			builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 

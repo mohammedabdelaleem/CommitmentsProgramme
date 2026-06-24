@@ -78,3 +78,11 @@ body {
     margin: 20px 0 10px;
     font-weight: 800;
   }
+
+.select2-search.select2-search--inline {
+    display:none;
+}
+
+select2-selection__choice {
+    background-color: #b6ff00 
+}
