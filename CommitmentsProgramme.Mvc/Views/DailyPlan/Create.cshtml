@@ -9,7 +9,7 @@
 
     <h3 class="mb-4">إنشاء خطة يومية</h3>
 
-    <form asp-action="Create" method="post">
+    <form asp-action="Create" method="post" id="dailyPlanForm">
 
         <!-- ================= HEADER ================= -->
 
@@ -42,99 +42,44 @@
 
         <!-- ================= COMMITMENTS ================= -->
 
-        <div id="commitmentsContainer">
+        <div class="d-flex justify-content-between align-items-center mb-3">
 
-            @for (int i = 0; i < Model.Commitments.Count; i++)
-            {
-                <div class="card p-3 mb-3 commitment-row">
+            <h5 class="mb-0">الالتزامات</h5>
 
-                    <input type="hidden" name="Commitments.Index" value="@i" />
+            <button type="button"
+                    id="btnAddCommitment"
+                    class="btn btn-success">
 
-                    <div class="row">
+                <i class="fa fa-plus"></i>
+                إضافة التزام
 
-                        <div class="col-md-4">
-                            <label>العنوان</label>
-                            <input name="Commitments[@i].Title"
-                                   value="@Model.Commitments[i].Title"
-                                   class="form-control" />
-                        </div>
-
-                        <div class="col-md-4">
-                            <label>الوقت</label>
-                            <input type="time"
-                                   name="Commitments[@i].Time"
-                                   value="@Model.Commitments[i].Time"
-                                   class="form-control" />
-                        </div>
-
-                        <div class="col-md-4">
-                            <label>النوع</label>
-                            <select name="Commitments[@i].CommitmentTypeId"
-                                    asp-items="Model.CommitmentTypes"
-                                    class="form-control"></select>
-                        </div>
-
-                        <div class="col-md-4 mt-2">
-                            <label>الأولوية</label>
-                            <select name="Commitments[@i].PriorityId"
-                                    asp-items="Model.Priorities"
-                                    class="form-control"></select>
-                        </div>
-
-                        <div class="col-md-4 mt-2">
-                            <label>المكان</label>
-                            <select name="Commitments[@i].PlaceId"
-                                    asp-items="Model.Places"
-                                    class="form-control"></select>
-                        </div>
-
-                        <!-- Branches -->
-                        <div class="col-md-4 mt-2">
-                            <label>الفروع</label>
-                            <select multiple
-                                    name="Commitments[@i].BranchIds"
-                                    class="form-control">
-                                @foreach (var b in Model.Branches)
-                                {
-                                    <option value="@b.Value">
-                                        @b.Text
-                                    </option>
-                                }
-                            </select>
-                        </div>
-
-                        <!-- Attendances -->
-                        <div class="col-md-6 mt-2">
-                            <label>الحضور</label>
-                            <select multiple
-                                    name="Commitments[@i].AttendanceIds"
-                                    class="form-control">
-                                @foreach (var a in Model.Attendances)
-                                {
-                                    <option value="@a.Value">
-                                        @a.Text
-                                    </option>
-                                }
-                            </select>
-                        </div>
-
-                        <div class="col-md-6 mt-2">
-                            <label>ملاحظات</label>
-                            <textarea name="Commitments[@i].Notes"
-                                      class="form-control">@Model.Commitments[i].Notes</textarea>
-                        </div>
-
-                    </div>
-                </div>
-            }
+            </button>
 
         </div>
 
-        <button type="button"
-                id="btnAddCommitment"
-                class="btn btn-success mt-3">
-            + إضافة التزام
-        </button>
+        <table class="table table-bordered table-striped align-middle">
+
+            <thead class="table-light">
+
+                <tr>
+                    <th>الوقت</th>
+                    <th>العنوان</th>
+                    <th>النوع</th>
+                    <th>المكان</th>
+                    <th width="150">إجراءات</th>
+                </tr>
+
+            </thead>
+
+           
+            <tbody id="commitmentsTableBody">
+            </tbody>
+
+        </table>
+
+        <div id="hiddenCommitments"></div>
+
+     
 
         <hr />
 
@@ -146,89 +91,11 @@
 
 </div>
 
-@section Scripts {
+<partial name="_CommitmentModal" model="Model" />
+@* <partial name="_CommitmentScripts" model="Model" /> *@
 
-    <script>
 
-        let index = @index;
-
-        // ================= ADD NEW COMMITMENT =================
-        $("#btnAddCommitment").on("click", function () {
-
-            let branchesOptions = `@Html.Raw(string.Join("", Model.Branches.Select(b => $"<option value='{b.Value}'>{b.Text}</option>")))`;
-            let attendanceOptions = `@Html.Raw(string.Join("", Model.Attendances.Select(a => $"<option value='{a.Value}'>{a.Text}</option>")))`;
-
-            let commitmentTypes = `@Html.Raw(string.Join("", Model.CommitmentTypes.Select(x => $"<option value='{x.Value}'>{x.Text}</option>")))`;
-            let priorities = `@Html.Raw(string.Join("", Model.Priorities.Select(x => $"<option value='{x.Value}'>{x.Text}</option>")))`;
-            let places = `@Html.Raw(string.Join("", Model.Places.Select(x => $"<option value='{x.Value}'>{x.Text}</option>")))`;
-
-            let html = `
-            <div class="card p-3 mb-3 commitment-row">
-
-                <input type="hidden" name="Commitments.Index" value="${index}" />
-
-                <div class="row">
-
-                    <div class="col-md-4">
-                        <label>العنوان</label>
-                        <input name="Commitments[${index}].Title" class="form-control" />
-                    </div>
-
-                    <div class="col-md-4">
-                        <label>الوقت</label>
-                        <input type="time" name="Commitments[${index}].Time" class="form-control" />
-                    </div>
-
-                    <div class="col-md-4">
-                        <label>النوع</label>
-                        <select name="Commitments[${index}].CommitmentTypeId" class="form-control">
-                            ${commitmentTypes}
-                        </select>
-                    </div>
-
-                    <div class="col-md-4 mt-2">
-                        <label>الأولوية</label>
-                        <select name="Commitments[${index}].PriorityId" class="form-control">
-                            ${priorities}
-                        </select>
-                    </div>
-
-                    <div class="col-md-4 mt-2">
-                        <label>المكان</label>
-                        <select name="Commitments[${index}].PlaceId" class="form-control">
-                            ${places}
-                        </select>
-                    </div>
-
-                    <div class="col-md-4 mt-2">
-                        <label>الفروع</label>
-                        <select multiple name="Commitments[${index}].BranchIds" class="form-control">
-                            ${branchesOptions}
-                        </select>
-                    </div>
-
-                    <div class="col-md-6 mt-2">
-                        <label>الحضور</label>
-                        <select multiple name="Commitments[${index}].AttendanceIds" class="form-control">
-                            ${attendanceOptions}
-                        </select>
-                    </div>
-
-                    <div class="col-md-6 mt-2">
-                        <label>ملاحظات</label>
-                        <textarea name="Commitments[${index}].Notes" class="form-control"></textarea>
-                    </div>
-
-                </div>
-
-            </div>
-            `;
-
-            $("#commitmentsContainer").append(html);
-
-            index++;
-        });
-
-    </script>
-
+@section Scripts
+{
+    <partial name="_CommitmentScripts" model="Model" />
 }

@@ -4,6 +4,7 @@ namespace CommitmentsProgramme.Mvc.ViewModels;
 
 public class CommitmentVm
 {
+    public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
 
     public TimeOnly? Time { get; set; }

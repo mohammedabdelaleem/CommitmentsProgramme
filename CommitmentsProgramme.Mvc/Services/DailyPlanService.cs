@@ -100,6 +100,7 @@ public class DailyPlanService(IUnitOfWork unitOfWork) : IDailyPlanService
         vm.Commitments = plan.Commitments
             .Select(c => new CommitmentVm
             {
+                Id = c.Id,
                 Title = c.Title,
 
                 Time = c.Time,
@@ -156,6 +157,7 @@ public class DailyPlanService(IUnitOfWork unitOfWork) : IDailyPlanService
             {
                 var commitment = new Commitment
                 {
+                    Id= c.Id,
                     Title = c.Title,
 
                     Time = c.Time,
@@ -221,6 +223,7 @@ public class DailyPlanService(IUnitOfWork unitOfWork) : IDailyPlanService
             {
                 var commitment = new Commitment
                 {
+                    Id = c.Id,  
                     Title = c.Title,
 
                     Time = c.Time,
@@ -249,7 +252,7 @@ public class DailyPlanService(IUnitOfWork unitOfWork) : IDailyPlanService
 
             await _unitOfWork.DailyPlans.SaveAsync(
                 plan,
-                "system");
+               userFullName);
         }
 
         await _unitOfWork.CompleteAsync();

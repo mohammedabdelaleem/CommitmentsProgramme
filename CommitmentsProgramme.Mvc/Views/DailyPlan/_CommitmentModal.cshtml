@@ -1,0 +1,225 @@
+﻿@model DailyPlanVm
+
+<div class="modal fade"
+     id="commitmentModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-xl">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    بيانات الالتزام
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row g-3">
+
+                    <!-- Title -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            عنوان الالتزام
+                        </label>
+
+                        <input id="cTitle"
+                               class="form-control" />
+
+                    </div>
+
+                    <!-- Time -->
+
+                    <div class="col-md-3">
+
+                        <label class="form-label">
+                            الوقت
+                        </label>
+
+                        <input id="cTime"
+                               type="time"
+                               class="form-control" />
+
+                    </div>
+
+                    <!-- Commitment Type -->
+
+                    <div class="col-md-3">
+
+                        <label class="form-label">
+                            النوع
+                        </label>
+
+                        <select id="cType"
+                                class="form-select select2">
+
+                            <option value="">
+                                اختر النوع
+                            </option>
+
+                            @foreach (var item in Model.CommitmentTypes)
+                            {
+                                <option value="@item.Value">
+                                    @item.Text
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+                    <!-- Priority -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+                            الأولوية
+                        </label>
+
+                        <select id="cPriority"
+                                class="form-select select2">
+
+                            <option value="">
+                                اختر الأولوية
+                            </option>
+
+                            @foreach (var item in Model.Priorities)
+                            {
+                                <option value="@item.Value">
+                                    @item.Text
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+                    <!-- Place -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+                            المكان
+                        </label>
+
+                        <select id="cPlace"
+                                class="form-select select2">
+
+                            <option value="">
+                                اختر المكان
+                            </option>
+
+                            @foreach (var item in Model.Places)
+                            {
+                                <option value="@item.Value">
+                                    @item.Text
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+                    <!-- Branches -->
+
+                    <div class="col-md-4">
+
+                        <label class="form-label">
+                            الفروع
+                        </label>
+
+                        <select id="cBranches"
+                                multiple
+                                class="form-select select2-multiple">
+
+                            @foreach (var item in Model.Branches)
+                            {
+                                <option value="@item.Value">
+                                    @item.Text
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+                    <!-- Attendances -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            الحضور
+                        </label>
+
+                        <select id="cAttendances"
+                                multiple
+                                class="form-select select2-multiple">
+
+                            @foreach (var item in Model.Attendances)
+                            {
+                                <option value="@item.Value">
+                                    @item.Text
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+                    <!-- Notes -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            ملاحظات
+                        </label>
+
+                        <textarea id="cNotes"
+                                  rows="4"
+                                  class="form-control">
+                        </textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    إغلاق
+
+                </button>
+
+                <button type="button"
+                        id="btnSaveCommitment"
+                        class="btn btn-primary">
+
+                    حفظ الالتزام
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

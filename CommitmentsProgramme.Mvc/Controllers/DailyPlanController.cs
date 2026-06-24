@@ -1,10 +1,9 @@
 ﻿using CommitmentsProgramme.Utilities.Extensions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CommitmentsProgramme.Mvc.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class DailyPlanController(IDailyPlanService dailyPlanService,
         IUnitOfWork unitOfWork) : Controller
     {
@@ -13,6 +12,7 @@ namespace CommitmentsProgramme.Mvc.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //var userId = User.GetUserId();
             // Load all daily plans (light data only)
             var plans = await _unitOfWork.DailyPlans.GetAllAsync(
                 include: q => q

@@ -1,49 +1,50 @@
 ﻿<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="~/admin/vendors/select2/select2.min.js"></script>
+
+<script src="~/js/site.js"></script>
 
 <script src="~/js/externalfiles/toastr.min.js"></script>
 
 <script src="~/js/externalfiles/sweetalert2.all.min.js"></script>
 
-<script src="~/js/notifications.js" asp-append-version="true"></script>
-
-<script src="~/admin/vendors/select2/select2.min.js"></script>
 <script>
 
-    $(function () {
+    $(document).ready(function () {
+
+    function initSelect2() {
 
     $(".select2").select2({
-
     theme: "bootstrap-5",
-
     width: "100%",
-
     dir: "rtl",
-
     placeholder: "اختر",
-
-    allowClear: true
-
+    dropdownParent: $("#commitmentModal") // ⭐ مهم للمودال
     });
 
     $(".select2-multiple").select2({
-
     theme: "bootstrap-5",
-
     width: "100%",
-
     dir: "rtl",
+    placeholder: "اختر",
+    closeOnSelect: false,
+    dropdownParent: $("#commitmentModal") // ⭐ مهم جدًا
+    });
+    }
 
-    placeholder: "اختر الفروع",
+    initSelect2();
 
-    closeOnSelect: false
-
+    // إعادة تهيئة بعد فتح المودال
+    $("#commitmentModal").on("shown.bs.modal", function () {
+    $(".select2, .select2-multiple").select2({
+    theme: "bootstrap-5",
+    width: "100%",
+    dir: "rtl",
+    dropdownParent: $("#commitmentModal")
+    });
     });
 
     });
-
-
     
 </script>
