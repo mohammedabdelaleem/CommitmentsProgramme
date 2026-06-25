@@ -34,10 +34,18 @@
                     <td>@item.DutyOfficerName</td>
                     <td>@item.CommitmentsCount</td>
                     <td >
+
                         <a class="btn btn-sm btn-warning"
                            asp-action="Create"
                            asp-route-id="@item.Id">
                             تعديل
+                        </a>
+
+                        <a asp-action="Print"
+                           asp-route-id="@item.Id"
+                           target="_blank"
+                           class="btn btn-dark">
+                            طباعة
                         </a>
 
                         <form asp-action="Delete" asp-route-id="@item.Id" method="post">

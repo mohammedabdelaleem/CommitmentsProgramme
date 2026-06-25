@@ -17,5 +17,6 @@ namespace CommitmentsProgramme.Mvc.ViewModels
 
         public IEnumerable<SelectListItem> Ranks { get; set; }
             = new List<SelectListItem>();
+
     }
 }

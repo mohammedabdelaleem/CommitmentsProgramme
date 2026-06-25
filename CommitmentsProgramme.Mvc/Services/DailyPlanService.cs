@@ -6,6 +6,115 @@ public class DailyPlanService(IUnitOfWork unitOfWork) : IDailyPlanService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
+    public async Task<DailyPlanDetailsVm> GetDetailsAsync(int id)
+    {
+        var plan = await _unitOfWork.DailyPlans.GetAsync(
+            x => x.Id == id,
+            include: q => q
+
+                .Include(x => x.SeniorOfficer)
+                    .ThenInclude(x => x.Rank)
+
+                .Include(x => x.DutyOfficer)
+                    .ThenInclude(x => x.Rank)
+
+                .Include(x => x.Commitments)
+                    .ThenInclude(x => x.CommitmentType)
+
+                .Include(x => x.Commitments)
+                    .ThenInclude(x => x.Priority)
+
+                .Include(x => x.Commitments)
+                    .ThenInclude(x => x.Place)
+
+                .Include(x => x.Commitments)
+                    .ThenInclude(x => x.CommitmentBranches)
+                        .ThenInclude(x => x.Branch)
+
+                .Include(x => x.Commitments)
+                    .ThenInclude(x => x.CommitmentsAttendances)
+                        .ThenInclude(x => x.Attendance)
+        );
+
+        if (plan is null)
+        {
+            throw new InvalidOperationException(
+                $"DailyPlan with Id {id} was not found.");
+        }
+
+        var vm = new DailyPlanDetailsVm
+        {
+            Id = plan.Id,
+
+            PlanDate = plan.PlanDate,
+
+            SeniorOfficer = new OfficerInfoVm
+            {
+                RankName = plan.SeniorOfficer.Rank.Name,
+                FullName = plan.SeniorOfficer.FullName,
+                PhoneNumber = plan.SeniorOfficer.PhoneNumber
+            },
+
+            DutyOfficer = new OfficerInfoVm
+            {
+                RankName = plan.DutyOfficer.Rank.Name,
+                FullName = plan.DutyOfficer.FullName,
+                PhoneNumber = plan.DutyOfficer.PhoneNumber
+            }
+        };
+
+        var commitments = plan.Commitments
+            .OrderBy(x => x.Time)
+            .Select(c => new CommitmentVm
+            {
+                Id = c.Id,
+
+                Title = c.Title,
+
+                Time = c.Time,
+
+                CommitmentTypeId = c.CommitmentTypeId,
+
+                CommitmentTypeName = c.CommitmentType.Name,
+
+                PriorityId = c.PriorityId,
+
+                PriorityName = c.Priority.Name,
+
+                PlaceId = c.PlaceId,
+
+                PlaceName = c.Place.Name,
+
+                Notes = c.Notes,
+
+                BranchIds = c.CommitmentBranches
+                    .Select(x => x.BranchId)
+                    .ToList(),
+
+                BranchNames = c.CommitmentBranches
+                    .Select(x => x.Branch.Name)
+                    .ToList(),
+
+                AttendanceIds = c.CommitmentsAttendances
+                    .Select(x => x.AttendanceId)
+                    .ToList(),
+
+                AttendanceNames = c.CommitmentsAttendances
+                    .Select(x => x.Attendance.Title)
+                    .ToList()
+            })
+            .ToList();
+
+        vm.OutsideCommitments = commitments
+            .Where(x => x.CommitmentTypeId == 1)
+            .ToList();
+
+        vm.SideCommitments = commitments
+            .Where(x => x.CommitmentTypeId == 2)
+            .ToList();
+
+        return vm;
+    }
     public async Task<DailyPlanVm> GetForEditAsync(int id)
     {
         var vm = new DailyPlanVm();
@@ -137,14 +246,22 @@ public class DailyPlanService(IUnitOfWork unitOfWork) : IDailyPlanService
          Notes = c.Notes,
 
          BranchIds = c.CommitmentBranches
-             .Select(x => x.BranchId)
-             .ToList(),
+            .Select(x => x.BranchId)
+            .ToList(),
 
-         AttendanceIds = c.CommitmentsAttendances
-             .Select(x => x.AttendanceId)
-             .ToList()
-     })
-     .ToList();
+                 BranchNames = c.CommitmentBranches
+            .Select(x => x.Branch.Name)
+            .ToList(),
+
+                 AttendanceIds = c.CommitmentsAttendances
+            .Select(x => x.AttendanceId)
+            .ToList(),
+
+                 AttendanceNames = c.CommitmentsAttendances
+            .Select(x => x.Attendance.Title)
+            .ToList(),
+             })
+             .ToList();
 
         return vm;
     }
@@ -288,6 +405,7 @@ public class DailyPlanService(IUnitOfWork unitOfWork) : IDailyPlanService
 
         await _unitOfWork.CompleteAsync();
     }
+
     private async Task<List<SelectListItem>> GetOfficers(
         int fromRank,
         int toRank)
@@ -302,5 +420,100 @@ public class DailyPlanService(IUnitOfWork unitOfWork) : IDailyPlanService
                 Text = x.FullName
             })
             .ToList();
+    }
+
+    public async Task<DailyPlanPrintVm> GetForPrintAsync(int id)
+    {
+        var plan = await _unitOfWork.DailyPlans.GetAsync(
+            x => x.Id == id,
+            include: q => q
+
+                .Include(x => x.SeniorOfficer)
+                    .ThenInclude(x => x.Rank)
+
+                .Include(x => x.DutyOfficer)
+                    .ThenInclude(x => x.Rank)
+
+                .Include(x => x.Commitments)
+                    .ThenInclude(x => x.CommitmentType)
+
+                .Include(x => x.Commitments)
+                    .ThenInclude(x => x.Place)
+
+                .Include(x => x.Commitments)
+                    .ThenInclude(x => x.CommitmentBranches)
+                        .ThenInclude(x => x.Branch)
+
+                .Include(x => x.Commitments)
+                    .ThenInclude(x => x.CommitmentsAttendances)
+                        .ThenInclude(x => x.Attendance)
+        );
+
+        if (plan is null)
+        {
+            throw new InvalidOperationException(
+                $"Daily Plan {id} was not found.");
+        }
+
+        var vm = new DailyPlanPrintVm
+        {
+            PlanDate = plan.PlanDate,
+
+            SeniorOfficerName = plan.SeniorOfficer.FullName,
+            SeniorOfficerRank = plan.SeniorOfficer.Rank.Name,
+            SeniorOfficerPhone = plan.SeniorOfficer.PhoneNumber,
+
+            DutyOfficerName = plan.DutyOfficer.FullName,
+            DutyOfficerRank = plan.DutyOfficer.Rank.Name,
+            DutyOfficerPhone = plan.DutyOfficer.PhoneNumber
+        };
+
+        vm.OutsideCommitments = plan.Commitments
+            .Where(x => x.CommitmentType.Name.Contains("خار"))
+            .Select(c => new CommitmentPrintVm
+            {
+                Title = c.Title,
+
+                PlaceName = c.Place.Name,
+
+                Time = c.Time,
+
+                Notes = c.Notes,
+
+                Branches = c.CommitmentBranches
+                    .Select(x => x.Branch.Name)
+                    .ToList(),
+
+                Attendances = c.CommitmentsAttendances
+                    .Select(x => x.Attendance.Title)
+                    .ToList()
+            })
+            .OrderBy(x => x.Time)
+            .ToList();
+
+        vm.InsideCommitments = plan.Commitments
+            .Where(x => x.CommitmentType.Name.Contains("داخ"))
+            .Select(c => new CommitmentPrintVm
+            {
+                Title = c.Title,
+
+                PlaceName = c.Place.Name,
+
+                Time = c.Time,
+
+                Notes = c.Notes,
+
+                Branches = c.CommitmentBranches
+                    .Select(x => x.Branch.Name)
+                    .ToList(),
+
+                Attendances = c.CommitmentsAttendances
+                    .Select(x => x.Attendance.Title)
+                    .ToList()
+            })
+            .OrderBy(x => x.Time)
+            .ToList();
+
+        return vm;
     }
 }

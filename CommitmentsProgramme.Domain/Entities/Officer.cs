@@ -19,5 +19,6 @@ public class Officer : BaseEntity
 
   public Rank Rank { get; set; } = default!;
 
-  public bool IsActive { get; set; } = true;
+    public string PhoneNumber { get; set; } = "01030632293";
+    public bool IsActive { get; set; } = true;
 }

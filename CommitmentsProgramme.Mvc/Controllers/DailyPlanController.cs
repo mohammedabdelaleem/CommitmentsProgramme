@@ -32,6 +32,23 @@ namespace CommitmentsProgramme.Mvc.Controllers
             return View(vm);
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var vm = await _dailyPlanService.GetDetailsAsync(id);
+
+            return View(vm);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Print(int id)
+        {
+            DailyPlanPrintVm vm = await _dailyPlanService.GetForPrintAsync(id);
+            return View(vm);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Create(int? id)
         {
@@ -50,7 +67,6 @@ namespace CommitmentsProgramme.Mvc.Controllers
 
                 return View("Create", vm);
             }
-           
         }
 
         [HttpPost]
@@ -86,6 +102,7 @@ namespace CommitmentsProgramme.Mvc.Controllers
             }
           
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
