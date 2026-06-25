@@ -5,63 +5,72 @@
 }
 
 <!DOCTYPE html>
-
 <html dir="rtl">
 <head>
     <meta charset="utf-8" />
-    <title>الخطة اليومية</title>
 
     <style>
 
             body {
                 font-family: Tahoma;
-                margin: 20px;
                 direction: rtl;
+                margin: 20px;
             }
+
+            .report {
+                width: 100%;
+                border-collapse: collapse;
+                border: 4px solid #000;
+            }
+
+                .report td {
+                    border: 2px solid #000;
+                }
+
+            .header-table,
+            .officers-table,
+            .commitments-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+                .header-table td,
+                .officers-table td,
+                .commitments-table td,
+                .commitments-table th {
+                    border: 1px solid #000;
+                    padding: 8px;
+                }
 
             .header {
                 text-align: center;
-                margin-bottom: 20px;
+                font-size: 22px;
+                font-weight: bold;
             }
 
-            .officers {
-                display: flex;
-                justify-content: space-between;
-                gap: 20px;
-                margin-bottom: 20px;
+            .logo {
+                width: 120px;
+                text-align: center;
             }
 
-            .officer-card {
-                width: 48%;
-                border: 1px solid #000;
+            .date-row {
                 padding: 10px;
+                font-weight: bold;
             }
 
-                .officer-card h4 {
-                    text-align: center;
-                    margin-bottom: 15px;
-                }
-
-            .officer-row {
-                margin-bottom: 10px;
-            }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 25px;
-            }
-
-            table, th, td {
-                border: 1px solid black;
-            }
-
-            th {
-                background-color: #eee;
-            }
-
-            th, td {
+            .section-title {
+                text-align: center;
+                font-weight: bold;
+                font-size: 18px;
                 padding: 8px;
+                background: #f3f3f3;
+            }
+
+            .commitments-table th {
+                text-align: center;
+            }
+
+            .commitments-table td {
                 vertical-align: top;
             }
 
@@ -70,148 +79,301 @@
                 padding-right: 18px;
             }
 
+            .signature {
+                height: 120px;
+            }
+
     </style>
 </head>
 
 <body>
 
-    <div class="header">
-        <h2>الخطة اليومية</h2>
-        <h4>@Model.PlanDate.ToString("dd/MM/yyyy")</h4>
-    </div>
+    <table class="report">
 
-    <div class="officers">
+        <!-- HEADER -->
 
-        <div class="officer-card">
-            <h4>ضابط عظيم</h4>
+        <tr>
+            <td>
 
-            <div class="officer-row">
-                <strong>الرتبة / الاسم:</strong>
-                @Model.SeniorOfficerRank @Model.SeniorOfficerName
-            </div>
+                <table class="header-table">
 
-            <div class="officer-row">
-                <strong>الهاتف:</strong>
-                @Model.SeniorOfficerPhone
-            </div>
-        </div>
+                    <tr>
 
-        <div class="officer-card">
-            <h4>ضابط النوبتجية</h4>
+                        <td class="logo">
+                            <img src="~/Uploads/Website/logo.png"/>
+                        </td>
 
-            <div class="officer-row">
-                <strong>الرتبة / الاسم:</strong>
-                @Model.DutyOfficerRank @Model.DutyOfficerName
-            </div>
+                        <td class="header">
 
-            <div class="officer-row">
-                <strong>الهاتف:</strong>
-                @Model.DutyOfficerPhone
-            </div>
-        </div>
+                            الخطة اليومية
 
-    </div>
+                            <br />
 
-    <h3>الالتزامات الخارجية</h3>
+                            إدارة .........
 
-    <table>
-        <thead>
-            <tr>
-                <th>الوقت</th>
-                <th>العنوان</th>
-                <th>المكان</th>
-                <th>الأفرع</th>
-                <th>الحضور</th>
-                <th>ملاحظات</th>
-            </tr>
-        </thead>
-        <tbody>
+                        </td>
 
-            @foreach (var item in Model.OutsideCommitments)
-            {
-                <tr>
+                    </tr>
 
-                    <td>@item.Time</td>
+                </table>
 
-                    <td>@item.Title</td>
+            </td>
+        </tr>
 
-                    <td>@item.PlaceName</td>
+        <!-- DATE -->
 
-                    <td>
-                        <ul>
-                            @foreach (var branch in item.Branches)
-                            {
-                                <li>@branch</li>
-                            }
-                        </ul>
-                    </td>
+        <tr>
+            <td class="date-row">
 
-                    <td>
-                        <ul>
-                            @foreach (var attendance in item.Attendances)
-                            {
-                                <li>@attendance</li>
-                            }
-                        </ul>
-                    </td>
+                التاريخ :
+                @Model.PlanDate.ToString("dd/MM/yyyy")
 
-                    <td>@item.Notes</td>
+            </td>
+        </tr>
 
-                </tr>
-            }
+        <!-- INSIDE -->
 
-        </tbody>
-    </table>
+        <tr>
+            <td>
 
-    <h3>الالتزامات الداخلية</h3>
+                <div class="section-title">
+                    الالتزامات الداخلية
+                </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>الوقت</th>
-                <th>العنوان</th>
-                <th>المكان</th>
-                <th>الأفرع</th>
-                <th>الحضور</th>
-                <th>ملاحظات</th>
-            </tr>
-        </thead>
-        <tbody>
+                <table class="commitments-table">
 
-            @foreach (var item in Model.InsideCommitments)
-            {
-                <tr>
+                    <thead>
 
-                    <td>@item.Time</td>
+                        <tr>
 
-                    <td>@item.Title</td>
+                            <th>م</th>
+                            <th>الوقت</th>
+                            <th>الالتزام</th>
+                            <th>المكان</th>
+                            <th>القطاعات</th>
+                            <th>الحضور</th>
 
-                    <td>@item.PlaceName</td>
+                        </tr>
 
-                    <td>
-                        <ul>
-                            @foreach (var branch in item.Branches)
-                            {
-                                <li>@branch</li>
-                            }
-                        </ul>
-                    </td>
+                    </thead>
 
-                    <td>
-                        <ul>
-                            @foreach (var attendance in item.Attendances)
-                            {
-                                <li>@attendance</li>
-                            }
-                        </ul>
-                    </td>
+                    <tbody>
 
-                    <td>@item.Notes</td>
+                        @{
+                            int insideIndex = 1;
+                        }
 
-                </tr>
-            }
+                        @foreach (var item in Model.InsideCommitments)
+                        {
+                            <tr>
 
-        </tbody>
+                                <td>@insideIndex</td>
+
+                                <td>@item.Time.ToString("HH:mm")</td>
+
+                                <td>@item.Title</td>
+
+                                <td>@item.PlaceName</td>
+
+                                <td>
+
+                                    <ul>
+
+                                        @foreach (var branch in item.Branches)
+                                        {
+                                            <li>@branch</li>
+                                        }
+
+                                    </ul>
+
+                                </td>
+
+                                <td>
+
+                                    <ul>
+
+                                        @foreach (var attendance in item.Attendances)
+                                        {
+                                            <li>@attendance</li>
+                                        }
+
+                                    </ul>
+
+                                </td>
+
+                            </tr>
+
+                            insideIndex++;
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </td>
+        </tr>
+
+        <!-- OUTSIDE -->
+
+        <tr>
+            <td>
+
+                <div class="section-title">
+                    الالتزامات الخارجية
+                </div>
+
+                <table class="commitments-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>م</th>
+                            <th>الوقت</th>
+                            <th>الالتزام</th>
+                            <th>المكان</th>
+                            <th>القطاعات</th>
+                            <th>الحضور</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @{
+                            int index = 1;
+                        }
+
+                        @foreach (var item in Model.OutsideCommitments)
+                        {
+                            <tr>
+
+                                <td>@index</td>
+
+                                <td>@item.Time.ToString("HH:mm")</td>
+
+                                <td>@item.Title</td>
+
+                                <td>@item.PlaceName</td>
+
+                                <td>
+
+                                    <ul>
+
+                                        @foreach (var branch in item.Branches)
+                                        {
+                                            <li>@branch</li>
+                                        }
+
+                                    </ul>
+
+                                </td>
+
+                                <td>
+
+                                    <ul>
+
+                                        @foreach (var attendance in item.Attendances)
+                                        {
+                                            <li>@attendance</li>
+                                        }
+
+                                    </ul>
+
+                                </td>
+
+                            </tr>
+
+                            index++;
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </td>
+        </tr>
+
+      
+
+        <!-- OFFICERS -->
+
+        <tr>
+
+            <td>
+
+                <table class="officers-table">
+
+                    <tr>
+
+                        <td width="50%">
+
+                            <b>ضابط عظيم</b>
+
+                            <hr />
+
+                            @Model.SeniorOfficerRank
+                            /
+                            @Model.SeniorOfficerName
+
+                            <br />
+
+                            @Model.SeniorOfficerPhone
+
+                        </td>
+
+                        <td width="50%">
+
+                            <b>ضابط النوبتجية</b>
+
+                            <hr />
+
+                            @Model.DutyOfficerRank
+                            /
+                            @Model.DutyOfficerName
+
+                            <br />
+
+                            @Model.DutyOfficerPhone
+
+                        </td>
+
+                    </tr>
+
+                </table>
+
+            </td>
+
+        </tr>
+
+
+        <!-- FOOTER -->
+
+        <tr>
+
+            <td class="signature">
+
+                <table style="width:100%;border-collapse:collapse">
+
+                    <tr>
+
+                        <td style="width:50%;border:none">
+                            التوقيع
+                        </td>
+
+                        <td style="width:50%;border:none;text-align:left">
+                            يعتمد
+                        </td>
+
+                    </tr>
+
+                </table>
+
+            </td>
+
+        </tr>
+
     </table>
 
 </body>
