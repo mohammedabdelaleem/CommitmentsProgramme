@@ -1,0 +1,101 @@
+﻿@model OfficerVm
+
+<div class="content-wrapper">
+
+    <form method="post"
+          asp-area="Admin"
+          asp-controller="Officers"
+          asp-action="Save"
+          class="row g-4">
+
+        <div class="col-md-8">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body">
+
+                    <h4 class="card-title mb-3">
+                        بيانات الضابط
+                    </h4>
+
+                    <div asp-validation-summary="All"
+                         class="text-danger my-3">
+                    </div>
+
+                    <input asp-for="Id" type="hidden" />
+
+                    <div class="form-group mb-3">
+
+                        <label asp-for="FullName"></label>
+
+                        <input asp-for="FullName"
+                               class="form-control" />
+
+                        <span asp-validation-for="FullName"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="form-group mb-3">
+
+                        <label asp-for="RankId"></label>
+
+                        <select asp-for="RankId"
+                                asp-items="Model.Ranks"
+                                class="form-control">
+
+                            <option value="">
+                                اختر الرتبة
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="RankId"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                    <div class="form-check mb-3">
+
+                        <input asp-for="IsActive"
+                               class="form-check-input" />
+
+                        <label asp-for="IsActive"
+                               class="form-check-label">
+                            نشط
+                        </label>
+
+                    </div>
+
+                    <div class="d-flex gap-2">
+
+                        <button type="submit"
+                                class="btn btn-gradient-primary">
+                            💾 حفظ
+                        </button>
+
+                        <a asp-action="Index"
+                           asp-controller="Officers"
+                           asp-area="Admin"
+                           class="btn btn-light">
+                            ↩ رجوع
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

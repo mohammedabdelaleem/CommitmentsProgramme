@@ -1,0 +1,35 @@
+﻿@model CommitmentType
+
+<div class="content-wrapper">
+
+
+	<form method="post" asp-controller="CommitmentTypes" asp-area="Admin" asp-action="Save" role="form" class="row g-4 ">
+		<div class="col-md-8">
+			<div class="card shadow-sm border-0">
+				<div class="card-body">
+					<h4 class="card-title mb-3">نوع الالتزام</h4>
+					<div asp-validation-summary="All" class="text-danger my-3"></div>
+
+					<input asp-for="Id" type="hidden" />
+
+					<div class="form-group mb-3">
+						<label asp-for="Name" class="form-label fw-bold"></label>
+						<input asp-for="Name" class="form-control" placeholder="قطاع جديد" />
+						<span asp-validation-for="Name" class="text-danger small"></span>
+					</div>
+
+					<div class="d-flex gap-2">
+						<button type="submit" class="btn btn-gradient-primary px-4">💾 حفظ</button>
+						<a asp-action="Index" asp-controller="CommitmentTypes" asp-area="Admin" class="btn btn-light px-4">↩ رجوع</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</form>
+</div>
+
+@section Scripts {
+	@await Html.PartialAsync("_ValidationScriptsPartial")
+}

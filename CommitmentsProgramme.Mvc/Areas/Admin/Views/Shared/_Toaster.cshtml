@@ -7,13 +7,13 @@
     <script>
         const text = "@message";
 
-        if (text.includes("Created")) {
+        if (text.includes("Created") || text.includes("اضافة")) {
             toastr.success(text);
         }
-        else if (text.includes("Updated")) {
+        else if (text.includes("Updated") || text.includes("تعديل")) {
             toastr.info(text);
         }
-        else if (text.includes("Deleted")) {
+        else if (text.includes("Deleted") || text.includes("حذف")) {
             toastr.error(text); 
         }
         else {

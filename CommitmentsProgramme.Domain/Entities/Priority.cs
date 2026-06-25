@@ -16,8 +16,8 @@ public class Priority : BaseEntity
   [Display(Name = "لون العرض")]
   public string CssClass { get; set; } = "primary";
 
-  [Display(Name = "الترتيب")]
-  public int DisplayOrder { get; set; }
+  //[Display(Name = "الترتيب")]
+  //public int DisplayOrder { get; set; }
 
   [Display(Name = "نشط")]
   public bool IsActive { get; set; } = true;

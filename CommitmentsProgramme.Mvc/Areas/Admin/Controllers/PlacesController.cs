@@ -8,27 +8,27 @@ namespace CommitmentsProgramme.Mvc.Areas.Admin.Controllers
 
     [Area(DefaultRoles.Admin)]
     [Authorize(Roles = DefaultRoles.Admin)]
-    public class AttendancesController(IUnitOfWork unitOfWork) : Controller
+    public class PlacesController(IUnitOfWork unitOfWork) : Controller
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         [HttpGet]
         public async Task<IActionResult> Index(CancellationToken cancellationToken = default)
         {
-            var attendences = await _unitOfWork.Attendances.GetAllAsync(orderByExpression:x=>x.CreatedDate, order:OrderBy.Descending,cancellationToken: cancellationToken);
-            return View(nameof(Index), attendences);
+            var entities = await _unitOfWork.Places.GetAllAsync(orderByExpression: x => x.CreatedDate, order: OrderBy.Descending, cancellationToken: cancellationToken);
+            return View(nameof(Index), entities);
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int? id, CancellationToken cancellationToken = default)
         {
             if (id == null)
-                 return View(nameof(Edit), new Attendance());
-            
+                return View(nameof(Edit), new Place());
+
             else
             {
-                var attendance = await _unitOfWork.Attendances.GetAsync(x=>x.Id== id!.Value, cancellationToken: cancellationToken);
-                return View(nameof(Edit), attendance);
+                var entity = await _unitOfWork.Places.GetAsync(x => x.Id == id!.Value, cancellationToken: cancellationToken);
+                return View(nameof(Edit), entity);
             }
 
         }
@@ -36,29 +36,29 @@ namespace CommitmentsProgramme.Mvc.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Save(Attendance attendance,CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Save(Place entity, CancellationToken cancellationToken = default)
         {
             if (!ModelState.IsValid)
             {
-                return View(nameof(Edit), attendance);
+                return View(nameof(Edit), entity);
             }
 
             var username = User.GetUserFullname();
 
-            if (attendance.Id == 0)
+            if (entity.Id == 0)
             {
-                TempData["success"] = "تم اضافة الحضور بنجاح ";
+                TempData["success"] = "تم اضافة المكان بنجاح ";
             }
 
             else
             {
-                TempData["success"] = "تم تعديل الحضور بنجاح";
+                TempData["success"] = "تم تعديل المكان بنجاح";
             }
 
-            await _unitOfWork.Attendances.SaveAsync(attendance, username!, cancellationToken);
+            await _unitOfWork.Places.SaveAsync(entity, username!, cancellationToken);
             await _unitOfWork.CompleteAsync(cancellationToken);
 
-            
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -67,27 +67,27 @@ namespace CommitmentsProgramme.Mvc.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken = default)
         {
-            var attendance = await _unitOfWork.Attendances.GetAsync(
+            var entity = await _unitOfWork.Places.GetAsync(
                 x => x.Id == id,
                 cancellationToken: cancellationToken);
 
-            if (attendance is null)
+            if (entity is null)
             {
                 return Json(new
                 {
                     success = false,
-                    message = "الحضور غير موجود"
+                    message = "المكان غير موجود"
                 });
             }
 
-            _unitOfWork.Attendances.Remove(attendance);
+            _unitOfWork.Places.Remove(entity);
 
             await _unitOfWork.CompleteAsync(cancellationToken);
 
             return Json(new
             {
                 success = true,
-                message = "تم حذف الحضور بنجاح"
+                message = "تم حذف المكان بنجاح"
             });
         }
 

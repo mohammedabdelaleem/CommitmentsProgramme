@@ -1,4 +1,4 @@
-﻿@model List<Attendance>
+﻿@model List<Rank>
 
 
 @section styles
@@ -13,19 +13,19 @@
     <div class="main-panel">
         <div class="content-wrapper">
             <div class="page-header">
-                <h3 class="page-title"> ادارة بيانات الحضور </h3>
-              
+                <h3 class="page-title"> ادارة الرتب  </h3>
+
             </div>
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">بيانات الحضور</h4>
+                    <h4 class="card-title"> الرتبة</h4>
                     <div class="row">
                         <div class="col-12">
-                            <a asp-area="Admin" asp-controller="Attendances" asp-action="Edit" class="btn btn-success btn-fw my-3">اضافة</a>
+                            <a asp-area="Admin" asp-controller="Ranks" asp-action="Edit" class="btn btn-success btn-fw my-3">اضافة</a>
                             <table id="order-listing" class="table table-hover ">
                                 <thead>
                                     <tr>
-                                        
+
                                         <th>الاسم</th>
                                         <th></th>
                                     </tr>
@@ -34,15 +34,15 @@
                                     @foreach (var item in Model)
                                     {
                                         <tr style="margin:0px;padding:0px;" data-id="@item.Id">
-                                          
-                                            <td class="col-md-8">@item.Title</td>
+
+                                            <td class="col-md-8">@item.Name</td>
                                             <td class="col-md-4" style="margin:0px;padding:0px;">
                                                 <a style="height:max-content"
-                                                   asp-area="Admin" asp-controller="Attendances" asp-action="Edit" asp-route-id="@item.Id"
+                                                   asp-area="Admin" asp-controller="Ranks" asp-action="Edit" asp-route-id="@item.Id"
                                                    class="btn btn-info btn-fw">تعديل</a>
 
 
-                                                <a onclick="deleteItem(@item.Id, 'Attendances')"
+                                                <a onclick="deleteItem(@item.Id, 'Ranks')"
                                                    class="btn btn-danger">
                                                     <i class="bi bi-trash"></i> حذف
                                                 </a>

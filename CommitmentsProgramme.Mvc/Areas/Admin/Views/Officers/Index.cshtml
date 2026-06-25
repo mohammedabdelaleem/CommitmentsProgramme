@@ -1,0 +1,88 @@
+﻿@model List<Officer>
+
+<div class="container-fluid page-body-wrapper">
+
+    <div class="main-panel">
+
+        <div class="content-wrapper">
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <h4 class="card-title">
+                        الضباط
+                    </h4>
+
+                    <a asp-area="Admin"
+                       asp-controller="Officers"
+                       asp-action="Edit"
+                       class="btn btn-success my-3">
+                        إضافة
+                    </a>
+
+                    <table class="table table-hover">
+
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>الرتبة</th>
+                                <th>الحالة</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+
+                                    <td>@item.FullName</td>
+
+                                    <td>@item.Rank?.Name</td>
+
+                                    <td>
+                                        @(item.IsActive ? "نشط" : "غير نشط")
+                                    </td>
+
+                                    <td>
+
+                                        <a asp-area="Admin"
+                                           asp-controller="Officers"
+                                           asp-action="Edit"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-info">
+                                            تعديل
+                                        </a>
+
+                                        <a onclick="deleteItem(@item.Id,'Officers')"
+                                           class="btn btn-danger">
+                                            حذف
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    @Html.AntiForgeryToken()
+
+</div>
+
+@section scripts
+{
+    <script src="~/js/deleteitem.js"></script>
+}
