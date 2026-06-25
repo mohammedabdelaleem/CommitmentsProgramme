@@ -1,5 +1,4 @@
-﻿using CommitmentsProgramme.Domain.Entities;
-using CommitmentsProgramme.Utilities.Extensions;
+﻿using CommitmentsProgramme.Utilities.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using static CommitmentsProgramme.Utilities.Abstractions.Consts.SharedData;
