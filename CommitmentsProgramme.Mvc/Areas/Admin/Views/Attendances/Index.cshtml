@@ -1,0 +1,80 @@
+﻿@model List<Attendance>
+
+
+@section styles
+{
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="~/Admin/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <!-- End plugin css for this page -->
+}
+
+
+<div class="container-fluid page-body-wrapper">
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h3 class="page-title"> ادارة بيانات الحضور </h3>
+              
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">بيانات الحضور</h4>
+                    <div class="row">
+                        <div class="col-12">
+                            <a asp-area="Admin" asp-controller="Attendances" asp-action="Edit" class="btn btn-success btn-fw my-3">اضافة</a>
+                            <table id="order-listing" class="table table-hover ">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th>الاسم</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var attendance in Model)
+                                    {
+                                        <tr style="margin:0px;padding:0px;" data-id="@attendance.Id">
+                                          
+                                            <td class="col-md-8">@attendance.Title</td>
+                                            <td class="col-md-4" style="margin:0px;padding:0px;">
+                                                <a style="height:max-content"
+                                                   asp-area="Admin" asp-controller="Attendances" asp-action="Edit" asp-route-id="@attendance.Id"
+                                                   class="btn btn-info btn-fw">تعديل</a>
+
+
+                                                <a onclick="deleteItem(@attendance.Id, 'Attendances')"
+                                                   class="btn btn-danger">
+                                                    <i class="bi bi-trash"></i> حذف
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- content-wrapper ends -->
+    </div>
+    @Html.AntiForgeryToken()
+    <!-- main-panel ends -->
+</div>
+
+@section scripts
+{
+    <!-- plugins:js -->
+    <script src="~/Admin/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="~/Admin/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="~/Admin/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- Custom js for this page -->
+    <script src="~/Admin/js/data-table.js"></script>
+    <!-- End custom js for this page -->
+
+    <script src="~/js/deleteitem.js"></script>
+}

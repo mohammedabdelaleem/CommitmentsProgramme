@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CommitmentsProgramme.Domain\CommitmentsProgramme.Domain.csproj" />
+    <ProjectReference Include="..\CommitmentsProgramme.Utilities\CommitmentsProgramme.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

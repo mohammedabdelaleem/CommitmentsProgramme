@@ -1,6 +1,4 @@
-﻿using CommitmentsProgramme.Domain.Entities;
-
-namespace CommitmentsProgramme.Utilities.Abstractions.Consts;
+﻿namespace CommitmentsProgramme.Utilities.Abstractions.Consts;
 
 public static class SharedData
 {
@@ -13,7 +11,6 @@ public static class SharedData
 
     public const string MainTitle = "Dashboard_X";
 
-    public const int MaxNumberOfReports = 5;
 
     public enum OrderBy
     {
@@ -21,20 +18,15 @@ public static class SharedData
         Descending
     }
 
-  
-    public enum SidebarOptions
-    {
-        Feed,
-        Favourites,
-        Friends,
-        Settings
-    }
-
- 
+   
+   
 
     public static class CustomeClaims
     {
         public static string FullName = "FullName";
+        public static string ImageName = "ImageName";
     }
+
+
 
 }

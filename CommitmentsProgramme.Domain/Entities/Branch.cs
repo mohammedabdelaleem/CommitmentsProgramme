@@ -7,8 +7,9 @@ public class Branch : BaseEntity
   [StringLength(100, ErrorMessage = "{0} يجب ألا يزيد عن 100 حرف")]
   public string Name { get; set; } = string.Empty;
 
-  [Display(Name = "الترتيب")]
-  public int DisplayOrder { get; set; }
+
+  //[Display(Name = "الترتيب")]
+  //public int DisplayOrder { get; set; }
 
   
     [Display(Name = "نشط")]

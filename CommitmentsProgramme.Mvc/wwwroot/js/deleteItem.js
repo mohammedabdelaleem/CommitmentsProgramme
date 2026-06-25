@@ -1,4 +1,5 @@
-﻿function confirmDelete({
+﻿
+function confirmDelete({
     itemId,
     url,
     removeCallback,
@@ -66,6 +67,7 @@
 
 //for TABLE(Admin)
 function deleteItem(itemId, controller) {
+    console.log(`item id : ${itemId} ==> ${typeof itemId} `)
     confirmDelete({
         itemId: itemId,
         url: `/Admin/${controller}/Delete`,
@@ -76,22 +78,3 @@ function deleteItem(itemId, controller) {
     });
 }
 
-function deletePost(postId) {
-    confirmDelete({
-        itemId: postId,
-      url: "/Post/RemoveHidePost",
-
-        removeCallback: function (id) {
-            $(`#post-${id}`).fadeOut(300, function () {
-                $(this).remove();
-            });
-
-            bootstrap.Modal.getInstance(
-                document.getElementById("postDetailsModal")
-            )?.hide();
-
-        },
-
-        successText: "Post deleted"
-    });
-}
