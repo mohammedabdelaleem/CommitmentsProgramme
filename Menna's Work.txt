@@ -1,0 +1,106 @@
+namespace CommitmentsProgramme.Application.Interfaces;
+
+public interface ITrafficPlaneRepositiry : IGenericRepository<TrafficPlane> { }
+
+///////////////////////////////////////
+
+using System.Collections;
+
+namespace CommitmentsProgramme.Domain.Entities;
+public class TrafficPlane :BaseEntity
+{
+   public int Id { get; set; }
+  public ICollection<Rank> ranks {get;set;}
+  public ICollection<Place> place {get;set;}
+}
+
+//////////////////////////////
+
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace CommitmentsProgramme.Infrastructure.Migrations
+{
+    /// <inheritdoc />
+    public partial class InitialCreate : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Branches_Commitments_CommitmentId",
+                table: "Branches");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "CommitmentId",
+                table: "Branches",
+                type: "int",
+                nullable: false,
+                defaultValue: 0,
+                oldClrType: typeof(int),
+                oldType: "int",
+                oldNullable: true);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Branches_Commitments_CommitmentId",
+                table: "Branches",
+                column: "CommitmentId",
+                principalTable: "Commitments",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Branches_Commitments_CommitmentId",
+                table: "Branches");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "CommitmentId",
+                table: "Branches",
+                type: "int",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Branches_Commitments_CommitmentId",
+                table: "Branches",
+                column: "CommitmentId",
+                principalTable: "Commitments",
+                principalColumn: "Id");
+        }
+    }
+}
+
+//////////////////////////
+
+using CommitmentsProgramme.Domain.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+
+namespace CommitmentsProgramme.Mvc.Services;
+
+public class TrafficServices(IUnitOfWork unitOfWork) : ITrafficServices
+{
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+
+    public Task DeleteTraffic(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task EditTraffic(TrafficPlanVm vm)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task GetAllTraffic()
+    {
+        throw new NotImplementedException();
+    }
+
+}
