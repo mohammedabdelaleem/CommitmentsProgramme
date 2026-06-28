@@ -6,7 +6,9 @@
         [Display(Name = "اسم المكان")]
         [StringLength(300)]
         public string Name { get; set; }
+          public bool IsDeleted { get; set; }
 
-        public bool IsDeleted { get; set; }
+    public ICollection<TrafficPlace> TrafficPlaces { get; set; }
+        = new List<TrafficPlace>();
     }
 }

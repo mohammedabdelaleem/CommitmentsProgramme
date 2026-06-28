@@ -14,7 +14,10 @@ public interface IUnitOfWork : IDisposable
   IRankRepository Ranks { get; set; }
   IAttendanceRepository Attendances { get; set; }
     IPlaceRepository Places { get; set; }
+    ITrafficPlaneRepositiry TrafficPlane { get; set; }
+   ITrafficOfficerRepository trafficOfficer {get;set;}
 
+   ITrafficPlaceRepository trafficPlace {get;set;}
 
   Task<int> CompleteAsync(CancellationToken cancellationToken = default); // save changes
     }

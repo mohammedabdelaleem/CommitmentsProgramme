@@ -51,6 +51,7 @@ public interface IGenericRepository<T> where T : class
         Expression<Func<T, object>>? distinctByExpression = null,
         CancellationToken cancellationToken = default);
 
+    Task<T> AddAsync(T entity, string username, CancellationToken cancellationToken = default);
 
     IQueryable<T> GetQueryable(
         Expression<Func<T, bool>>? predicate = null,

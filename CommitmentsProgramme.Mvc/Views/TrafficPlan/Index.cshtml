@@ -1,0 +1,190 @@
+@model List<TrafficPlanVm>
+
+<form method="get" class="row g-3 mb-3">
+
+    <div class="col-md-4">
+        <input type="date" name="date" class="form-control"
+               value="@Context.Request.Query["date"]" />
+    </div>
+
+    <div class="col-md-2">
+        <button class="btn btn-primary w-100">بحث</button>
+    </div>
+
+</form>
+
+<div class="d-flex justify-content-end mb-3">
+    <button id="btnAddTraffic" class="btn btn-success">+ إضافة</button>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>المكان</th>
+            <th>الرتبة</th>
+            <th>الضابط</th>
+            <th>التاريخ</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr id="row-@item.id">
+
+            <td>@item.PlaceName</td>
+            <td>@item.RankName</td>
+            <td>@item.OfficerName</td>
+            <td>@item.dateOnly.ToString("yyyy-MM-dd")</td>
+
+            <td>
+                <button class="btn btn-warning btn-sm btn-edit"
+                        data-id="@item.id"
+                        data-date="@item.dateOnly.ToString("yyyy-MM-dd")">
+                    تعديل
+                </button>
+
+                <button class="btn btn-danger btn-sm btn-delete"
+                        data-id="@item.id">
+                    حذف
+                </button>
+            </td>
+
+        </tr>
+    }
+    </tbody>
+</table>
+
+<!-- MODAL -->
+<div class="modal fade" id="trafficPlanModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5>خطة مرورية</h5>
+            </div>
+
+            <div class="modal-body">
+
+                <input type="hidden" id="editId" />
+
+                <input type="date" id="tDate" class="form-control mb-2" />
+
+                <select id="tPlaceId" class="form-select mb-2"></select>
+                <select id="tOfficerId" class="form-select"></select>
+
+            </div>
+
+            <div class="modal-footer">
+                <button id="btnSaveTrafficPlan" class="btn btn-success">حفظ</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+
+let modal;
+
+$(function () {
+
+    modal = new bootstrap.Modal(document.getElementById("trafficPlanModal"));
+
+    // =========================
+    // LOAD DROPDOWNS
+    // =========================
+    function loadDropdowns(callback) {
+
+        $.get('/TrafficPlan/GetCreateData', function (res) {
+
+            $("#tPlaceId").empty();
+            res.places.forEach(x =>
+                $("#tPlaceId").append(new Option(x.text, x.value)));
+
+            $("#tOfficerId").empty();
+            res.officers.forEach(x =>
+                $("#tOfficerId").append(new Option(x.text, x.value)));
+
+            if (callback) callback();
+        });
+    }
+
+    // =========================
+    // ADD
+    // =========================
+    $("#btnAddTraffic").click(function () {
+
+        $("#editId").val("");
+        $("#tDate").val("");
+
+        loadDropdowns(() => modal.show());
+    });
+
+    // =========================
+    // EDIT
+    // =========================
+    $(document).on("click", ".btn-edit", function () {
+
+        const id = $(this).data("id");
+        const date = $(this).data("date");
+
+        $("#editId").val(id);
+        $("#tDate").val(date);
+
+        loadDropdowns(() => modal.show());
+    });
+
+    // =========================
+    // SAVE (ADD / EDIT)
+    // =========================
+    $("#btnSaveTrafficPlan").click(function () {
+
+        const id = $("#editId").val();
+
+        const payload = {
+            id: id ? parseInt(id) : 0,
+            placeIds: [parseInt($("#tPlaceId").val())],
+            officerIds: [parseInt($("#tOfficerId").val())],
+            dateOnly: $("#tDate").val()
+        };
+
+        const url = id ? "/TrafficPlan/Edit" : "/TrafficPlan/Add";
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(payload),
+
+            success: function () {
+                location.reload();
+            },
+
+            error: function (xhr) {
+                console.log("ERROR:", xhr.responseText);
+                alert("حدث خطأ أثناء الحفظ");
+            }
+        });
+
+    });
+
+    // =========================
+    // DELETE
+    // =========================
+    $(document).on("click", ".btn-delete", function () {
+
+        const id = $(this).data("id");
+
+        $.post("/TrafficPlan/Delete", { id: id }, function () {
+            $("#row-" + id).remove();
+        });
+
+    });
+
+});
+
+</script>
+}

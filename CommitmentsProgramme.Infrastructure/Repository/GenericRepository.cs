@@ -12,7 +12,18 @@ public class GenericRepository<T> :IGenericRepository<T> where T : BaseEntity
         this.context = context;
         dbSet = context.Set<T>();
     }
+  public virtual async Task<T> AddAsync(
+    T entity,
+    string username,
+    CancellationToken cancellationToken = default)
+{
+    if (entity is null)
+        throw new ArgumentNullException(nameof(entity));
 
+    await SaveAsync(entity, username, cancellationToken);
+
+    return entity;
+}
 
     public virtual async Task<List<T>> GetAllAsync(
         Expression<Func<T, bool>>? predicate = null,

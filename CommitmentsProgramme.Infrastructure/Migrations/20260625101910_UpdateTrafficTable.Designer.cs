@@ -4,6 +4,7 @@ using CommitmentsProgramme.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CommitmentsProgramme.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260625101910_UpdateTrafficTable")]
+    partial class UpdateTrafficTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -417,6 +420,9 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                     b.Property<int>("RankId")
                         .HasColumnType("int");
 
+                    b.Property<int>("TrafficPlaneId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -426,6 +432,8 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("RankId");
+
+                    b.HasIndex("TrafficPlaneId");
 
                     b.ToTable("Officers");
                 });
@@ -452,6 +460,9 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
+                    b.Property<int>("TrafficPlaneId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -459,6 +470,8 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TrafficPlaneId");
 
                     b.ToTable("Places");
                 });
@@ -522,6 +535,9 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int?>("TrafficPlaneId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -530,72 +546,9 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TrafficPlaneId");
+
                     b.ToTable("Ranks");
-                });
-
-            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.TrafficOfficer", b =>
-                {
-                    b.Property<int>("TrafficPlaneId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OfficerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("TrafficPlaneId", "OfficerId");
-
-                    b.HasIndex("OfficerId");
-
-                    b.ToTable("TrafficOfficers");
-                });
-
-            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.TrafficPlace", b =>
-                {
-                    b.Property<int>("TrafficId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlaceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("trafficPlaneId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TrafficId", "PlaceId");
-
-                    b.HasIndex("PlaceId");
-
-                    b.HasIndex("trafficPlaneId");
-
-                    b.ToTable("TrafficPlaces");
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.TrafficPlane", b =>
@@ -925,45 +878,33 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Rank");
-                });
-
-            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.TrafficOfficer", b =>
-                {
-                    b.HasOne("CommitmentsProgramme.Domain.Entities.Officer", "officer")
-                        .WithMany("TrafficOfficer")
-                        .HasForeignKey("OfficerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CommitmentsProgramme.Domain.Entities.TrafficPlane", "trafficPlane")
-                        .WithMany("TrafficOfficer")
+                    b.HasOne("CommitmentsProgramme.Domain.Entities.TrafficPlane", "TrafficPlane")
+                        .WithMany()
                         .HasForeignKey("TrafficPlaneId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("officer");
+                    b.Navigation("Rank");
 
-                    b.Navigation("trafficPlane");
+                    b.Navigation("TrafficPlane");
                 });
 
-            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.TrafficPlace", b =>
+            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Place", b =>
                 {
-                    b.HasOne("CommitmentsProgramme.Domain.Entities.Place", "place")
-                        .WithMany("TrafficPlaces")
-                        .HasForeignKey("PlaceId")
+                    b.HasOne("CommitmentsProgramme.Domain.Entities.TrafficPlane", "TrafficPlane")
+                        .WithMany("PlacesID")
+                        .HasForeignKey("TrafficPlaneId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CommitmentsProgramme.Domain.Entities.TrafficPlane", "trafficPlane")
-                        .WithMany("TrafficPlaces")
-                        .HasForeignKey("trafficPlaneId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Navigation("TrafficPlane");
+                });
 
-                    b.Navigation("place");
-
-                    b.Navigation("trafficPlane");
+            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Rank", b =>
+                {
+                    b.HasOne("CommitmentsProgramme.Domain.Entities.TrafficPlane", null)
+                        .WithMany("RanksID")
+                        .HasForeignKey("TrafficPlaneId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1039,21 +980,11 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                     b.Navigation("Commitments");
                 });
 
-            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Officer", b =>
-                {
-                    b.Navigation("TrafficOfficer");
-                });
-
-            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Place", b =>
-                {
-                    b.Navigation("TrafficPlaces");
-                });
-
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.TrafficPlane", b =>
                 {
-                    b.Navigation("TrafficOfficer");
+                    b.Navigation("PlacesID");
 
-                    b.Navigation("TrafficPlaces");
+                    b.Navigation("RanksID");
                 });
 #pragma warning restore 612, 618
         }

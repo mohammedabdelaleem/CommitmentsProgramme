@@ -16,8 +16,11 @@ public class UnitOfWork : IUnitOfWork
 	public IRankRepository Ranks { get; set; }
 	public IAttendanceRepository Attendances { get; set; }
 	public IPlaceRepository Places { get; set; }
-	
 
+   public  ITrafficPlaneRepositiry TrafficPlane { get; set; }
+  public  ITrafficOfficerRepository trafficOfficer {get;set;}
+
+   public ITrafficPlaceRepository trafficPlace {get;set;}
     public UnitOfWork(AppDbContext context)
 	{
 		this.context = context;
@@ -31,7 +34,9 @@ public class UnitOfWork : IUnitOfWork
 		Ranks = new RankRepository(context);
 		 Attendances = new AttendanceRepository(context);
         Places = new PlaceRepository(context);
-		
+		TrafficPlane = new TrafficPlaneRepositiry(context);
+		trafficPlace = new TrafficPlaceRepository (context);
+		trafficOfficer = new TrafficOfficerRepository (context)  ;
     }
     public async Task<int> CompleteAsync(CancellationToken cancellationToken = default)
 	{

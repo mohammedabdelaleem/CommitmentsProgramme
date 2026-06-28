@@ -4,6 +4,7 @@ using CommitmentsProgramme.Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CommitmentsProgramme.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260625075855_AddTrafficPlaneRelations")]
+    partial class AddTrafficPlaneRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -533,99 +536,6 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                     b.ToTable("Ranks");
                 });
 
-            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.TrafficOfficer", b =>
-                {
-                    b.Property<int>("TrafficPlaneId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OfficerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("TrafficPlaneId", "OfficerId");
-
-                    b.HasIndex("OfficerId");
-
-                    b.ToTable("TrafficOfficers");
-                });
-
-            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.TrafficPlace", b =>
-                {
-                    b.Property<int>("TrafficId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlaceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("trafficPlaneId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TrafficId", "PlaceId");
-
-                    b.HasIndex("PlaceId");
-
-                    b.HasIndex("trafficPlaneId");
-
-                    b.ToTable("TrafficPlaces");
-                });
-
-            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.TrafficPlane", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateOnly>("dateOnly")
-                        .HasColumnType("date");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TrafficPlanes");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -928,44 +838,6 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
                     b.Navigation("Rank");
                 });
 
-            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.TrafficOfficer", b =>
-                {
-                    b.HasOne("CommitmentsProgramme.Domain.Entities.Officer", "officer")
-                        .WithMany("TrafficOfficer")
-                        .HasForeignKey("OfficerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CommitmentsProgramme.Domain.Entities.TrafficPlane", "trafficPlane")
-                        .WithMany("TrafficOfficer")
-                        .HasForeignKey("TrafficPlaneId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("officer");
-
-                    b.Navigation("trafficPlane");
-                });
-
-            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.TrafficPlace", b =>
-                {
-                    b.HasOne("CommitmentsProgramme.Domain.Entities.Place", "place")
-                        .WithMany("TrafficPlaces")
-                        .HasForeignKey("PlaceId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CommitmentsProgramme.Domain.Entities.TrafficPlane", "trafficPlane")
-                        .WithMany("TrafficPlaces")
-                        .HasForeignKey("trafficPlaneId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("place");
-
-                    b.Navigation("trafficPlane");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1037,23 +909,6 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.DailyPlan", b =>
                 {
                     b.Navigation("Commitments");
-                });
-
-            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Officer", b =>
-                {
-                    b.Navigation("TrafficOfficer");
-                });
-
-            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Place", b =>
-                {
-                    b.Navigation("TrafficPlaces");
-                });
-
-            modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.TrafficPlane", b =>
-                {
-                    b.Navigation("TrafficOfficer");
-
-                    b.Navigation("TrafficPlaces");
                 });
 #pragma warning restore 612, 618
         }

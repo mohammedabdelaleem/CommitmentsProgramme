@@ -19,11 +19,21 @@ namespace CommitmentsProgramme.Infrastructure.Persistance
     public DbSet<Officer> Officers { get; set; }
     public DbSet<Place> Places { get; set; }
     public DbSet<Attendance> Attendances { get; set; }
-        public DbSet<CommitmentBranch> CommitmentBranches { get; set; }
+    public DbSet<CommitmentBranch> CommitmentBranches { get; set; }
 
-        public DbSet<CommitmentsAttendances> CommitmentsAttendances { get; set; }
+        public DbSet<TrafficPlane> TrafficPlanes { get; set; }
+
+      public DbSet<TrafficOfficer> TrafficOfficers { get; set; }
+	   public DbSet<TrafficPlace> TrafficPlaces { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder builder)
-		{
+		{  
+
+
+
+
+		
 
 			// change on delete behaviour
 			var cascadeFKs = builder.Model

@@ -20,4 +20,9 @@ public class Officer : BaseEntity
   public Rank Rank { get; set; } = default!;
 
   public bool IsActive { get; set; } = true;
+
+  
+    public ICollection<TrafficOfficer> TrafficOfficer { get; set; }
+        = new List<TrafficOfficer>();
+    
 }
