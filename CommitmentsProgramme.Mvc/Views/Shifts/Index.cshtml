@@ -1,0 +1,235 @@
+@model List<Shiftvm>
+
+<form method="get" class="row g-3 mb-3">
+
+    <div class="col-md-4">
+        <input type="date" name="date" class="form-control"
+               value="@Context.Request.Query["date"]" />
+    </div>
+
+    <div class="col-md-2">
+        <button class="btn btn-primary w-100">بحث</button>
+    </div>
+
+</form>
+
+<div class="d-flex justify-content-end mb-3">
+    <button id="btnAddShift" class="btn btn-success">+ إضافة</button>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>الاسم</th>
+            <th>رقم الهاتف</th>
+            <th>الرتبة</th>
+            <th>التاريخ</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr id="row-@item.Id">
+
+            <td>@item.Name</td>
+            <td>@item.Phone</td>
+            <td>@((ShiftRank)item.EnumSelect)</td>
+            <td>@item.dateOnly.ToString("yyyy-MM-dd")</td>
+
+            <td>
+                <button class="btn btn-warning btn-sm btn-edit"
+                        data-id="@item.Id"
+                        data-name="@item.Name"
+                        data-phone="@item.Phone"
+                        data-rank="@item.EnumSelect"
+                        data-date="@item.dateOnly.ToString("yyyy-MM-dd")">
+                    تعديل
+                </button>
+
+                <button class="btn btn-danger btn-sm btn-delete"
+                        data-id="@item.Id">
+                    حذف
+                </button>
+            </td>
+
+        </tr>
+    }
+    </tbody>
+</table>
+
+<!-- MODAL -->
+<div class="modal fade" id="shiftModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5>إضافة / تعديل شيفت</h5>
+            </div>
+
+            <div class="modal-body">
+
+                <input type="hidden" id="shiftId" />
+
+                <div class="mb-2">
+                    <label>الاسم</label>
+                    <input type="text" id="shiftName" class="form-control" />
+                </div>
+
+                <div class="mb-2">
+                    <label>رقم الهاتف</label>
+                    <input type="text" id="shiftPhone" class="form-control" />
+                </div>
+
+                <div class="mb-2">
+                    <label>التاريخ</label>
+                    <input type="date" id="shiftDate" class="form-control" />
+                </div>
+
+                <div class="mb-2">
+                    <label>الرتبة</label>
+                    <select id="shiftRank" class="form-select"></select>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button id="btnSaveShift" class="btn btn-success">حفظ</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+<script>
+
+let modal;
+
+$(function () {
+
+    modal = new bootstrap.Modal(document.getElementById("shiftModal"));
+
+    // ======================
+    // LOAD ENUM
+    // ======================
+    function loadRanks(selected = null) {
+
+        $.get('/Shifts/GetRanks', function (data) {
+
+            $("#shiftRank").empty();
+
+            data.forEach(function (item) {
+
+                const text = item.text ?? item.Text;
+                const value = item.value ?? item.Value;
+
+                $("#shiftRank").append(new Option(text, value));
+            });
+
+            if (selected != null)
+                $("#shiftRank").val(selected);
+
+        });
+
+    }
+
+    // ======================
+    // ADD
+    // ======================
+    $("#btnAddShift").click(function () {
+
+        $("#shiftId").val("");
+        $("#shiftName").val("");
+        $("#shiftPhone").val("");
+        $("#shiftDate").val("");
+
+        loadRanks();
+
+        modal.show();
+    });
+
+    // ======================
+    // EDIT
+    // ======================
+    $(document).on("click", ".btn-edit", function () {
+
+        $("#shiftId").val($(this).data("id"));
+        $("#shiftName").val($(this).data("name"));
+        $("#shiftPhone").val($(this).data("phone"));
+        $("#shiftDate").val($(this).data("date"));
+
+        loadRanks($(this).data("rank"));
+
+        modal.show();
+    });
+
+    // ======================
+    // SAVE
+    // ======================
+    $("#btnSaveShift").click(function () {
+
+        const id = $("#shiftId").val();
+
+        const model = {
+            Id: id ? parseInt(id) : 0,
+            name: $("#shiftName").val(),
+            Phone: $("#shiftPhone").val(),
+            EnumSelect: parseInt($("#shiftRank").val()),
+            dateOnly: $("#shiftDate").val()
+        };
+
+        const url = id ? "/Shifts/Edit" : "/Shifts/Create";
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(model),
+
+            success: function () {
+                location.reload();
+            },
+
+            error: function (xhr) {
+                console.log(xhr.responseText);
+
+
+    console.log("❌ STATUS CODE:", xhr.status);
+    console.log("❌ STATUS TEXT:", xhr.statusText);
+
+    console.log("❌ RESPONSE TEXT:");
+    console.log(xhr.responseText);
+
+    console.log("❌ FULL ERROR OBJECT:");
+    console.log(xhr);
+                alert("حدث خطأ أثناء الحفظ");
+            }
+        });
+
+    });
+
+    // ======================
+    // DELETE
+    // ======================
+    $(document).on("click", ".btn-delete", function () {
+
+        if (!confirm("هل تريد حذف هذا السجل؟"))
+            return;
+
+        const id = $(this).data("id");
+
+        $.post("/Shifts/Delete", { id: id }, function () {
+            $("#row-" + id).remove();
+        });
+
+    });
+
+});
+
+</script>
+
+}

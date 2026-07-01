@@ -25,6 +25,7 @@ namespace CommitmentsProgramme.Infrastructure.Persistance
 
       public DbSet<TrafficOfficer> TrafficOfficers { get; set; }
 	   public DbSet<TrafficPlace> TrafficPlaces { get; set; }
+	   public DbSet<Shifts> Shifts { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

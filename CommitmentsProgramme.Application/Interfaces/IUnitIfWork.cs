@@ -18,6 +18,7 @@ public interface IUnitOfWork : IDisposable
    ITrafficOfficerRepository trafficOfficer {get;set;}
 
    ITrafficPlaceRepository trafficPlace {get;set;}
+   IShiftsRepository shifts {get;set;}
 
   Task<int> CompleteAsync(CancellationToken cancellationToken = default); // save changes
     }

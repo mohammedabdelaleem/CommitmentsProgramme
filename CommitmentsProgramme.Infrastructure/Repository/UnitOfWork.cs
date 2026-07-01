@@ -21,6 +21,8 @@ public class UnitOfWork : IUnitOfWork
   public  ITrafficOfficerRepository trafficOfficer {get;set;}
 
    public ITrafficPlaceRepository trafficPlace {get;set;}
+
+   public IShiftsRepository shifts {get;set;}
     public UnitOfWork(AppDbContext context)
 	{
 		this.context = context;
@@ -37,6 +39,8 @@ public class UnitOfWork : IUnitOfWork
 		TrafficPlane = new TrafficPlaneRepositiry(context);
 		trafficPlace = new TrafficPlaceRepository (context);
 		trafficOfficer = new TrafficOfficerRepository (context)  ;
+
+		shifts = new ShiftsRepository (context) ;
     }
     public async Task<int> CompleteAsync(CancellationToken cancellationToken = default)
 	{

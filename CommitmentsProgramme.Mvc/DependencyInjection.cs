@@ -39,6 +39,7 @@ public static class DependencyInjection
     services.AddScoped<IDailyPlanService, DailyPlanService>();
     services.AddScoped<IUnitOfWork, UnitOfWork>();
     services.AddScoped<ITrafficServices,TrafficServices>();
+    services.AddScoped<IShiftsService,ShiftsService>();
 
     services.AddScoped<AuthService>();
 
