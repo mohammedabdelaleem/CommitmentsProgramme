@@ -1,7 +1,6 @@
 ﻿using CommitmentsProgramme.Utilities.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using static CommitmentsProgramme.Utilities.Abstractions.Consts.SharedData;
 
 namespace CommitmentsProgramme.Mvc.Areas.Admin.Controllers;
 
@@ -68,7 +67,7 @@ public class OfficersController(IUnitOfWork unitOfWork) : Controller
         if (vm.Id == 0)
         {
             officer = new Officer();
-            TempData["success"] = "تم اضافة الضابط بنجاح";
+            TempData["success"] = "تم اضافة العنصر بنجاح";
         }
         else
         {
@@ -79,7 +78,7 @@ public class OfficersController(IUnitOfWork unitOfWork) : Controller
             if (officer is null)
                 return NotFound();
 
-            TempData["success"] = "تم تعديل الضابط بنجاح";
+            TempData["success"] = "تم تعديل العنصر بنجاح";
         }
 
         officer.FullName = vm.FullName;
@@ -102,28 +101,39 @@ public class OfficersController(IUnitOfWork unitOfWork) : Controller
         int id,
         CancellationToken cancellationToken = default)
     {
-        var officer = await _unitOfWork.Officers.GetAsync(
+        var entity = await _unitOfWork.Officers.GetAsync(
             x => x.Id == id,
             cancellationToken: cancellationToken);
 
-        if (officer is null)
+        if (entity is null)
         {
             return Json(new
             {
                 success = false,
-                message = "الضابط غير موجود"
+                message = "العنصر غير موجود"
+            });
+        }
+       
+        try
+        {
+            _unitOfWork.Officers.Remove(entity);
+            await _unitOfWork.CompleteAsync(cancellationToken);
+
+            return Json(new
+            {
+                success = true,
+                message = Messages.SuccessRemoveItem
+            });
+        }
+        catch
+        {
+            return Json(new
+            {
+                success = false,
+                message = Messages.ErrorRemoveItem
             });
         }
 
-        _unitOfWork.Officers.Remove(officer);
-
-        await _unitOfWork.CompleteAsync(cancellationToken);
-
-        return Json(new
-        {
-            success = true,
-            message = "تم حذف الضابط بنجاح"
-        });
     }
 
     private async Task FillRanks(

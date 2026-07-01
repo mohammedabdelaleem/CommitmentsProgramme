@@ -6,7 +6,7 @@ public class CommitmentVm
 
     public string Title { get; set; } = string.Empty;
 
-    public TimeOnly Time { get; set; }
+    public TimeOnly? Time { get; set; }
 
     public int CommitmentTypeId { get; set; }
 

@@ -1,104 +1,142 @@
 ﻿.auth-page {
+    direction: rtl;
+    background: #f4f6f9;
     overflow: hidden;
+    animation: fadeIn .35s ease;
 }
 
-/* Slide container */
-.auth-slide {
-    position: relative;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-
-}
-
-    /*  Dark overlay */
-    .auth-slide::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.15);
-        border-radius: 0 15px 15px 0;
-    }
-.left-auth {
-    border-radius:  15px 0 0 15px ;
-}
-/* Content above overlay */
-.auth-content {
-    position: relative;
-    z-index: 2;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    align-items: center;
-    text-align: center;
-    color: #fff;
-    padding: 40px;
-}
-
-    .auth-content h2 {
-        font-weight: bold;
-        margin-bottom: 15px;
+    .auth-page .form-control,
+    .auth-page .form-select,
+    .auth-page textarea {
+        text-align: right;
     }
 
-    .auth-content p {
-        max-width: 400px;
-        opacity: 0.9;
-    }
-
-
-.carousel-item.active .auth-slide {
-    animation: zoomEffect 6s ease-in-out;
-}
-
-@keyframes zoomEffect {
-    0% {
-        transform: scale(1);
-    }
-
-    100% {
-        transform: scale(1.08);
-    }
-}
-
-.preview-box {
-    width: 140px;
-    height: 140px;
-    margin: auto;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 2px dashed #ccc;
-    background: #f8f9fa;
+.auth-right {
+    background: linear-gradient(135deg,#0d47a1 0%,#0a3577 45%,#072554 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+    flex-direction: column;
+    color: #fff;
 }
 
-.preview-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    .auth-right h2 {
+        letter-spacing: .5px;
+    }
+
+    .auth-right p {
+        font-size: 1rem;
+    }
+
+.auth-logo {
+    width: 260px;
+    max-width: 70%;
+    height: auto;
+    object-fit: contain;
+    margin: auto;
+    filter: drop-shadow(0 15px 25px rgba(0,0,0,.25));
+    transition: .35s;
 }
 
-.input-wrapper {
-    position: relative;
-}
-
-.toggle-password {
-    position: absolute;
-    top: 50%;
-    left: 15px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    z-index: 12;
-}
+    .auth-logo:hover {
+        transform: scale(1.03);
+    }
 
 .toggle-password-login {
     position: absolute;
-    top: 40%;
-    left: 15px;
-/*    transform: translateY(-50%);*/
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
     cursor: pointer;
-    z-index: 12;
+    color: #6c757d;
+}
+
+.auth-form {
+    width: 100%;
+    max-width: 460px;
+    padding: 24px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+    transition: .25s;
+}
+
+    .auth-form:hover {
+        box-shadow: 0 12px 35px rgba(0,0,0,.12);
+    }
+
+.form-control,
+.form-select,
+textarea {
+    border-radius: 12px;
+}
+
+.form-control {
+    padding: .85rem 1rem;
+    padding-left: 48px;
+    transition: .25s;
+}
+
+    .form-control:hover {
+        border-color: #9bbcff;
+    }
+
+    .form-control:focus,
+    .form-select:focus,
+    textarea:focus {
+        border-color: #0d6efd;
+        box-shadow: none;
+    }
+
+.btn-primary {
+    height: 52px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: .25s;
+}
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-primary:active {
+        transform: none;
+    }
+
+.validation-summary.validation-summary-valid {
+    display: none;
+}
+
+.validation-summary.validation-summary-errors {
+    display: block;
+    background: #fff5f5;
+    border: 1px solid #f5c2c7;
+    color: #842029;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@media (max-width:992px) {
+
+    .auth-right {
+        display: none !important;
+    }
+
+    .auth-form {
+        box-shadow: none;
+        border-radius: 0;
+        padding: 20px;
+    }
 }

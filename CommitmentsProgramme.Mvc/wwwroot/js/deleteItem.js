@@ -3,7 +3,7 @@ function confirmDelete({
     itemId,
     url,
     removeCallback,
-    successText = "Item deleted"
+    successText = "تم حذف العنصر بنجاح"
 }) {
 
     const isDarkMode = false;
@@ -19,11 +19,12 @@ function confirmDelete({
     };
 
     Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
+        title: " هل انت متاكد من الحذف؟",
+        text: "لن تتمكن من التراجع عن هذا",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "نعم!",
+        cancelButtonText: "تراجع",
         background: swalTheme.background,
         color: swalTheme.textColor,
         confirmButtonColor: swalTheme.confirmButtonColor,
@@ -46,7 +47,7 @@ function confirmDelete({
                     //$(".dropdown-menu").removeClass("show");
                     if (removeCallback) removeCallback(itemId);
 
-                    toastr.error(res.message, "Deleted", {
+                    toastr.success(res.message, "تمت عملية الحذف", {
                         timeOut: 3000,
                         closeButton: true,
                         progressBar: true
@@ -58,7 +59,7 @@ function confirmDelete({
             },
 
             error: function () {
-                toastr.error("Something went wrong");
+                toastr.error(res.message);
             }
         });
 

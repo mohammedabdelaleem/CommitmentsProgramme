@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CommitmentsProgramme.Domain.Entities;
+﻿namespace CommitmentsProgramme.Domain.Entities;
 
 public class DailyPlan : BaseEntity
 {
@@ -24,6 +18,6 @@ public class DailyPlan : BaseEntity
 
   public Officer DutyOfficer { get; set; } = default!;
 
-  public ICollection<Commitment> Commitments { get; set; }
+    public ICollection<Commitment> Commitments { get; set; }
       = new List<Commitment>();
 }

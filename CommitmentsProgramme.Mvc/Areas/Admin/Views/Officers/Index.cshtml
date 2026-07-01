@@ -52,13 +52,16 @@
                                            asp-controller="Officers"
                                            asp-action="Edit"
                                            asp-route-id="@item.Id"
-                                           class="btn btn-info">
-                                            تعديل
+                                           class="btn btn-primary shadow-sm rounded-circle"
+                                           title="تعديل">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+
                                         </a>
 
                                         <a onclick="deleteItem(@item.Id,'Officers')"
-                                           class="btn btn-danger">
-                                            حذف
+                                           class="btn btn-danger shadow-sm rounded-circle"
+                                           title="حذف">
+                                            <i class="fa-solid fa-trash-can"></i>
                                         </a>
 
                                     </td>

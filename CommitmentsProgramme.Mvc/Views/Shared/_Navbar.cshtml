@@ -1,16 +1,24 @@
-﻿<nav class="navbar navbar-expand-lg website-navbar sticky-top">
+﻿@using System.Globalization
+
+@{
+    DateTime today = DateTime.Today;
+
+    DateTime firstDayOfCurrentMonth = new DateTime(today.Year, today.Month, 1);
+
+    DateTime firstDayOfPreviousMonth = firstDayOfCurrentMonth.AddMonths(-1);
+
+    string currentMonthName = firstDayOfCurrentMonth.ToString("MMMM", new CultureInfo("ar-EG"));
+    string previousMonthName = firstDayOfPreviousMonth.ToString("MMMM", new CultureInfo("ar-EG"));
+
+}
+<nav class="navbar navbar-expand-lg website-navbar sticky-top">
 
     <div class="container">
 
-        <a asp-controller="DailyPlan"
-           asp-action="Index"
-           class="navbar-brand">
-
-            <i class="fa-solid fa-calendar-check"></i>
-
+        <div class="navbar-brand comm-nav-title">
+            <i class="fa-solid fa-calendar-check " ></i>  
             نظام الالتزامات اليومية
-
-        </a>
+        </div>
 
         <button class="navbar-toggler"
                 data-bs-toggle="collapse"
@@ -40,9 +48,11 @@
                 <li class="nav-item">
 
                     <a asp-controller="DailyPlan"
-                       asp-action="Index" class="nav-link">
+                       asp-action="Index"
+                       asp-route-date="@DateOnly.FromDateTime(firstDayOfCurrentMonth)"
+                       class="nav-link">
 
-                        التزامات اليوم
+                        التزامات شهر @currentMonthName
 
                     </a>
 
@@ -50,42 +60,61 @@
 
                 <li class="nav-item">
 
-                    <a class="nav-link">
+                    <a asp-controller="DailyPlan"
+                       asp-action="Index"
+                       asp-route-date="@DateOnly.FromDateTime(firstDayOfPreviousMonth)"
+                       class="nav-link">
 
-                        التقارير
+                        التزامات شهر @previousMonthName
 
                     </a>
 
                 </li>
 
+
+
+                <li class="nav-item ms-3    ">
+
+                        @if (User.IsInRole(DefaultRoles.Admin))
+                        {
+                            <a asp-area="Admin"
+                               asp-controller="Home"
+                               asp-action="Index"
+                               class="btn btn-primary">
+
+                                لوحة التحكم
+
+                            </a>
+                        }
+                        else if(User?.Identity?.IsAuthenticated == false)
+                        {
+                            <a asp-controller="Auth"
+                               asp-action="Login"
+                               class="btn btn-outline-primary">
+
+                                تسجيل الدخول
+
+                            </a>
+                        }
+                        @* todo : signout*@
+
+
+
+                </li>
+
+
+
             </ul>
 
-            <div>
+          
+            <a class="navbar-brand d-flex align-items-center gap-2" asp-controller="Home" asp-action="Index">
 
-                @if (User.Identity?.IsAuthenticated == true)
-                {
-                    <a asp-area="Admin"
-                       asp-controller="Home"
-                       asp-action="Index"
-                       class="btn btn-primary">
+                <img src="~/Uploads/Website/logo.png"
+                     alt="Logo"
+                     title="الرجوع للصفحة الرئيسية"
+                     class="logo-nav">
 
-                        لوحة التحكم
-
-                    </a>
-                }
-                else
-                {
-                    <a asp-controller="Auth"
-                       asp-action="Login"
-                       class="btn btn-outline-primary">
-
-                        تسجيل الدخول
-
-                    </a>
-                }
-
-            </div>
-
+            </a>
         </div>
 
     </div>

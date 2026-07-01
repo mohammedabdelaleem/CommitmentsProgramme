@@ -3,7 +3,14 @@
 @{
     ViewData["Title"] = "الخطط اليومية";
 }
+@if (Model is null)
+{
+    <div class="alert alert-warning text-center">
+        لا توجد خطط 
+    </div>
 
+    return;
+}
 <div class="container py-4">
 
     <div class="d-flex justify-content-between mb-3">
@@ -28,32 +35,38 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
+                <tr data-id="@item.Id">
                     <td>@item.PlanDate</td>
                     <td>@item.SeniorOfficerName</td>
                     <td>@item.DutyOfficerName</td>
                     <td>@item.CommitmentsCount</td>
                     <td >
 
-                        <a class="btn btn-sm btn-warning"
+                        <a
                            asp-action="Create"
-                           asp-route-id="@item.Id">
-                            تعديل
+                           asp-route-id="@item.Id"
+                           class="btn btn-primary shadow-sm rounded-circle"
+                           title="تعديل">
+                            <i class="fa-solid fa-pen-to-square"></i>
                         </a>
 
                         <a asp-action="Print"
                            asp-route-id="@item.Id"
                            target="_blank"
-                           class="btn btn-dark">
-                            طباعة
+                           class="btn btn-success shadow-sm rounded-circle"
+                           title="طباعة">
+                            <i class="fa-solid fa-print"></i>
+
                         </a>
 
-                        <form asp-action="Delete" asp-route-id="@item.Id" method="post">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-sm btn-danger">
-                                حذف
-                            </button>
-                        </form>
+                       
+                            <a
+                                class="btn btn-danger shadow-sm rounded-50 "
+                                title="حذف"
+                                    onclick="deleteItem('@item.Id', 'DailyPlan')">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </a>
+                       
 
                     </td>
                 </tr>
@@ -61,3 +74,7 @@
         </tbody>
     </table>
 </div>
+
+@section Scripts {
+    <script src="~/js/deleteitem.js"></script>
+}

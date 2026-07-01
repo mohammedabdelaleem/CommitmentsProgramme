@@ -152,13 +152,39 @@ public class RoleController(RoleManager<ApplicationRole> roleManager) : Controll
 	{
 		var role = await _roleManager.Roles.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 		if (role == null)
-			return Json(new { success = false, message = "Role not found." });
+			return Json(new { success = false, message = Messages.ItemNotFound });
 
-		var result = await _roleManager.DeleteAsync(role);
+	
 
-		if (result.Succeeded)
-			return Json(new { success = true, message = "Role deleted successfully." });
 
-		return Json(new { success = false, message = "Error while deleting the role." });
-	}
+        try
+        {
+
+            var result = await _roleManager.DeleteAsync(role);
+
+            if (result.Succeeded)
+                return Json(new
+                {
+                    success = true,
+                    message = Messages.SuccessRemoveItem
+                });
+
+			else
+			{
+                return Json(new
+                {
+                    success = false,
+                    message = Messages.ErrorRemoveItem
+                });
+            }
+                             }
+        catch
+        {
+            return Json(new
+            {
+                success = false,
+                message = Messages.ErrorRemoveItem
+            });
+        }
+    }
 }

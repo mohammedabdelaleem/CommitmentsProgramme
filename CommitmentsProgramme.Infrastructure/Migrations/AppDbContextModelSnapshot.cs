@@ -193,7 +193,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Attendances");
+                    b.ToTable("Attendances", (string)null);
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Branch", b =>
@@ -226,7 +226,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Branches");
+                    b.ToTable("Branches", (string)null);
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Commitment", b =>
@@ -282,7 +282,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasIndex("PriorityId");
 
-                    b.ToTable("Commitments");
+                    b.ToTable("Commitments", (string)null);
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.CommitmentBranch", b =>
@@ -299,7 +299,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasIndex("CommitmentId", "BranchId");
 
-                    b.ToTable("CommitmentBranches");
+                    b.ToTable("CommitmentBranches", (string)null);
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.CommitmentType", b =>
@@ -335,7 +335,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CommitmentType");
+                    b.ToTable("CommitmentType", (string)null);
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.CommitmentsAttendances", b =>
@@ -352,7 +352,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasIndex("CommitmentId", "AttendanceId");
 
-                    b.ToTable("CommitmentsAttendances");
+                    b.ToTable("CommitmentsAttendances", (string)null);
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.DailyPlan", b =>
@@ -390,7 +390,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasIndex("SeniorOfficerId");
 
-                    b.ToTable("DailyPlans");
+                    b.ToTable("DailyPlans", (string)null);
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Officer", b =>
@@ -431,7 +431,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasIndex("RankId");
 
-                    b.ToTable("Officers");
+                    b.ToTable("Officers", (string)null);
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Place", b =>
@@ -464,7 +464,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Places");
+                    b.ToTable("Places", (string)null);
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Priority", b =>
@@ -501,7 +501,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Priorities");
+                    b.ToTable("Priorities", (string)null);
                 });
 
             modelBuilder.Entity("CommitmentsProgramme.Domain.Entities.Rank", b =>
@@ -534,7 +534,7 @@ namespace CommitmentsProgramme.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ranks");
+                    b.ToTable("Ranks", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

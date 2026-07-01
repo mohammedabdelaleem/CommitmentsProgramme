@@ -8,7 +8,7 @@ public class Commitment : BaseEntity
   public string Title { get; set; } = string.Empty;
 
   [Display(Name = "التوقيت")]
-  public TimeOnly Time { get; set; }
+  public TimeOnly? Time { get; set; }
 
  
   [Display(Name = "ملاحظات")]

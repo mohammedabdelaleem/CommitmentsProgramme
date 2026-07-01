@@ -67,28 +67,38 @@ namespace CommitmentsProgramme.Mvc.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken = default)
         {
-            var attendance = await _unitOfWork.Attendances.GetAsync(
+            var entity = await _unitOfWork.Attendances.GetAsync(
                 x => x.Id == id,
                 cancellationToken: cancellationToken);
 
-            if (attendance is null)
+            if (entity is null)
             {
                 return Json(new
                 {
                     success = false,
-                    message = "الحضور غير موجود"
+                    message = Messages.ItemNotFound
+                });
+            }
+            try
+            {
+                _unitOfWork.Attendances.Remove(entity);
+                await _unitOfWork.CompleteAsync(cancellationToken);
+
+                return Json(new
+                {
+                    success = true,
+                    message = Messages.SuccessRemoveItem
+                });
+            }
+            catch
+            {
+                return Json(new
+                {
+                    success = false,
+                    message =Messages.ErrorRemoveItem
                 });
             }
 
-            _unitOfWork.Attendances.Remove(attendance);
-
-            await _unitOfWork.CompleteAsync(cancellationToken);
-
-            return Json(new
-            {
-                success = true,
-                message = "تم حذف الحضور بنجاح"
-            });
         }
 
     }

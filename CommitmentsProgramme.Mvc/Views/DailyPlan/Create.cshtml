@@ -42,7 +42,7 @@
 
         <!-- ================= COMMITMENTS ================= -->
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-3 px-2">
 
 
             <button type="button"
@@ -51,6 +51,11 @@
 
                 <i class="fa fa-plus"></i>
                 إضافة التزام
+            </button>
+
+
+            <button type="submit" class="btn btn-primary shadow-sm rounded-circle save-dailyplan" title="حفظ الخطة اليومية">
+                <i class="fa-solid fa-floppy-disk"></i>
             </button>
 
         </div>
@@ -69,8 +74,17 @@
 
             </thead>
 
-           
-            <tbody id="commitmentsTableBody">
+                <tbody id="commitmentsTableBody">
+
+                @if (Model.Commitments.Count() == 0)
+                {
+                    <tr id="empty-commitments-row-create">
+                        <td colspan="5"
+                            class="text-center text-muted">
+                            لا توجد التزامات
+                        </td>
+                    </tr>
+                }   
             </tbody>
 
         </table>
@@ -81,17 +95,15 @@
 
         <hr />
 
-        <button type="submit" class="btn btn-primary">
-            حفظ
-        </button>
-
+      
     </form>
 
 </div>
-
+    
 <partial name="_CommitmentModal" model="Model" />
 
 @section Scripts
 {
     <partial name="_CommitmentScripts" model="Model" />
+
 }

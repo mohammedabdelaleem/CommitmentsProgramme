@@ -1,5 +1,6 @@
 ﻿using CommitmentsProgramme.Utilities.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq.Expressions;
 
 namespace CommitmentsProgramme.Mvc.Controllers
 {
@@ -10,17 +11,39 @@ namespace CommitmentsProgramme.Mvc.Controllers
         private readonly IDailyPlanService _dailyPlanService = dailyPlanService;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateOnly? date)
         {
-            //var userId = User.GetUserId();
-            // Load all daily plans (light data only)
-            var plans = await _unitOfWork.DailyPlans.GetAllAsync(
-                include: q => q
-                    .Include(x => x.SeniorOfficer)
-                    .Include(x => x.DutyOfficer)
-                    .Include(x => x.Commitments));
+            List<DailyPlan> plans;
+            if (date is null)
+            {
+                plans = await _unitOfWork.DailyPlans.GetAllAsync(
 
-            var vm = plans.Select(p => new DailyPlanListVm
+              include: q => q
+                  .Include(x => x.SeniorOfficer)
+                  .Include(x => x.DutyOfficer)
+                  .Include(x => x.Commitments),
+
+              orderByExpression:x=>x.PlanDate,
+              order:OrderBy.Descending);
+            }
+            else
+            {
+                var requestDateMonth = date.Value.Month;
+                var requestDateYear = date.Value.Year;
+
+                plans = await _unitOfWork.DailyPlans.GetAllAsync(
+             x => x.PlanDate.Month == requestDateMonth && x.PlanDate.Year == requestDateYear,
+             include: q => q
+                 .Include(x => x.SeniorOfficer)
+                 .Include(x => x.DutyOfficer)
+                 .Include(x => x.Commitments),
+
+              orderByExpression: x => x.PlanDate,
+              order: OrderBy.Descending);
+            }
+
+
+            var vm = plans?.Select(p => new DailyPlanListVm
             {
                 Id = p.Id,
                 PlanDate = p.PlanDate,
@@ -34,9 +57,13 @@ namespace CommitmentsProgramme.Mvc.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(DailyPlanRequestVM requestVM)
         {
-            var vm = await _dailyPlanService.GetDetailsAsync(id);
+            DailyPlanDetailsVm vm = new();
+            if (requestVM.Id > 0)
+                vm = await _dailyPlanService.GetDetailsAsync(requestVM);
+            else if (requestVM.Date is not null)
+                vm = await _dailyPlanService.GetDetailsAsync(requestVM);
 
             return View(vm);
         }
@@ -52,7 +79,7 @@ namespace CommitmentsProgramme.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Create(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 var vm = await _dailyPlanService.GetForEditAsync(0);
 
@@ -65,7 +92,7 @@ namespace CommitmentsProgramme.Mvc.Controllers
                 // calculate the current items
                 ViewBag.CommitmentIndex = vm.Commitments.Count;
 
-                return View("Create", vm);
+                return View(vm);
             }
         }
 
@@ -73,11 +100,11 @@ namespace CommitmentsProgramme.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DailyPlanVm vm)
         {
-            if(vm.Id == 0)
+            if (vm.Id == 0)
             {
                 if (!ModelState.IsValid)
                 {
-                    vm = await _dailyPlanService.GetForEditAsync(0);
+                    //vm = await _dailyPlanService.GetForEditAsync(0);
                     return View(vm);
                 }
 
@@ -90,7 +117,7 @@ namespace CommitmentsProgramme.Mvc.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    vm = await _dailyPlanService.GetForEditAsync(vm.Id);
+                    //vm = await _dailyPlanService.GetForEditAsync(vm.Id);
 
                     return View("Create", vm);
                 }
@@ -100,12 +127,12 @@ namespace CommitmentsProgramme.Mvc.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-          
+
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken = default)
         {
             var plan = await _unitOfWork.DailyPlans.GetAsync(
                 x => x.Id == id,
@@ -113,26 +140,56 @@ namespace CommitmentsProgramme.Mvc.Controllers
                     .Include(x => x.Commitments)
                         .ThenInclude(x => x.CommitmentBranches)
                     .Include(x => x.Commitments)
-                        .ThenInclude(x => x.CommitmentsAttendances));
+                        .ThenInclude(x => x.CommitmentsAttendances),
+                cancellationToken: cancellationToken);
 
             if (plan is null)
             {
-                return NotFound();
+                return Json(new { success = false, message = Messages.ItemNotFound });
             }
 
 
-            foreach (var commitment in plan.Commitments)
+
+            try
             {
-                commitment.CommitmentBranches.Clear();
-                commitment.CommitmentsAttendances.Clear();
+
+                foreach (var commitment in plan.Commitments)
+                {
+                    commitment.CommitmentBranches.Clear();
+                    commitment.CommitmentsAttendances.Clear();
+                }
+
+                _unitOfWork.Commitments.RemoveRange(plan.Commitments);
+                _unitOfWork.DailyPlans.Remove(plan);
+                int result = await _unitOfWork.CompleteAsync(cancellationToken);
+
+                if (result > 0)
+                {
+                    return Json(new
+                    {
+                        success = true,
+                        message = Messages.SuccessRemoveItem
+                    });
+                }
+
+                else
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = Messages.ErrorRemoveItem
+                    });
+                }
             }
-            _unitOfWork.Commitments.RemoveRange(plan.Commitments);
-            _unitOfWork.DailyPlans.Remove(plan);
-            await _unitOfWork.CompleteAsync();
-
-            return RedirectToAction(nameof(Index));
+            catch
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = Messages.ErrorRemoveItem
+                });
+            }
         }
-
 
     }
 }

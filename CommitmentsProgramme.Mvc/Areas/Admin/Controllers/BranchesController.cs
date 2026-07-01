@@ -76,20 +76,32 @@ namespace CommitmentsProgramme.Mvc.Areas.Admin.Controllers
                 return Json(new
                 {
                     success = false,
-                    message = "القطاع غير موجود"
+                    message = Messages.ItemNotFound
+                   
                 });
             }
 
-            _unitOfWork.Branches.Remove(entity);
-
-            await _unitOfWork.CompleteAsync(cancellationToken);
-
-            return Json(new
+            try
             {
-                success = true,
-                message = "تم حذف القطاع بنجاح"
-            });
-        }
+                _unitOfWork.Branches.Remove(entity);
+                await _unitOfWork.CompleteAsync(cancellationToken);
 
+                return Json(new
+                {
+                    success = true,
+                    message = Messages.SuccessRemoveItem
+                });
+            }
+            catch
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = Messages.ErrorRemoveItem
+                });
+            }
+
+        }
     }
 }
+   

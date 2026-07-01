@@ -4,8 +4,6 @@ using static CommitmentsProgramme.Utilities.Abstractions.Consts.SharedData;
 
 namespace CommitmentsProgramme.Mvc.Areas.Admin.Controllers
 {
-
-
     [Area(DefaultRoles.Admin)]
     [Authorize(Roles = DefaultRoles.Admin)]
     public class CommitmentTypesController(IUnitOfWork unitOfWork) : Controller
@@ -47,12 +45,12 @@ namespace CommitmentsProgramme.Mvc.Areas.Admin.Controllers
 
             if (entity.Id == 0)
             {
-                TempData["success"] = "تم اضافة القطاع بنجاح ";
+                TempData["success"] = "تم اضافة نوع الالتزام بنجاح ";
             }
 
             else
             {
-                TempData["success"] = "تم تعديل القطاع بنجاح";
+                TempData["success"] = "تم تعديل نوع الالتزام بنجاح";
             }
 
             await _unitOfWork.CommitmentTypes.SaveAsync(entity, username!, cancellationToken);
@@ -76,19 +74,30 @@ namespace CommitmentsProgramme.Mvc.Areas.Admin.Controllers
                 return Json(new
                 {
                     success = false,
-                    message = "القطاع غير موجود"
+                    message = Messages.ItemNotFound
                 });
             }
 
-            _unitOfWork.CommitmentTypes.Remove(entity);
-
-            await _unitOfWork.CompleteAsync(cancellationToken);
-
-            return Json(new
+            try
             {
-                success = true,
-                message = "تم حذف القطاع بنجاح"
-            });
+                _unitOfWork.CommitmentTypes.Remove(entity);
+                await _unitOfWork.CompleteAsync(cancellationToken);
+
+                return Json(new
+                {
+                    success = true,
+                    message = Messages.SuccessRemoveItem
+                });
+            }
+            catch
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = Messages.ErrorRemoveItem
+                });
+            }
+
         }
 
     }

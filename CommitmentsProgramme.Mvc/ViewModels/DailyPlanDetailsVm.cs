@@ -10,8 +10,8 @@
 
         public OfficerInfoVm DutyOfficer { get; set; } = new();
 
-        public List<CommitmentVm> OutsideCommitments { get; set; } = new();
+        public List<CommitmentVm> OutsideCommitments { get; set; } = [];
 
-        public List<CommitmentVm> SideCommitments { get; set; } = new();
+        public List<CommitmentVm> InsideCommitments { get; set; } = [];
     }
 }

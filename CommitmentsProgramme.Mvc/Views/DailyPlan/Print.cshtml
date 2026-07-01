@@ -1,203 +1,161 @@
-﻿@model DailyPlanPrintVm
+﻿@using System.Globalization
+@model DailyPlanPrintVm
 
 @{
     Layout = null;
+
+    string ArabicTime(TimeOnly? time)
+    {
+        if (time == null)
+            return "";
+
+        var dt = DateTime.Today.Add(time.Value.ToTimeSpan());
+
+        int hour = dt.Hour % 12;
+
+        if (hour == 0)
+            hour = 12;
+
+        string period = dt.Hour >= 12 ? "م" : "ص";
+
+        return $"{hour:00}:{dt:mm}{period}";
+    }
 }
 
-<!DOCTYPE html>
-<html dir="rtl">
+<!doctype html>
+
+<html lang="ar" dir="rtl">
+
 <head>
+
     <meta charset="utf-8" />
 
-    <style>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1" />
 
-            body {
-                font-family: Tahoma;
-                direction: rtl;
-                margin: 20px;
-            }
+    <title>الإلتزامات الرئيسية</title>
 
-            .report {
-                width: 100%;
-                border-collapse: collapse;
-                border: 4px solid #000;
-            }
+    <link rel="stylesheet"
+          href="@Url.Content("~/css/print-report.css")" />
 
-                .report td {
-                    border: 2px solid #000;
-                }
-
-            .header-table,
-            .officers-table,
-            .commitments-table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-
-                .header-table td,
-                .officers-table td,
-                .commitments-table td,
-                .commitments-table th {
-                    border: 1px solid #000;
-                    padding: 8px;
-                }
-
-            .header {
-                text-align: center;
-                font-size: 22px;
-                font-weight: bold;
-            }
-
-            .logo {
-                width: 120px;
-                text-align: center;
-            }
-
-            .date-row {
-                padding: 10px;
-                font-weight: bold;
-            }
-
-            .section-title {
-                text-align: center;
-                font-weight: bold;
-                font-size: 18px;
-                padding: 8px;
-                background: #f3f3f3;
-            }
-
-            .commitments-table th {
-                text-align: center;
-            }
-
-            .commitments-table td {
-                vertical-align: top;
-            }
-
-            ul {
-                margin: 0;
-                padding-right: 18px;
-            }
-
-            .signature {
-                height: 120px;
-            }
-
-    </style>
 </head>
 
 <body>
 
-    <table class="report">
+    <main class="page">
+        <div class="page-content">
+            <header class="top">
 
-        <!-- HEADER -->
-
-        <tr>
-            <td>
-
-                <table class="header-table">
-
-                    <tr>
-
-                        <td class="logo">
-                            <img src="~/Uploads/Website/logo.png"/>
-                        </td>
-
-                        <td class="header">
-
-                            الخطة اليومية
-
-                            <br />
-
-                            إدارة .........
-
-                        </td>
-
-                    </tr>
-
-                </table>
-
-            </td>
-        </tr>
-
-        <!-- DATE -->
-
-        <tr>
-            <td class="date-row">
-
-                التاريخ :
-                @Model.PlanDate.ToString("dd/MM/yyyy")
-
-            </td>
-        </tr>
-
-        <!-- INSIDE -->
-
-        <tr>
-            <td>
-
-                <div class="section-title">
-                    الالتزامات الداخلية
+                <div class="agency">
+                    جهاز الخدمات العامة للقوات المسلحة
                 </div>
 
-                <table class="commitments-table">
+                <img class="logo"
+                     src="@Url.Content("~/Uploads/Website/logo.png")" />
+
+                <div class="text-center middle-main-title">
+
+                    <p class="main-title">
+
+                        الإلتزامات الرئيسية عن يوم
+
+                        @Model.PlanDate.ToString("dddd", new CultureInfo("ar-EG")).ToArabic()
+
+                        الموافق
+
+                        @Model.PlanDate.ToString("yyyy/MM/dd", new CultureInfo("ar-EG")).ToArabic()
+
+                    </p>
+
+                </div>
+
+            </header>
+
+            <div class="section-title">
+
+                الإلتزامات الداخلية
+
+            </div>
+
+
+            @{
+                int insideIndex = 1;
+            }
+
+            @if (Model?.InsideCommitments.Any() == true)
+            {
+                <table class="report-table">
+
+                    <colgroup>
+                        <col class="col-number">
+                        <col class="col-time">
+                        <col class="col-title">
+                        <col class="col-attendance">
+                        <col class="col-place">
+                        <col class="col-branch">
+                    </colgroup>
 
                     <thead>
-
                         <tr>
-
                             <th>م</th>
-                            <th>الوقت</th>
-                            <th>الالتزام</th>
+                            <th>الساعة</th>
+                            <th>الإلتزام</th>
+                            <th>الحاضرون</th>
                             <th>المكان</th>
-                            <th>القطاعات</th>
-                            <th>الحضور</th>
-
+                            <th>الفرع المختص</th>
                         </tr>
-
                     </thead>
 
                     <tbody>
-
-                        @{
-                            int insideIndex = 1;
-                        }
-
                         @foreach (var item in Model.InsideCommitments)
                         {
                             <tr>
 
-                                <td>@insideIndex</td>
+                                <td>@insideIndex.ToString().ToArabic()</td>
 
-                                <td>@item.Time.ToString("HH:mm")</td>
+                                <td>@ArabicTime(item?.Time).ToArabic()</td>
 
-                                <td>@item.Title</td>
+                                <td class="text-cell">
+                                    @item?.Title
+                                </td>
 
-                                <td>@item.PlaceName</td>
+                                <td class="text-cell">
 
-                                <td>
-
-                                    <ul>
-
-                                        @foreach (var branch in item.Branches)
-                                        {
-                                            <li>@branch</li>
-                                        }
-
-                                    </ul>
+                                    @if (item?.Attendances.Any() == true)
+                                    {
+                                        <ul class="report-list">
+                                            @foreach (var attendance in item.Attendances)
+                                            {
+                                                <li>@attendance</li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <span>لا يوجد</span>
+                                    }
 
                                 </td>
 
                                 <td>
+                                    @item?.PlaceName
+                                </td>
 
-                                    <ul>
+                                <td class="text-cell">
 
-                                        @foreach (var attendance in item.Attendances)
-                                        {
-                                            <li>@attendance</li>
-                                        }
-
-                                    </ul>
+                                    @if (item?.Branches.Any() == true)
+                                    {
+                                        <ul class="report-list">
+                                            @foreach (var branch in item.Branches)
+                                            {
+                                                <li>@branch</li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <span>لا يوجد</span>
+                                    }
 
                                 </td>
 
@@ -209,172 +167,184 @@
                     </tbody>
 
                 </table>
+            }
+            else
+            {
+                <table class="report-table">
+                    <tbody>
+                        <tr>
+                            <td colspan="6" class="empty-message">
+                                لا توجد التزامات داخلية
+                            </td>
+                        </tr>
+                    </tbody>
 
-            </td>
-        </tr>
+                </table>
+            }
 
-        <!-- OUTSIDE -->
+            <div class="section-title">
+                الإلتزامات الخارجية
+            </div>
 
-        <tr>
-            <td>
+           
 
-                <div class="section-title">
-                    الالتزامات الخارجية
-                </div>
+            @{
+                int outsideIndex = 1;
+            }
 
-                <table class="commitments-table">
+            @if (Model?.OutsideCommitments.Any() == true)
+            {
+                <table class="report-table">
+
+                    <colgroup>
+                        <col class="col-number">
+                        <col class="col-time">
+                        <col class="col-title">
+                        <col class="col-attendance">
+                        <col class="col-place">
+                        <col class="col-branch">
+                    </colgroup>
 
                     <thead>
-
                         <tr>
-
                             <th>م</th>
-                            <th>الوقت</th>
-                            <th>الالتزام</th>
+                            <th>الساعة</th>
+                            <th>الإلتزام</th>
+                            <th>الحاضرون</th>
                             <th>المكان</th>
-                            <th>القطاعات</th>
-                            <th>الحضور</th>
-
+                            <th>الفرع المختص</th>
                         </tr>
-
                     </thead>
 
                     <tbody>
-
-                        @{
-                            int index = 1;
-                        }
-
                         @foreach (var item in Model.OutsideCommitments)
                         {
                             <tr>
 
-                                <td>@index</td>
+                                <td>@outsideIndex.ToString().ToArabic()</td>
 
-                                <td>@item.Time.ToString("HH:mm")</td>
+                                <td>@ArabicTime(item?.Time).ToArabic()</td>
 
-                                <td>@item.Title</td>
+                                <td class="text-cell">
+                                    @item?.Title
+                                </td>
 
-                                <td>@item.PlaceName</td>
+                                <td class="text-cell">
 
-                                <td>
-
-                                    <ul>
-
-                                        @foreach (var branch in item.Branches)
-                                        {
-                                            <li>@branch</li>
-                                        }
-
-                                    </ul>
+                                    @if (item?.Attendances.Any() == true)
+                                    {
+                                        <ul class="report-list">
+                                            @foreach (var attendance in item.Attendances)
+                                            {
+                                                <li>@attendance</li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <span>لا يوجد</span>
+                                    }
 
                                 </td>
 
                                 <td>
+                                    @item?.PlaceName
+                                </td>
 
-                                    <ul>
+                                <td class="text-cell">
 
-                                        @foreach (var attendance in item.Attendances)
-                                        {
-                                            <li>@attendance</li>
-                                        }
-
-                                    </ul>
+                                    @if (item?.Branches.Any()==true)
+                                    {
+                                        <ul class="report-list">
+                                            @foreach (var branch in item.Branches)
+                                            {
+                                                <li>@branch</li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <span>لا يوجد</span>
+                                    }
 
                                 </td>
 
                             </tr>
 
-                            index++;
+                            outsideIndex++;
                         }
 
                     </tbody>
 
                 </table>
+            }
+            else
+            {
+                <table class="report-table">
+                    <tbody>
+                        <tr>
+                            <td colspan="6" class="empty-message">
+                                لا توجد التزامات خارجية
+                            </td>
+                        </tr>
+                    </tbody>
 
-            </td>
-        </tr>
+                </table>
+            }
 
-      
+              
+            <table class="signatures">
 
-        <!-- OFFICERS -->
-
-        <tr>
-
-            <td>
-
-                <table class="officers-table">
+                <tbody>
 
                     <tr>
 
-                        <td width="50%">
+                        <td>ضابط عظيم</td>
 
-                            <b>ضابط عظيم</b>
+                        <td>ضابط نوبتجي الإدارة العامة</td>
 
-                            <hr />
+                    </tr>
 
-                            @Model.SeniorOfficerRank
+                    <tr>
+
+                        <td>
+
+                            @Model?.SeniorOfficerRank
+
                             /
-                            @Model.SeniorOfficerName
 
-                            <br />
-
-                            @Model.SeniorOfficerPhone
+                            @Model?.SeniorOfficerName
 
                         </td>
 
-                        <td width="50%">
+                        <td>
 
-                            <b>ضابط النوبتجية</b>
+                            @Model?.DutyOfficerRank
 
-                            <hr />
-
-                            @Model.DutyOfficerRank
                             /
-                            @Model.DutyOfficerName
 
-                            <br />
-
-                            @Model.DutyOfficerPhone
+                            @Model?.DutyOfficerName
 
                         </td>
 
                     </tr>
 
-                </table>
-
-            </td>
-
-        </tr>
-
-
-        <!-- FOOTER -->
-
-        <tr>
-
-            <td class="signature">
-
-                <table style="width:100%;border-collapse:collapse">
-
                     <tr>
 
-                        <td style="width:50%;border:none">
-                            التوقيع
-                        </td>
+                        <td>@Model?.SeniorOfficerPhone?.ToArabic()</td>
 
-                        <td style="width:50%;border:none;text-align:left">
-                            يعتمد
-                        </td>
+                        <td>@Model?.DutyOfficerPhone?.ToArabic()</td>
 
                     </tr>
 
-                </table>
+                </tbody>
 
-            </td>
+            </table>
+        </div>
+    </main>
 
-        </tr>
 
-    </table>
-
+    <script> document.body.innerHTML = document.body.innerHTML.replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d] ); </script>
 </body>
+
 </html>

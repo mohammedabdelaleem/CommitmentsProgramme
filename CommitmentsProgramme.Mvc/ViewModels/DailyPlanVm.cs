@@ -12,21 +12,21 @@ public class DailyPlanVm
 
   public int DutyOfficerId { get; set; }
 
-  public List<CommitmentVm> Commitments { get; set; } = new();
+  public List<CommitmentVm> Commitments { get; set; } =[];
 
 
     // SELECT LISTS
-    public List<SelectListItem> Priorities { get; set; } = new();
+    public List<SelectListItem> Priorities { get; set; } =[];
 
-    public List<SelectListItem> CommitmentTypes { get; set; } = new();
+    public List<SelectListItem> CommitmentTypes { get; set; } =[];
 
-    public List<SelectListItem> Branches { get; set; } = new();
+    public List<SelectListItem> Branches { get; set; } =[];
 
-    public List<SelectListItem> Places { get; set; } = new();
+    public List<SelectListItem> Places { get; set; } =[];
 
-    public List<SelectListItem> Attendances { get; set; } = new();
+    public List<SelectListItem> Attendances { get; set; } =[];
 
-    public List<SelectListItem> SeniorOfficers { get; set; } = new();
+    public List<SelectListItem> SeniorOfficers { get; set; } =[];
 
-    public List<SelectListItem> DutyOfficers { get; set; } = new();
+    public List<SelectListItem> DutyOfficers { get; set; } =[];
 }

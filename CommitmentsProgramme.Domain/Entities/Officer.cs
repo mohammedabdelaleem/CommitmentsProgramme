@@ -11,7 +11,7 @@ public class Officer : BaseEntity
 {
   [Required(ErrorMessage = "{0} مطلوب")]
   [Display(Name = "الاسم")]
-  public string FullName { get; set; } = string.Empty;
+  public string FullName { get; set; } 
 
   [Required(ErrorMessage = "{0} مطلوب")]
   [Display(Name = "الرتبة")]

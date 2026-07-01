@@ -20,6 +20,6 @@ global using CommitmentsProgramme.Infrastructure.Repository;
 global using Microsoft.CodeAnalysis;
 global using System.Security.Claims;
 global using CommitmentsProgramme.Mvc.Services;
-global using CommitmentsProgramme.Mvc.Controllers;
 global using Microsoft.AspNetCore.Mvc;
 
+global using static CommitmentsProgramme.Utilities.Abstractions.Consts.SharedData;

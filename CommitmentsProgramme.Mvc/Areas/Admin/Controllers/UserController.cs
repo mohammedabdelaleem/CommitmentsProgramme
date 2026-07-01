@@ -97,16 +97,40 @@ public class UserController(
 	public async Task<IActionResult> Delete(string id, CancellationToken cancellationToken = default)
 	{
 		var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+		
 		if (user == null)
-			return Json(new { success = false, message = "User not found." });
+			return Json(new { success = false, message = Messages.ItemNotFound });
 
-		var result = await _userManager.DeleteAsync(user);
+        try
+        {
+            var result = await _userManager.DeleteAsync(user);
 
-		if (result.Succeeded)
-			return Json(new { success = true, message = "User deleted successfully." });
+            if (result.Succeeded)
+                return Json(new
+            {
+                success = true,
+                message = Messages.SuccessRemoveItem
+            });
 
-		return Json(new { success = false, message = "Error while deleting the User." });
-	}
+			else
+			{
+ return Json(new
+            {
+                success = false,
+                message = Messages.ErrorRemoveItem
+            });
+			}
+        }
+        catch
+        {
+            return Json(new
+            {
+                success = false,
+                message = Messages.ErrorRemoveItem
+            });
+           
+        }
+    }
 
 }
 

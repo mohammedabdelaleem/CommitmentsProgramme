@@ -27,6 +27,7 @@ app.UseAuthorization();
 
 app.UseSession();
 
+
 app.MapControllerRoute(
     name: "admin",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");

@@ -39,12 +39,16 @@
                                             <td class="col-md-4" style="margin:0px;padding:0px;">
                                                 <a style="height:max-content"
                                                    asp-area="Admin" asp-controller="Places" asp-action="Edit" asp-route-id="@item.Id"
-                                                   class="btn btn-info btn-fw">تعديل</a>
+                                                   class="btn btn-primary shadow-sm rounded-circle"
+                                                   title="تعديل">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </a>
 
 
                                                 <a onclick="deleteItem(@item.Id, 'Places')"
-                                                   class="btn btn-danger">
-                                                    <i class="bi bi-trash"></i> حذف
+                                                   class="btn btn-danger shadow-sm rounded-circle"
+                                                   title="حذف">
+                                                    <i class="fa-solid fa-trash-can"></i>
                                                 </a>
                                             </td>
                                         </tr>

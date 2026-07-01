@@ -1,88 +1,258 @@
 ﻿@import url("variables.css");
 
 body {
-  background: var(--background);
-  font-family: Cairo,sans-serif;
-  direction: rtl;
+    margin: 0;
+    background: var(--background);
+    font-family: Cairo, sans-serif;
+    direction: rtl;
+    color: #212529;
 }
 
-.website-body {
-  min-height: 100vh;
-}
+/* ===========================
+   Navbar
+=========================== */
 
 .website-navbar {
-  background: white;
-  box-shadow: 0 2px 15px rgba(0,0,0,.05);
+    background: #fff;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
 }
 
 .navbar-brand {
-  font-weight: 700;
-  font-size: 24px;
-  color: var(--primary);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--primary);
 }
 
 .nav-link {
-  font-weight: 600;
-  margin-inline: 8px;
+    font-weight: 600;
+    margin-inline: 8px;
+    transition: color 0.3s ease;
 }
 
+    .nav-link:hover {
+        color: var(--primary);
+    }
+
+
+.logo-nav {
+    height: 55px;
+    width: 55px;
+    object-fit: cover;
+    background: #fff;
+    padding: 6px;
+    border-radius: 40px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+    transition: all .3s ease;
+}
+
+    .logo-nav:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 8px 20px rgba(0,0,0,.18);
+    }
+
+/* ===========================
+   Buttons
+=========================== */
+.save-dailyplan {
+    font-size: 20px;
+    border-radius: 30%;
+}
+
+.rounded-10 {
+    border-radius: 10%;
+}
+
+.rounded-20 {
+    border-radius: 20%;
+}
+
+.rounded-30 {
+    border-radius: 30%;
+}
+
+.rounded-40 {
+    border-radius: 40%;
+}
+
+.rounded-50 {
+    border-radius: 50%;
+}
+
+.comm-nav-title {
+    color: royalblue !important;
+    transition: all 0.5s ease !important;
+}
+
+    .comm-nav-title:hover {
+        color: #1d1d1d !important;
+    }
+/* ===========================
+   Hero Section
+=========================== */
 .hero-section {
-  padding: 90px 0;
+    padding: 90px 0;
 }
 
 .hero-badge {
-  display: inline-block;
-  background: #EAF2FF;
-  color: var(--primary);
-  padding: 8px 18px;
-  border-radius: 50px;
-  margin-bottom: 20px;
+    display: inline-block;
+    background: #EAF2FF;
+    color: var(--primary);
+    padding: 8px 18px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    font-weight: 700;
 }
 
 .hero-section h1 {
-  font-size: 54px;
-  font-weight: 800;
+    font-size: clamp(32px, 6vw, 54px);
+    font-weight: 800;
+    line-height: 1.2;
 }
 
 .hero-section p {
-  font-size: 19px;
-  color: #6c757d;
-  margin-top: 20px;
+    margin-top: 20px;
+    font-size: clamp(16px, 2vw, 19px);
+    color: #6c757d;
+    line-height: 1.8;
 }
 
 .hero-icon {
-  font-size: 180px;
-  color: var(--primary);
-  opacity: .85;
+    font-size: clamp(80px, 18vw, 180px);
+    color: var(--primary);
+    opacity: 0.85;
 }
+
+/* ===========================
+   Cards
+=========================== */
 
 .info-card {
-  background: white;
-  border-radius: var(--radius);
-  padding: 35px;
-  text-align: center;
-  box-shadow: var(--shadow);
-  transition: .3s;
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 35px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-  .info-card:hover {
-    transform: translateY(-6px);
-  }
+    .info-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    }
 
-  .info-card i {
-    font-size: 38px;
-    color: var(--primary);
-  }
+    .info-card i {
+        font-size: 38px;
+        color: var(--primary);
+    }
 
-  .info-card h2 {
-    margin: 20px 0 10px;
-    font-weight: 800;
-  }
+    .info-card h2 {
+        margin: 20px 0 10px;
+        font-weight: 800;
+    }
+
+/* ===========================
+   Select2
+=========================== */
 
 .select2-search.select2-search--inline {
-    display:none;
+    display: none;
 }
 
-select2-selection__choice {
-    background-color: #b6ff00 
+.select2-selection__choice {
+    background-color: #b6ff00;
+    color: #000;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .select2-selection__choice:hover {
+        background-color: #1e1e1e;
+        color: #fff;
+    }
+
+/* ===========================
+   SweetAlert2
+=========================== */
+
+.swal2-modal .swal2-icon {
+    margin-bottom: 0;
+}
+
+/* ===========================
+   Layout
+=========================== */
+
+.website-body {
+    min-height: 100vh;
+}
+
+/* ===========================
+   Toast Notifications
+=========================== */
+
+.toast {
+    direction: rtl;
+    text-align: right;
+    background: #fff;
+    color: #212529;
+}
+
+.toast-close-button {
+    left: 8px;
+    right: auto;
+}
+
+#toast-container > .toast {
+    width: 320px;
+    opacity: 1;
+    border-radius: 8px;
+    color: #fff;
+    background-image: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+#toast-container > .toast-success {
+    background-color: #28a745 !important;
+}
+
+#toast-container > .toast-error {
+    background-color: #dc3545 !important;
+}
+
+#toast-container > .toast-info {
+    background-color: #17a2b8 !important;
+}
+
+#toast-container > .toast-warning {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 60px 0;
+        text-align: center;
+    }
+
+    .hero-icon {
+        margin-top: 30px;
+    }
+
+    .info-card {
+        padding: 25px;
+    }
+
+    .navbar-brand {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 576px) {
+    #toast-container > .toast {
+        width: calc(100vw - 32px);
+    }
 }

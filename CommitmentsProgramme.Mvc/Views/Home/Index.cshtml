@@ -30,7 +30,10 @@
 
                 <div class="mt-4">
 
-                    <a class="btn btn-primary btn-lg">
+                    <a asp-controller="DailyPlan"
+                       asp-action="Details"
+                       asp-route-date="@DateOnly.FromDateTime(DateTime.Today)"
+                       class="btn btn-primary btn-lg">
 
                         عرض التزامات اليوم
 
@@ -41,9 +44,7 @@
             </div>
 
             <div class="col-lg-5 text-center">
-
-                <i class="fa-solid fa-calendar-days hero-icon"></i>
-
+                <img src="~/Uploads/Website/logo.png" class="hero-icon " />
             </div>
 
         </div>
@@ -56,27 +57,53 @@
 
     <div class="row g-4">
 
-        @for (int i = 0; i < 4; i++)
-        {
-            <div class="col-lg-4 col-md-6">
+        
+        <div class="col-lg-4 col-md-6">
 
-                <div class="info-card">
+            <div class="info-card">
 
-                    <i class="fa-solid fa-chart-column"></i>
+                <i class="fa-solid fa-chart-column"></i>
 
-                    <h2>15</h2>
+                <h2>15</h2>
+                <p>
+                    الالتزامات اليومية
+                </p>
+            </div>
+        </div>
 
-                    <p>
+        
+        <div class="col-lg-4 col-md-6">
 
-                        التزامات اليوم
-
-                    </p>
-
-                </div>
+            <div class="info-card">
+                <i class="fa-solid fa-chart-column"></i>
+                <h2>30</h2>
+                <p>
+                    النبطشيات
+                </p>
 
             </div>
-        }
 
+        </div>
+
+        
+        <div class="col-lg-4 col-md-6">
+
+            <div class="info-card">
+
+                <i class="fa-solid fa-chart-column"></i>
+
+                <h2>5</h2>
+
+                <p>
+
+                    مخططات المرور
+                </p>
+
+            </div>
+
+        </div>
+
+        
     </div>
 
 </section>

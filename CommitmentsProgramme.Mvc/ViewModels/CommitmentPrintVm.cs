@@ -6,7 +6,7 @@
 
         public string PlaceName { get; set; }
 
-        public TimeOnly Time { get; set; }
+        public TimeOnly? Time { get; set; }
 
         public string? Notes { get; set; }
 
