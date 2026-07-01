@@ -1,5 +1,6 @@
 using CommitmentsProgramme.Domain.Entities;
 using Mapster;
+using CommitmentsProgramme.Utilities.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CommitmentsProgramme.Mvc.Services;
@@ -85,7 +86,7 @@ entity.dateOnly = vm.dateOnly;
                 .Cast<ShiftRank>()
                 .Select(x => new SelectListItem
                 {
-                    Text = x.ToString(),
+                    Text = x.GetDisplayName(),
                     Value = ((int)x).ToString()
                 })
                 .ToList());

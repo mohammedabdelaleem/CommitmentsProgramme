@@ -16,9 +16,14 @@ namespace CommitmentsProgramme.Domain.Entities
 
 
    public  enum  ShiftRank{
-        
+            [Display(Name = "ظابط عظيم")]
+
      GreateOfficer,
+         [Display(Name = "ضابط نوبنجي الاداره العامه")]
+
      ShiftOfficerGeneral,
+              [Display(Name = "ضابط نوبنجي الاداره المحليه")]
+
      ShiftofficerLocal
         
     }

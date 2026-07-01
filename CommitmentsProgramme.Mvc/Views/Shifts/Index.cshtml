@@ -1,5 +1,5 @@
 @model List<Shiftvm>
-
+@using CommitmentsProgramme.Utilities.Extensions
 <form method="get" class="row g-3 mb-3">
 
     <div class="col-md-4">
@@ -35,8 +35,14 @@
 
             <td>@item.Name</td>
             <td>@item.Phone</td>
-            <td>@((ShiftRank)item.EnumSelect)</td>
-            <td>@item.dateOnly.ToString("yyyy-MM-dd")</td>
+
+            @{
+    var rank = (ShiftRank)Convert.ToInt32(item.EnumSelect);
+}
+<td>@rank.GetDisplayName()</td>
+
+<td>@item.dateOnly</td>
+
 
             <td>
                 <button class="btn btn-warning btn-sm btn-edit"
@@ -198,13 +204,7 @@ $(function () {
                 console.log(xhr.responseText);
 
 
-    console.log("❌ STATUS CODE:", xhr.status);
-    console.log("❌ STATUS TEXT:", xhr.statusText);
-
-    console.log("❌ RESPONSE TEXT:");
-    console.log(xhr.responseText);
-
-    console.log("❌ FULL ERROR OBJECT:");
+   
     console.log(xhr);
                 alert("حدث خطأ أثناء الحفظ");
             }
